@@ -19,6 +19,13 @@ AddEventHandler('esx_policejob:confiscatePlayerItem', function(target, itemType,
 		print(('esx_policejob: %s attempted to confiscate!'):format(xPlayer.identifier))
 		return
 	end
+	
+	if targetXPlayer == nil then
+		return
+	end
+	
+	local SourceName = GetPlayerName(_source)
+	local TargetName = GetPlayerName(target)
 
 	if itemType == 'item_standard' then
 		local targetItem = targetXPlayer.getInventoryItem(itemName)
@@ -29,47 +36,72 @@ AddEventHandler('esx_policejob:confiscatePlayerItem', function(target, itemType,
 
 			-- can the player carry the said amount of x item?
 			if sourceItem.limit ~= -1 and (sourceItem.count + amount) > sourceItem.limit then
-				TriggerClientEvent('esx:showNotification', _source, _U('quantity_invalid'))
+				TriggerClientEvent("pNotify:SendNotification", _source, { text = "تعداد صحیح نیست.", type = "error", timeout = 5000, layout = "bottomCenter"})
 			else
 				targetXPlayer.removeInventoryItem(itemName, amount)
 				sourceXPlayer.addInventoryItem   (itemName, amount)
-				TriggerClientEvent('esx:showNotification', _source, _U('you_confiscated', amount, sourceItem.label, targetXPlayer.name))
-				TriggerClientEvent('esx:showNotification', target,  _U('got_confiscated', amount, sourceItem.label, sourceXPlayer.name))
+				TriggerClientEvent("pNotify:SendNotification", _source, { text = "تعداد " .. amount .. " عدد،" .. sourceItem.label .. " از " .. TargetName .. " مصادره شد.", type = "info", timeout = 5000, layout = "bottomCenter"})
+				TriggerClientEvent("pNotify:SendNotification", target, { text = "تعداد " .. amount .. " عدد،" .. sourceItem.label .. " از  شما توسط " .. SourceName .. " مصادره شد.", type = "info", timeout = 5000, layout = "bottomCenter"})
 			end
 		else
-			TriggerClientEvent('esx:showNotification', _source, _U('quantity_invalid'))
+			TriggerClientEvent("pNotify:SendNotification", _source, { text = "تعداد صحیح نیست.", type = "error", timeout = 5000, layout = "bottomCenter"})
 		end
 
 	elseif itemType == 'item_account' then
 		targetXPlayer.removeAccountMoney(itemName, amount)
 		sourceXPlayer.addAccountMoney   (itemName, amount)
-
-		TriggerClientEvent('esx:showNotification', _source, _U('you_confiscated_account', amount, itemName, targetXPlayer.name))
-		TriggerClientEvent('esx:showNotification', target,  _U('got_confiscated_account', amount, itemName, sourceXPlayer.name))
-
+		TriggerClientEvent("pNotify:SendNotification", _source, { text = "تعداد " .. amount .. " عدد،" .. itemName .. " از " .. TargetName .. " مصادره شد.", type = "info", timeout = 5000, layout = "bottomCenter"})
+		TriggerClientEvent("pNotify:SendNotification", target, { text = "تعداد " .. amount .. " عدد،" .. itemName .. " از  شما توسط " .. SourceName .. " مصادره شد.", type = "info", timeout = 5000, layout = "bottomCenter"})
 	elseif itemType == 'item_weapon' then
 		if amount == nil then amount = 0 end
 		targetXPlayer.removeWeapon(itemName, amount)
 		sourceXPlayer.addWeapon   (itemName, amount)
 
-		TriggerClientEvent('esx:showNotification', _source, _U('you_confiscated_weapon', ESX.GetWeaponLabel(itemName), targetXPlayer.name, amount))
-		TriggerClientEvent('esx:showNotification', target,  _U('got_confiscated_weapon', ESX.GetWeaponLabel(itemName), amount, sourceXPlayer.name))
-	
+		TriggerClientEvent("pNotify:SendNotification", _source, { text = "اسلحه " .. ESX.GetWeaponLabel(itemName) .." با " .. amount .. " عدد تیر، از " .. TargetName .. " مصادره شد.", type = "info", timeout = 5000, layout = "bottomCenter"})
+		TriggerClientEvent("pNotify:SendNotification", target, { text = "اسلحه " .. ESX.GetWeaponLabel(itemName) .." با " .. amount .. " عدد تیر، از شما توسط " .. SourceName .. " مصادره شد.", type = "info", timeout = 5000, layout = "bottomCenter"})	
 	end
 end)
 
 RegisterServerEvent('esx_policejob:handcuff')
 AddEventHandler('esx_policejob:handcuff', function(target)
 	local xPlayer = ESX.GetPlayerFromId(source)
+	local tPlayer = ESX.GetPlayerFromId(target)
+	if xPlayer and xPlayer ~= nil and tPlayer and tPlayer ~= nil and xPlayer.job.name == 'police' then
+		if tPlayer.get('HandCuff') then
+			tPlayer.set('HandCuff', false)
+			TriggerClientEvent('esx_policejob:animtarget', target, source)
+			TriggerClientEvent('esx_policejob:cuffanimpolice', source)
+			TriggerClientEvent('esx_policejob:handcuff', target)
+		else
+			tPlayer.set('HandCuff', true)
+			TriggerClientEvent('esx_policejob:uncuffanimpolice', source)
+			TriggerClientEvent('esx_policejob:handuncuff', target)
+		end
+	end
+end)
 
-		TriggerClientEvent('esx_policejob:handcuff', target)
+RegisterServerEvent('esx_policejob:handfootcuff')
+AddEventHandler('esx_policejob:handfootcuff', function(target)
+	local xPlayer = ESX.GetPlayerFromId(source)
+	local tPlayer = ESX.GetPlayerFromId(target)
+	if xPlayer and xPlayer ~= nil and tPlayer and tPlayer ~= nil and xPlayer.job.name == 'police' then
+		if tPlayer.get('HandCuff') then
+			tPlayer.set('HandCuff', false)
+			TriggerClientEvent('esx_policejob:animtarget', target, source)
+			TriggerClientEvent('esx_policejob:cuffanimpolice', source)
+			TriggerClientEvent('esx_policejob:handfootcuff', target)
+		else
+			tPlayer.set('HandCuff', true)
+			TriggerClientEvent('esx_policejob:uncuffanimpolice', source)
+			TriggerClientEvent('esx_policejob:handunfootcuff', target)
+		end
+	end
 end)
 
 RegisterServerEvent('esx_policejob:drag')
 AddEventHandler('esx_policejob:drag', function(target)
 	local xPlayer = ESX.GetPlayerFromId(source)
-
-		TriggerClientEvent('esx_policejob:drag', target, source)
+	TriggerClientEvent('esx_policejob:drag', target, source)
 end)
 
 RegisterServerEvent('esx_policejob:putInVehicle')

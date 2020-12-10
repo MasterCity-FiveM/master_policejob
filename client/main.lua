@@ -1,5 +1,5 @@
 local CurrentActionData, handcuffTimer, dragStatus, blipsCops, currentTask = {}, {}, {}, {}, {}
-local HasAlreadyEnteredMarker, isDead, isHandcuffed, hasAlreadyJoined, playerInService = false, false, false, false, false
+local HasAlreadyEnteredMarker, isDead, isHandcuffed, isHandFootcuffed, hasAlreadyJoined, playerInService = false, false, false, false, false, false
 local LastStation, LastPart, LastPartNum, LastEntity, CurrentAction, CurrentActionMsg
 dragStatus.isDragged, isInShopMenu = false, false
 ESX = nil
@@ -11,7 +11,7 @@ Citizen.CreateThread(function()
 	end
 
 	while ESX.GetPlayerData().job == nil do
-		Citizen.Wait(10)
+		Citizen.Wait(1000)
 	end
 
 	ESX.PlayerData = ESX.GetPlayerData()
@@ -262,8 +262,8 @@ function OpenPoliceActionsMenu()
 				{label = "Jail Menu",   value = 'jail_menu'},
 				{label = _U('id_card'), value = 'identity_card'},
 				{label = _U('search'), value = 'search'},
-				{label = 'Un-Cuff',   value = 'ruskicuff'},
-				{label = _U('handcuff'), value = 'handcuff'},
+				{label = 'باز و بسته کردن دستبند',   value = 'handcuff'},
+				{label = 'باز و بسته کردن دستبند و پابند', value = 'handfootcuff'},
 				{label = _U('drag'), value = 'drag'},
 				{label = _U('put_in_vehicle'), value = 'put_in_vehicle'},
 				{label = _U('out_the_vehicle'), value = 'out_the_vehicle'},
@@ -292,13 +292,10 @@ function OpenPoliceActionsMenu()
 						OpenIdentityCardMenu(closestPlayer)
 					elseif action == 'search' then
 						OpenBodySearchMenu(closestPlayer)
-					elseif action == 'ruskicuff' then
-						TriggerServerEvent('esx_ruski_areszt:startAreszt', GetPlayerServerId(closestPlayer)) -- Rozpoczyna Funkcje na Animacje (Cala Funkcja jest Powyzej^^^)
-						Citizen.Wait(3000)
-						TriggerServerEvent('InteractSound_SV:PlayWithinDistance', 2.0, 'cuff', 0.7)
-						TriggerServerEvent('esx_policejob:handcuff',  GetPlayerServerId(closestPlayer))
 					elseif action == 'handcuff' then
 						TriggerServerEvent('esx_policejob:handcuff', GetPlayerServerId(closestPlayer))
+					elseif action == 'handfootcuff' then
+						TriggerServerEvent('esx_policejob:handfootcuff', GetPlayerServerId(closestPlayer))
 					elseif action == 'drag' then
 						TriggerServerEvent('esx_policejob:drag', GetPlayerServerId(closestPlayer))
 					elseif action == 'put_in_vehicle' then
@@ -449,10 +446,16 @@ function OpenIdentityCardMenu(player)
 	ESX.TriggerServerCallback('esx_policejob:getOtherPlayerData', function(data)
 		local elements = {}
 		local nameLabel = _U('name', data.name)
-		local jobLabel, sexLabel, dobLabel, heightLabel, idLabel
+		local jobLabel, sexLabel, idLabel
 
-		if data.job.grade_label and  data.job.grade_label ~= '' then
+		if data.job.grade_label_fa and data.job.grade_label_fa ~= '' and data.job.label_fa and data.job.label_fa ~= '' then
+			jobLabel = _U('job', data.job.label_fa .. ' - ' .. data.job.grade_label_fa)
+		elseif data.job.grade_label_fa and data.job.grade_label_fa ~= '' then
+			jobLabel = _U('job', data.job.label .. ' - ' .. data.job.grade_label_fa)
+		elseif data.job.grade_label and data.job.grade_label ~= '' then
 			jobLabel = _U('job', data.job.label .. ' - ' .. data.job.grade_label)
+		elseif data.job.label_fa and data.job.label_fa ~= '' then
+			jobLabel = _U('job', data.job.label_fa)
 		else
 			jobLabel = _U('job', data.job.label)
 		end
@@ -470,23 +473,11 @@ function OpenIdentityCardMenu(player)
 				sexLabel = _U('sex', _U('unknown'))
 			end
 
-			if data.dob then
-				dobLabel = _U('dob', data.dob)
-			else
-				dobLabel = _U('dob', _U('unknown'))
-			end
-
-			if data.height then
-				heightLabel = _U('height', data.height)
-			else
-				heightLabel = _U('height', _U('unknown'))
-			end
-
-			if data.name then
+			--[[if data.name then
 				idLabel = _U('id', data.name)
 			else
 				idLabel = _U('id', _U('unknown'))
-			end
+			end]]--
 		end
 
 		local elements = {
@@ -496,9 +487,7 @@ function OpenIdentityCardMenu(player)
 
 		if Config.EnableESXIdentity then
 			table.insert(elements, {label = sexLabel})
-			table.insert(elements, {label = dobLabel})
-			table.insert(elements, {label = heightLabel})
-			table.insert(elements, {label = idLabel})
+			-- table.insert(elements, {label = idLabel})
 		end
 
 		if data.drunk then
@@ -1096,57 +1085,94 @@ end)
 
 RegisterNetEvent('esx_policejob:handcuff')
 AddEventHandler('esx_policejob:handcuff', function()
-	isHandcuffed = not isHandcuffed
+	isHandcuffed = true
+	isHandFootcuffed = false
 	local playerPed = PlayerPedId()
+	TriggerServerEvent('InteractSound_SV:PlayWithinDistance', 2.0, 'cuff', 0.7)
+	Citizen.Wait(4010)
+	SetEnableHandcuffs(playerPed, true)
+	DisablePlayerFiring(playerPed, true)
+	SetPedCanPlayGestureAnims(playerPed, false)
+	FreezeEntityPosition(playerPed, false)
 
-	if isHandcuffed then
-		RequestAnimDict('mp_arresting')
-		while not HasAnimDictLoaded('mp_arresting') do
-			Citizen.Wait(100)
-		end
-
-		TaskPlayAnim(playerPed, 'mp_arresting', 'idle', 8.0, -8, -1, 49, 0, 0, 0, 0)
-
-		SetEnableHandcuffs(playerPed, true)
-		DisablePlayerFiring(playerPed, true)
-		SetCurrentPedWeapon(playerPed, GetHashKey('WEAPON_UNARMED'), true) -- unarm player
-		SetPedCanPlayGestureAnims(playerPed, false)
-		FreezeEntityPosition(playerPed, true)
-		DisplayRadar(false)
-
-		if Config.EnableHandcuffTimer then
-			if handcuffTimer.active then
-				ESX.ClearTimeout(handcuffTimer.task)
-			end
-
-			StartHandcuffTimer()
-		end
-	else
-		if Config.EnableHandcuffTimer and handcuffTimer.active then
+	if Config.EnableHandcuffTimer then
+		if handcuffTimer.active then
 			ESX.ClearTimeout(handcuffTimer.task)
 		end
 
-		ClearPedSecondaryTask(playerPed)
-		SetEnableHandcuffs(playerPed, false)
-		DisablePlayerFiring(playerPed, false)
-		SetPedCanPlayGestureAnims(playerPed, true)
-		FreezeEntityPosition(playerPed, false)
-		DisplayRadar(true)
+		StartHandcuffTimer()
 	end
+end)
+
+RegisterNetEvent('esx_policejob:handuncuff')
+AddEventHandler('esx_policejob:handuncuff', function()
+	isHandcuffed = false
+	isHandFootcuffed = false
+	local playerPed = PlayerPedId()
+	TriggerServerEvent('InteractSound_SV:PlayWithinDistance', 2.0, 'cuff', 0.7)
+	Citizen.Wait(5600)
+	if Config.EnableHandcuffTimer and handcuffTimer.active then
+		ESX.ClearTimeout(handcuffTimer.task)
+	end
+	
+	ClearPedSecondaryTask(playerPed)
+	SetEnableHandcuffs(playerPed, false)
+	DisablePlayerFiring(playerPed, false)
+	SetPedCanPlayGestureAnims(playerPed, true)
+	FreezeEntityPosition(playerPed, false)
+end)
+
+RegisterNetEvent('esx_policejob:handfootcuff')
+AddEventHandler('esx_policejob:handfootcuff', function()
+	isHandcuffed = false
+	isHandFootcuffed = true
+	local playerPed = PlayerPedId()
+	TriggerServerEvent('InteractSound_SV:PlayWithinDistance', 2.0, 'cuff', 0.7)
+	Citizen.Wait(4010)
+	SetEnableHandcuffs(playerPed, true)
+	DisablePlayerFiring(playerPed, true)
+	SetPedCanPlayGestureAnims(playerPed, false)
+	FreezeEntityPosition(playerPed, true)
+
+	if Config.EnableHandcuffTimer then
+		if handcuffTimer.active then
+			ESX.ClearTimeout(handcuffTimer.task)
+		end
+
+		StartHandcuffTimer()
+	end
+end)
+
+RegisterNetEvent('esx_policejob:handunfootcuff')
+AddEventHandler('esx_policejob:handunfootcuff', function()
+	isHandcuffed = false
+	isHandFootcuffed = false
+	local playerPed = PlayerPedId()
+	TriggerServerEvent('InteractSound_SV:PlayWithinDistance', 2.0, 'cuff', 0.7)
+	Citizen.Wait(5600)
+	if Config.EnableHandcuffTimer and handcuffTimer.active then
+		ESX.ClearTimeout(handcuffTimer.task)
+	end
+	
+	ClearPedSecondaryTask(playerPed)
+	SetEnableHandcuffs(playerPed, false)
+	DisablePlayerFiring(playerPed, false)
+	SetPedCanPlayGestureAnims(playerPed, true)
+	FreezeEntityPosition(playerPed, false)
 end)
 
 RegisterNetEvent('esx_policejob:unrestrain')
 AddEventHandler('esx_policejob:unrestrain', function()
-	if isHandcuffed then
+	if isHandcuffed or isHandFootcuffed then
 		local playerPed = PlayerPedId()
 		isHandcuffed = false
+		isHandFootcuffed = false
 
 		ClearPedSecondaryTask(playerPed)
 		SetEnableHandcuffs(playerPed, false)
 		DisablePlayerFiring(playerPed, false)
 		SetPedCanPlayGestureAnims(playerPed, true)
 		FreezeEntityPosition(playerPed, false)
-		DisplayRadar(true)
 
 		-- end timer
 		if Config.EnableHandcuffTimer and handcuffTimer.active then
@@ -1157,12 +1183,11 @@ end)
 
 RegisterNetEvent('esx_policejob:drag')
 AddEventHandler('esx_policejob:drag', function(copId)
-	if isHandcuffed then
+	if isHandcuffed or isHandFootcuffed then
 		dragStatus.isDragged = not dragStatus.isDragged
 		dragStatus.CopId = copId
 	end
 end)
-
 
 Citizen.CreateThread(function()
 	local wasDragged
@@ -1171,7 +1196,7 @@ Citizen.CreateThread(function()
 		Citizen.Wait(0)
 		local playerPed = PlayerPedId()
 
-		if isHandcuffed and dragStatus.isDragged then
+		if (isHandcuffed or isHandFootcuffed) and dragStatus.isDragged then
 			local targetPed = GetPlayerPed(GetPlayerFromServerId(dragStatus.CopId))
 
 			if DoesEntityExist(targetPed) and IsPedOnFoot(targetPed) and not IsPedDeadOrDying(targetPed, true) then
@@ -1197,7 +1222,7 @@ end)
 
 RegisterNetEvent('esx_policejob:putInVehicle')
 AddEventHandler('esx_policejob:putInVehicle', function()
-	if isHandcuffed then
+	if isHandcuffed or isHandFootcuffed then
 		local playerPed = PlayerPedId()
 		local coords = GetEntityCoords(playerPed)
 
@@ -1233,21 +1258,26 @@ AddEventHandler('esx_policejob:OutVehicle', function()
 	end
 end)
 
--- Handcuff
+-- Handcuff or HandFootcuff
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(0)
 		local playerPed = PlayerPedId()
 
-		if isHandcuffed then
-			DisableControlAction(0, 24, true) -- Attack
-			DisableControlAction(0, 257, true) -- Attack 2
-			DisableControlAction(0, 25, true) -- Aim
-			DisableControlAction(0, 263, true) -- Melee Attack 1
+		if isHandFootcuffed then
 			DisableControlAction(0, 32, true) -- W
 			DisableControlAction(0, 34, true) -- A
 			DisableControlAction(0, 31, true) -- S
 			DisableControlAction(0, 30, true) -- D
+		end
+		
+		if isHandcuffed or isHandFootcuffed then
+			DisableControlAction(0, 24, true) -- Attack
+			DisableControlAction(0, 257, true) -- Attack 2
+			DisableControlAction(0, 25, true) -- Aim
+			DisableControlAction(0, 263, true) -- Melee Attack 1
+			
+			DisableControlAction(0, 21, true) -- RUN
 
 			DisableControlAction(0, 45, true) -- Reload
 			DisableControlAction(0, 22, true) -- Jump
@@ -1291,7 +1321,6 @@ Citizen.CreateThread(function()
 		end
 	end
 end)
-
 
 -- Create blips
 Citizen.CreateThread(function()
@@ -1561,6 +1590,42 @@ function createBlip(id)
 	end
 end
 
+-- Animations
+RegisterNetEvent('esx_policejob:animtarget')
+AddEventHandler('esx_policejob:animtarget', function(target)
+
+	local playerPed = GetPlayerPed(-1)
+	local targetPed = GetPlayerPed(GetPlayerFromServerId(target))
+	
+	Citizen.Wait(250)
+	RequestAnimDict('mp_arrest_paired')
+	TaskPlayAnim(playerPed, 'mp_arrest_paired', 'crook_p2_back_left', 8.0, -8, 3750 , 2, 0, 0, 0, 0)
+	Citizen.Wait(3760)
+end)
+
+RegisterNetEvent('esx_policejob:cuffanimpolice')
+AddEventHandler('esx_policejob:cuffanimpolice', function()
+	local playerPed = GetPlayerPed(-1)
+	RequestAnimDict('mp_arrest_paired')
+	while not HasAnimDictLoaded('mp_arrest_paired') do
+		Citizen.Wait(10)
+	end
+	TaskPlayAnim(playerPed, 'mp_arrest_paired', 'cop_p2_back_left', 8.0, -8.0, 5500, 33, 0, false, false, false)
+	Citizen.Wait(3000)
+end)
+
+RegisterNetEvent('esx_policejob:uncuffanimpolice')
+AddEventHandler('esx_policejob:uncuffanimpolice', function()
+	local playerPed = GetPlayerPed(-1)
+	SetCurrentPedWeapon(playerPed, GetHashKey('WEAPON_UNARMED'), true) 
+	Citizen.Wait(250)
+	RequestAnimDict('mp_arrest_paired')
+	TaskPlayAnim(playerPed, 'mp_arresting', 'a_uncuff', 8.0, -8,-1, 2, 0, 0, 0, 0)
+	Citizen.Wait(5500)
+	ClearPedTasks(playerPed)
+end)
+
+-- Animations
 RegisterNetEvent('esx_policejob:updateBlip')
 AddEventHandler('esx_policejob:updateBlip', function()
 
