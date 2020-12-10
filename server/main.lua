@@ -1,4 +1,5 @@
 ESX = nil
+FineList = {}
 
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
@@ -66,16 +67,17 @@ RegisterServerEvent('esx_policejob:handcuff')
 AddEventHandler('esx_policejob:handcuff', function(target)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	local tPlayer = ESX.GetPlayerFromId(target)
+	
 	if xPlayer and xPlayer ~= nil and tPlayer and tPlayer ~= nil and xPlayer.job.name == 'police' then
 		if tPlayer.get('HandCuff') then
 			tPlayer.set('HandCuff', false)
+			TriggerClientEvent('esx_policejob:uncuffanimpolice', source)
+			TriggerClientEvent('esx_policejob:handuncuff', target)
+		else
+			tPlayer.set('HandCuff', true)
 			TriggerClientEvent('esx_policejob:animtarget', target, source)
 			TriggerClientEvent('esx_policejob:cuffanimpolice', source)
 			TriggerClientEvent('esx_policejob:handcuff', target)
-		else
-			tPlayer.set('HandCuff', true)
-			TriggerClientEvent('esx_policejob:uncuffanimpolice', source)
-			TriggerClientEvent('esx_policejob:handuncuff', target)
 		end
 	end
 end)
@@ -87,13 +89,13 @@ AddEventHandler('esx_policejob:handfootcuff', function(target)
 	if xPlayer and xPlayer ~= nil and tPlayer and tPlayer ~= nil and xPlayer.job.name == 'police' then
 		if tPlayer.get('HandCuff') then
 			tPlayer.set('HandCuff', false)
+			TriggerClientEvent('esx_policejob:uncuffanimpolice', source)
+			TriggerClientEvent('esx_policejob:handunfootcuff', target)
+		else
+			tPlayer.set('HandCuff', true)
 			TriggerClientEvent('esx_policejob:animtarget', target, source)
 			TriggerClientEvent('esx_policejob:cuffanimpolice', source)
 			TriggerClientEvent('esx_policejob:handfootcuff', target)
-		else
-			tPlayer.set('HandCuff', true)
-			TriggerClientEvent('esx_policejob:uncuffanimpolice', source)
-			TriggerClientEvent('esx_policejob:handunfootcuff', target)
 		end
 	end
 end)
@@ -101,23 +103,41 @@ end)
 RegisterServerEvent('esx_policejob:drag')
 AddEventHandler('esx_policejob:drag', function(target)
 	local xPlayer = ESX.GetPlayerFromId(source)
-	TriggerClientEvent('esx_policejob:drag', target, source)
+	local tPlayer = ESX.GetPlayerFromId(target)
+	if xPlayer and xPlayer ~= nil and tPlayer and tPlayer ~= nil and xPlayer.job.name == 'police' and tPlayer.get('HandCuff') then
+		TriggerClientEvent('esx_policejob:drag', target, source)
+		TriggerClientEvent('esx_policejob:dragDisableForCOP', source, target)
+	else
+		TriggerClientEvent('esx_policejob:dragDisableForCOPOff', source)
+	end
 end)
+
+RegisterServerEvent('esx_policejob:dragOff')
+AddEventHandler('esx_policejob:dragOff', function(target)
+	local xPlayer = ESX.GetPlayerFromId(source)
+	local tPlayer = ESX.GetPlayerFromId(target)
+	if xPlayer and xPlayer ~= nil and tPlayer and tPlayer ~= nil and tPlayer.job.name == 'police' then
+		TriggerClientEvent('esx_policejob:dragDisableForCOPOff', target)
+	end
+end)
+
 
 RegisterServerEvent('esx_policejob:putInVehicle')
 AddEventHandler('esx_policejob:putInVehicle', function(target)
 	local xPlayer = ESX.GetPlayerFromId(source)
+	local tPlayer = ESX.GetPlayerFromId(target)
+	if xPlayer and xPlayer ~= nil and tPlayer and tPlayer ~= nil and xPlayer.job.name == 'police' and tPlayer.get('HandCuff') then	
 		TriggerClientEvent('esx_policejob:putInVehicle', target)
+		TriggerClientEvent('esx_policejob:esx_policejob:dragDisableForCOPOff', source, target)
+	end
 end)
 
 RegisterServerEvent('esx_policejob:OutVehicle')
 AddEventHandler('esx_policejob:OutVehicle', function(target)
 	local xPlayer = ESX.GetPlayerFromId(source)
-
-	if xPlayer.job.name == 'police' then
+	local tPlayer = ESX.GetPlayerFromId(target)
+	if xPlayer and xPlayer ~= nil and tPlayer and tPlayer ~= nil and xPlayer.job.name == 'police' then	
 		TriggerClientEvent('esx_policejob:OutVehicle', target)
-	else
-		print(('esx_policejob: %s attempted to drag out from vehicle (not cop)!'):format(xPlayer.identifier))
 	end
 end)
 
@@ -232,9 +252,18 @@ ESX.RegisterServerCallback('esx_policejob:getOtherPlayerData', function(source, 
 end)
 
 ESX.RegisterServerCallback('esx_policejob:getFineList', function(source, cb, category)
+	if FineList[category] and FineList[category] ~= nil then
+		cb(FineList[category])
+		return
+	end
 	MySQL.Async.fetchAll('SELECT * FROM fine_types WHERE category = @category', {
 		['@category'] = category
 	}, function(fines)
+		if not FineList[category] and FineList[category] == nil then
+			FineList[category] = {}
+		end
+		
+		FineList[category] = fines
 		cb(fines)
 	end)
 end)

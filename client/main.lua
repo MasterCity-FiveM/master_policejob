@@ -1,6 +1,6 @@
 local CurrentActionData, handcuffTimer, dragStatus, blipsCops, currentTask = {}, {}, {}, {}, {}
-local HasAlreadyEnteredMarker, isDead, isHandcuffed, isHandFootcuffed, hasAlreadyJoined, playerInService = false, false, false, false, false, false
-local LastStation, LastPart, LastPartNum, LastEntity, CurrentAction, CurrentActionMsg
+local HasAlreadyEnteredMarker, isDead, isHandcuffed, isHandFootcuffed, hasAlreadyJoined, underDrag, playerInService = false, false, false, false, false, false, false
+local LastStation, LastPart, LastPartNum, LastEntity, CurrentAction, CurrentActionMsg, underDragPlayer
 dragStatus.isDragged, isInShopMenu = false, false
 ESX = nil
 
@@ -269,7 +269,7 @@ function OpenPoliceActionsMenu()
 				{label = _U('out_the_vehicle'), value = 'out_the_vehicle'},
 				{label = _U('fine'), value = 'fine'},
 				{label = _U('unpaid_bills'), value = 'unpaid_bills'},
-				{label = 'Criminalrecord',   value = 'criminalrecords'},
+				{label = 'سوابق کیفری',   value = 'criminalrecords'},
 				{label = "Community Service",	value = 'communityservice'},
 			}
 
@@ -309,7 +309,7 @@ function OpenPoliceActionsMenu()
 					elseif action == 'unpaid_bills' then
 						OpenUnpaidBillsMenu(closestPlayer)
 					elseif action == 'criminalrecords' then
-						TriggerEvent('esx_criminalrecords:open')
+						TriggerEvent('esx_criminalrecords:open', GetPlayerServerId(closestPlayer))
 					elseif action == 'communityservice' then
 						SendToCommunityService(GetPlayerServerId(closestPlayer))	
 					end
@@ -1189,14 +1189,39 @@ AddEventHandler('esx_policejob:drag', function(copId)
 	end
 end)
 
+RegisterNetEvent('esx_policejob:dragDisableForCOP')
+AddEventHandler('esx_policejob:dragDisableForCOP', function(TargetPlayer)
+	underDrag = not underDrag
+	underDragPlayer = TargetPlayer
+end)
+
+RegisterNetEvent('esx_policejob:dragDisableForCOPOff')
+AddEventHandler('esx_policejob:dragDisableForCOPOff', function()
+	underDrag = false
+	underDragPlayer = nil
+end)
+
 Citizen.CreateThread(function()
 	local wasDragged
 
 	while true do
 		Citizen.Wait(0)
 		local playerPed = PlayerPedId()
-
-		if (isHandcuffed or isHandFootcuffed) and dragStatus.isDragged then
+		if underDrag and underDragPlayer and underDragPlayer ~= nil then
+			local targetPed = GetPlayerPed(GetPlayerFromServerId(underDragPlayer))
+			if DoesEntityExist(targetPed) and not IsPedDeadOrDying(targetPed, true) then
+				DisableControlAction(0, 24, true) -- Attack
+				DisableControlAction(0, 257, true) -- Attack 2
+				DisableControlAction(0, 25, true) -- Aim
+				DisableControlAction(0, 263, true) -- Melee Attack 1
+				DisableControlAction(0, 21, true) -- RUN
+				DisableControlAction(0, 45, true) -- Reload
+				DisableControlAction(0, 22, true) -- Jump
+				DisableControlAction(0, 44, true) -- Cover
+				DisableControlAction(0, 37, true) -- Select Weapon
+				DisableControlAction(0, 23, true) -- Also 'enter'?
+			end
+		elseif (isHandcuffed or isHandFootcuffed) and dragStatus.isDragged then
 			local targetPed = GetPlayerPed(GetPlayerFromServerId(dragStatus.CopId))
 
 			if DoesEntityExist(targetPed) and IsPedOnFoot(targetPed) and not IsPedDeadOrDying(targetPed, true) then
@@ -1207,6 +1232,7 @@ Citizen.CreateThread(function()
 					Citizen.Wait(1000)
 				end
 			else
+				--TriggerServerEvent('esx_policejob:dragOff', dragStatus.CopId)
 				wasDragged = false
 				dragStatus.isDragged = false
 				DetachEntity(playerPed, true, false)
@@ -1593,10 +1619,8 @@ end
 -- Animations
 RegisterNetEvent('esx_policejob:animtarget')
 AddEventHandler('esx_policejob:animtarget', function(target)
-
 	local playerPed = GetPlayerPed(-1)
-	local targetPed = GetPlayerPed(GetPlayerFromServerId(target))
-	
+	SetCurrentPedWeapon(playerPed, GetHashKey('WEAPON_UNARMED'), true) 
 	Citizen.Wait(250)
 	RequestAnimDict('mp_arrest_paired')
 	TaskPlayAnim(playerPed, 'mp_arrest_paired', 'crook_p2_back_left', 8.0, -8, 3750 , 2, 0, 0, 0, 0)
