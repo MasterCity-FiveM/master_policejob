@@ -293,9 +293,9 @@ function OpenPoliceActionsMenu()
 					elseif action == 'search' then
 						OpenBodySearchMenu(closestPlayer)
 					elseif action == 'handcuff' then
-						TriggerServerEvent('esx_policejob:handcuff', GetPlayerServerId(closestPlayer))
+						TriggerServerEvent('esx_policejob:handcuff', GetPlayerServerId(closestPlayer), false)
 					elseif action == 'handfootcuff' then
-						TriggerServerEvent('esx_policejob:handfootcuff', GetPlayerServerId(closestPlayer))
+						TriggerServerEvent('esx_policejob:handcuff', GetPlayerServerId(closestPlayer), true)
 					elseif action == 'drag' then
 						TriggerServerEvent('esx_policejob:drag', GetPlayerServerId(closestPlayer))
 					elseif action == 'put_in_vehicle' then
@@ -1084,16 +1084,18 @@ AddEventHandler('esx_policejob:hasExitedEntityZone', function(entity)
 end)
 
 RegisterNetEvent('esx_policejob:handcuff')
-AddEventHandler('esx_policejob:handcuff', function()
-	isHandcuffed = true
-	isHandFootcuffed = false
+AddEventHandler('esx_policejob:handcuff', function(foot)
+	isHandcuffed = not foot
+	isHandFootcuffed = foot
 	local playerPed = PlayerPedId()
 	TriggerServerEvent('InteractSound_SV:PlayWithinDistance', 2.0, 'cuff', 0.7)
 	Citizen.Wait(4010)
 	SetEnableHandcuffs(playerPed, true)
 	DisablePlayerFiring(playerPed, true)
 	SetPedCanPlayGestureAnims(playerPed, false)
-	FreezeEntityPosition(playerPed, false)
+	if foot then
+		FreezeEntityPosition(playerPed, true)
+	end
 
 	if Config.EnableHandcuffTimer then
 		if handcuffTimer.active then
@@ -1105,46 +1107,7 @@ AddEventHandler('esx_policejob:handcuff', function()
 end)
 
 RegisterNetEvent('esx_policejob:handuncuff')
-AddEventHandler('esx_policejob:handuncuff', function()
-	isHandcuffed = false
-	isHandFootcuffed = false
-	local playerPed = PlayerPedId()
-	TriggerServerEvent('InteractSound_SV:PlayWithinDistance', 2.0, 'cuff', 0.7)
-	Citizen.Wait(5600)
-	if Config.EnableHandcuffTimer and handcuffTimer.active then
-		ESX.ClearTimeout(handcuffTimer.task)
-	end
-	
-	ClearPedSecondaryTask(playerPed)
-	SetEnableHandcuffs(playerPed, false)
-	DisablePlayerFiring(playerPed, false)
-	SetPedCanPlayGestureAnims(playerPed, true)
-	FreezeEntityPosition(playerPed, false)
-end)
-
-RegisterNetEvent('esx_policejob:handfootcuff')
-AddEventHandler('esx_policejob:handfootcuff', function()
-	isHandcuffed = false
-	isHandFootcuffed = true
-	local playerPed = PlayerPedId()
-	TriggerServerEvent('InteractSound_SV:PlayWithinDistance', 2.0, 'cuff', 0.7)
-	Citizen.Wait(4010)
-	SetEnableHandcuffs(playerPed, true)
-	DisablePlayerFiring(playerPed, true)
-	SetPedCanPlayGestureAnims(playerPed, false)
-	FreezeEntityPosition(playerPed, true)
-
-	if Config.EnableHandcuffTimer then
-		if handcuffTimer.active then
-			ESX.ClearTimeout(handcuffTimer.task)
-		end
-
-		StartHandcuffTimer()
-	end
-end)
-
-RegisterNetEvent('esx_policejob:handunfootcuff')
-AddEventHandler('esx_policejob:handunfootcuff', function()
+AddEventHandler('esx_policejob:handuncuff', function(foot)
 	isHandcuffed = false
 	isHandFootcuffed = false
 	local playerPed = PlayerPedId()
@@ -1181,22 +1144,26 @@ AddEventHandler('esx_policejob:unrestrain', function()
 	end
 end)
 
-RegisterNetEvent('esx_policejob:drag')
-AddEventHandler('esx_policejob:drag', function(copId)
-	if isHandcuffed or isHandFootcuffed then
-		dragStatus.isDragged = not dragStatus.isDragged
-		dragStatus.CopId = copId
-	end
+RegisterNetEvent('esx_policejob:dragOn')
+AddEventHandler('esx_policejob:dragOn', function(copId)
+	dragStatus.isDragged = true
+	dragStatus.CopId = copId
 end)
 
-RegisterNetEvent('esx_policejob:dragDisableForCOP')
-AddEventHandler('esx_policejob:dragDisableForCOP', function(TargetPlayer)
+RegisterNetEvent('esx_policejob:dragOff')
+AddEventHandler('esx_policejob:dragOff', function()
+	dragStatus.isDragged = false
+	dragStatus.CopId = nil
+end)
+
+RegisterNetEvent('esx_policejob:dragCopOn')
+AddEventHandler('esx_policejob:dragCopOn', function(TargetPlayer)
 	underDrag = not underDrag
 	underDragPlayer = TargetPlayer
 end)
 
-RegisterNetEvent('esx_policejob:dragDisableForCOPOff')
-AddEventHandler('esx_policejob:dragDisableForCOPOff', function()
+RegisterNetEvent('esx_policejob:dragCopOff')
+AddEventHandler('esx_policejob:dragCopOff', function()
 	underDrag = false
 	underDragPlayer = nil
 end)
@@ -1220,6 +1187,8 @@ Citizen.CreateThread(function()
 				DisableControlAction(0, 44, true) -- Cover
 				DisableControlAction(0, 37, true) -- Select Weapon
 				DisableControlAction(0, 23, true) -- Also 'enter'?
+			else
+				TriggerServerEvent('esx_policejob:dragCopOff')
 			end
 		elseif (isHandcuffed or isHandFootcuffed) and dragStatus.isDragged then
 			local targetPed = GetPlayerPed(GetPlayerFromServerId(dragStatus.CopId))
@@ -1232,12 +1201,13 @@ Citizen.CreateThread(function()
 					Citizen.Wait(1000)
 				end
 			else
-				--TriggerServerEvent('esx_policejob:dragOff', dragStatus.CopId)
+				TriggerServerEvent('esx_policejob:dragOff')
 				wasDragged = false
 				dragStatus.isDragged = false
 				DetachEntity(playerPed, true, false)
 			end
 		elseif wasDragged then
+			TriggerServerEvent('esx_policejob:dragOff')
 			wasDragged = false
 			DetachEntity(playerPed, true, false)
 		else
