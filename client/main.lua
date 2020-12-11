@@ -270,7 +270,7 @@ function OpenPoliceActionsMenu()
 				{label = _U('fine'), value = 'fine'},
 				{label = _U('unpaid_bills'), value = 'unpaid_bills'},
 				{label = 'سوابق کیفری',   value = 'criminalrecords'},
-				{label = "Community Service",	value = 'communityservice'},
+				{label = "خدمات اجتماعی",	value = 'communityservice'},
 			}
 
 			if Config.EnableLicenses then
@@ -426,8 +426,8 @@ end
 
 
 function SendToCommunityService(player)
-	ESX.UI.Menu.Open('dialog', GetCurrentResourceName(), 'Community Service Menu', {
-		title = "Community Service Menu",
+	ESX.UI.Menu.Open('dialog', GetCurrentResourceName(), 'خدمات اجتماعی', {
+		title = "خدمات اجتماعی",
 	}, function (data2, menu)
 		local community_services_count = tonumber(data2.value)
 		
@@ -1251,6 +1251,11 @@ AddEventHandler('esx_policejob:OutVehicle', function()
 	if IsPedSittingInAnyVehicle(playerPed) then
 		local vehicle = GetVehiclePedIsIn(playerPed, false)
 		TaskLeaveVehicle(playerPed, vehicle, 16)
+		if isHandcuffed or isHandFootcuffed then
+			SetEnableHandcuffs(playerPed, true)
+			DisablePlayerFiring(playerPed, true)
+			SetPedCanPlayGestureAnims(playerPed, false)
+		end
 	end
 end)
 
@@ -1590,16 +1595,30 @@ end
 RegisterNetEvent('esx_policejob:animtarget')
 AddEventHandler('esx_policejob:animtarget', function(target)
 	local playerPed = GetPlayerPed(-1)
-	SetCurrentPedWeapon(playerPed, GetHashKey('WEAPON_UNARMED'), true) 
+	local targetPed = GetPlayerPed(GetPlayerFromServerId(target))
+	SetCurrentPedWeapon(playerPed, GetHashKey('WEAPON_UNARMED'), true)
+	AttachEntityToEntity(GetPlayerPed(-1), targetPed, 11816, -0.1, 0.45, 0.0, 0.0, 0.0, 20.0, false, false, false, false, 20, false)
 	Citizen.Wait(250)
 	RequestAnimDict('mp_arrest_paired')
 	TaskPlayAnim(playerPed, 'mp_arrest_paired', 'crook_p2_back_left', 8.0, -8, 3750 , 2, 0, 0, 0, 0)
 	Citizen.Wait(3760)
+	DetachEntity(GetPlayerPed(-1), true, false)
+end)
+
+RegisterNetEvent('esx_policejob:animuncufftarget')
+AddEventHandler('esx_policejob:animuncufftarget', function(target)
+	local playerPed = GetPlayerPed(-1)
+	local targetPed = GetPlayerPed(GetPlayerFromServerId(target))
+	SetCurrentPedWeapon(playerPed, GetHashKey('WEAPON_UNARMED'), true)
+	AttachEntityToEntity(GetPlayerPed(-1), targetPed, 11816, -0.1, 0.45, 0.0, 0.0, 0.0, 20.0, false, false, false, false, 20, false)
+	Citizen.Wait(5500)
+	DetachEntity(GetPlayerPed(-1), true, false)
 end)
 
 RegisterNetEvent('esx_policejob:cuffanimpolice')
-AddEventHandler('esx_policejob:cuffanimpolice', function()
+AddEventHandler('esx_policejob:cuffanimpolice', function(target)
 	local playerPed = GetPlayerPed(-1)
+	
 	RequestAnimDict('mp_arrest_paired')
 	while not HasAnimDictLoaded('mp_arrest_paired') do
 		Citizen.Wait(10)

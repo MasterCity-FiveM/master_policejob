@@ -91,7 +91,7 @@ AddEventHandler('esx_policejob:handcuff', function(target, foot)
 			tPlayer.set('HandCuffedBy', source)
 			
 			TriggerClientEvent('esx_policejob:animtarget', target, source)
-			TriggerClientEvent('esx_policejob:cuffanimpolice', source)
+			TriggerClientEvent('esx_policejob:cuffanimpolice', source, target)
 			TriggerClientEvent('esx_policejob:handcuff', target, foot)
 			
 			TriggerClientEvent("pNotify:SendNotification", target, { text = "شما توسط " .. SourceName .." دستگیر شدید.", type = "info", timeout = 8000, layout = "bottomCenter"})
@@ -105,6 +105,7 @@ AddEventHandler('esx_policejob:handcuff', function(target, foot)
 				xPlayer.set('HandCuffedPlayer', nil)
 				tPlayer.set('HandCuffedBy', nil)
 				TriggerClientEvent('esx_policejob:uncuffanimpolice', source)
+				TriggerClientEvent('esx_policejob:animuncufftarget', target, source)
 				TriggerClientEvent('esx_policejob:handuncuff', target, foot)
 			else
 				TriggerClientEvent("pNotify:SendNotification", source, { text = "شما کلید این دستبند را ندارید.", type = "info", timeout = 8000, layout = "bottomCenter"})
@@ -131,6 +132,7 @@ AddEventHandler('esx_policejob:handcuff', function(target, foot)
 				tPlayer.set('HandCuff', false)
 				tPlayer.set('HandCuffedBy', nil)
 				TriggerClientEvent('esx_policejob:uncuffanimpolice', source)
+				TriggerClientEvent('esx_policejob:animuncufftarget', target, source)
 				TriggerClientEvent('esx_policejob:handuncuff', target, foot)
 			else
 				TriggerClientEvent("pNotify:SendNotification", source, { text = "شما کلید این دستبند را ندارید.", type = "info", timeout = 8000, layout = "bottomCenter"})
@@ -229,9 +231,12 @@ RegisterServerEvent('esx_policejob:putInVehicle')
 AddEventHandler('esx_policejob:putInVehicle', function(target)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	local tPlayer = ESX.GetPlayerFromId(target)
-	if xPlayer and xPlayer ~= nil and tPlayer and tPlayer ~= nil and xPlayer.job.name == 'police' and tPlayer.get('HandCuff') then	
+	if xPlayer and xPlayer ~= nil and tPlayer and tPlayer ~= nil and xPlayer.job.name == 'police' and tPlayer.get('HandCuff') then
+		xPlayer.set('EscortPlayer', nil)
+		tPlayer.set('EscortBy', nil)
+		TriggerClientEvent('esx_policejob:dragCopOff', source)
+		TriggerClientEvent('esx_policejob:dragOff', source)
 		TriggerClientEvent('esx_policejob:putInVehicle', target)
-		TriggerClientEvent('esx_policejob:esx_policejob:dragDisableForCOPOff', source, target)
 	end
 end)
 
@@ -290,6 +295,12 @@ AddEventHandler('esx_policejob:putStockItems', function(itemName, count)
 end)
 
 ESX.RegisterServerCallback('esx_policejob:getOtherPlayerData', function(source, cb, target)
+	local sPlayer = ESX.GetPlayerFromId(source)
+	if sPlayer ~= nil and sPlayer.job ~= nil and sPlayer.job.name == 'police' then
+		cb({})
+		return
+	end
+		
 	if Config.EnableESXIdentity then
 		local xPlayer = ESX.GetPlayerFromId(target)
 		local result = MySQL.Sync.fetchAll('SELECT firstname, lastname, sex, dateofbirth, height FROM users WHERE identifier = @identifier', {
