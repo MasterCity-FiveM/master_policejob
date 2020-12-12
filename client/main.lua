@@ -259,7 +259,6 @@ function OpenPoliceActionsMenu()
 
 		if data.current.value == 'citizen_interaction' then
 			local elements = {
-				{label = "Jail Menu",   value = 'jail_menu'},
 				{label = _U('id_card'), value = 'identity_card'},
 				{label = _U('search'), value = 'search'},
 				{label = 'باز و بسته کردن دستبند',   value = 'handcuff'},
@@ -286,9 +285,7 @@ function OpenPoliceActionsMenu()
 				if closestPlayer ~= -1 and closestDistance <= 2.0 then
 					local action = data2.current.value
 					
-					if action == 'jail_menu' then
-					  TriggerEvent("esx-qalle-jail:openJailMenu")
-					elseif action == 'identity_card' then
+					if action == 'identity_card' then
 						OpenIdentityCardMenu(closestPlayer)
 					elseif action == 'search' then
 						OpenBodySearchMenu(closestPlayer)
@@ -432,7 +429,7 @@ function SendToCommunityService(player)
 		local community_services_count = tonumber(data2.value)
 		
 		if community_services_count == nil then
-			ESX.ShowNotification('Invalid services count.')
+			exports.pNotify:SendNotification({text = "تعداد درخواستی صحیح نیست.", type = "error", timeout = 4000})
 		else
 			TriggerServerEvent("esx_communityservice:sendToCommunityService", player, community_services_count)
 			menu.close()
@@ -932,7 +929,7 @@ function OpenGetStocksMenu()
 				local count = tonumber(data2.value)
 
 				if not count then
-					ESX.ShowNotification(_U('quantity_invalid'))
+					exports.pNotify:SendNotification({text = "تعداد صحیح نیست.", type = "error", timeout = 4000})
 				else
 					menu2.close()
 					menu.close()
@@ -979,7 +976,7 @@ function OpenPutStocksMenu()
 				local count = tonumber(data2.value)
 
 				if not count then
-					ESX.ShowNotification(_U('quantity_invalid'))
+					exports.pNotify:SendNotification({text = "تعداد صحیح نیست.", type = "error", timeout = 4000})
 				else
 					menu2.close()
 					menu.close()
@@ -1035,6 +1032,10 @@ AddEventHandler('esx_policejob:hasEnteredMarker', function(station, part, partNu
 		CurrentAction     = 'menu_armory'
 		CurrentActionMsg  = _U('open_armory')
 		CurrentActionData = {station = station}
+	elseif part == 'Jail' then
+		CurrentAction     = 'menu_jail'
+		CurrentActionMsg  = 'Baz Kardane Menu Zendan'
+		CurrentActionData = {}
 	elseif part == 'Vehicles' then
 		CurrentAction     = 'menu_vehicle_spawner'
 		CurrentActionMsg  = _U('garage_prompt')
@@ -1117,6 +1118,23 @@ AddEventHandler('esx_policejob:handuncuff', function(foot)
 	local playerPed = PlayerPedId()
 	TriggerServerEvent('InteractSound_SV:PlayWithinDistance', 2.0, 'cuff', 0.7)
 	Citizen.Wait(5600)
+	if Config.EnableHandcuffTimer and handcuffTimer.active then
+		ESX.ClearTimeout(handcuffTimer.task)
+	end
+	
+	ClearPedSecondaryTask(playerPed)
+	SetEnableHandcuffs(playerPed, false)
+	DisablePlayerFiring(playerPed, false)
+	SetPedCanPlayGestureAnims(playerPed, true)
+	FreezeEntityPosition(playerPed, false)
+end)
+
+
+RegisterNetEvent('esx_policejob:handuncuffFast')
+AddEventHandler('esx_policejob:handuncuffFast', function(foot)
+	isHandcuffed = false
+	isHandFootcuffed = false
+	local playerPed = PlayerPedId()
 	if Config.EnableHandcuffTimer and handcuffTimer.active then
 		ESX.ClearTimeout(handcuffTimer.task)
 	end
@@ -1382,6 +1400,19 @@ Citizen.CreateThread(function()
 					end
 				end
 
+				for i=1, #v.Jail, 1 do
+					local distance = #(playerCoords - v.Jail[i])
+
+					if distance < Config.DrawDistance then
+						DrawMarker(21, v.Jail[i], 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.5, 0.5, Config.MarkerColor.r, Config.MarkerColor.g, Config.MarkerColor.b, 100, false, true, 2, true, false, false, false)
+						letSleep = false
+
+						if distance < Config.MarkerSize.x then
+							isInMarker, currentStation, currentPart, currentPartNum = true, k, 'Jail', i
+						end
+					end
+				end
+
 				for i=1, #v.Vehicles, 1 do
 					local distance = #(playerCoords - v.Vehicles[i].Spawner)
 
@@ -1514,6 +1545,8 @@ Citizen.CreateThread(function()
 
 				if CurrentAction == 'menu_cloakroom' then
 					OpenCloakroomMenu()
+				elseif CurrentAction == 'menu_jail' then
+					TriggerEvent("esx-qalle-jail:openJailMenu")
 				elseif CurrentAction == 'menu_armory' then
 					if not Config.EnableESXService then
 						OpenArmoryMenu(CurrentActionData.station)
