@@ -314,7 +314,7 @@ function OpenPoliceActionsMenu()
 						SendToCommunityService(GetPlayerServerId(closestPlayer))	
 					end
 				else
-					ESX.ShowNotification(_U('no_players_nearby'))
+					exports.pNotify:SendNotification({text = "شهروندی نزدیک شما نیست.", type = "error", timeout = 3000})
 				end
 			end, function(data2, menu2)
 				menu2.close()
@@ -448,20 +448,24 @@ function OpenIdentityCardMenu(player)
 		local nameLabel = _U('name', data.name)
 		local jobLabel, sexLabel, idLabel
 
-		if data.job.grade_label_fa and data.job.grade_label_fa ~= '' and data.job.label_fa and data.job.label_fa ~= '' then
-			jobLabel = _U('job', data.job.label_fa .. ' - ' .. data.job.grade_label_fa)
-		elseif data.job.grade_label_fa and data.job.grade_label_fa ~= '' then
-			jobLabel = _U('job', data.job.label .. ' - ' .. data.job.grade_label_fa)
-		elseif data.job.grade_label and data.job.grade_label ~= '' then
-			jobLabel = _U('job', data.job.label .. ' - ' .. data.job.grade_label)
-		elseif data.job.label_fa and data.job.label_fa ~= '' then
-			jobLabel = _U('job', data.job.label_fa)
-		else
-			jobLabel = _U('job', data.job.label)
+		if data.job ~= nil then
+			if data.job.grade_label_fa and data.job.grade_label_fa ~= '' and data.job.label_fa and data.job.label_fa ~= '' then
+				jobLabel = _U('job', data.job.label_fa .. ' - ' .. data.job.grade_label_fa)
+			elseif data.job.grade_label_fa and data.job.grade_label_fa ~= '' then
+				jobLabel = _U('job', data.job.label .. ' - ' .. data.job.grade_label_fa)
+			elseif data.job.grade_label and data.job.grade_label ~= '' then
+				jobLabel = _U('job', data.job.label .. ' - ' .. data.job.grade_label)
+			elseif data.job.label_fa and data.job.label_fa ~= '' then
+				jobLabel = _U('job', data.job.label_fa)
+			else
+				jobLabel = _U('job', data.job.label)
+			end
 		end
 
 		if Config.EnableESXIdentity then
-			nameLabel = _U('name', data.firstname .. ' ' .. data.lastname)
+			if data.lastname and data.firstname then
+				nameLabel = _U('name', data.firstname .. ' ' .. data.lastname)
+			end
 
 			if data.sex then
 				if string.lower(data.sex) == 'm' then
@@ -1330,7 +1334,7 @@ Citizen.CreateThread(function()
 
 		SetBlipSprite (blip, v.Blip.Sprite)
 		SetBlipDisplay(blip, v.Blip.Display)
-		SetBlipScale(blip, 0.7)
+		SetBlipScale(blip, 1.2)
 		SetBlipColour (blip, v.Blip.Colour)
 		SetBlipAsShortRange(blip, true)
 
@@ -1658,6 +1662,16 @@ AddEventHandler('esx_policejob:updateBlip', function()
 	if not Config.EnableJobBlip then
 		return
 	end
+	
+	while ESX == nil do
+		Citizen.Wait(0)
+	end
+	
+	while ESX.GetPlayerData().job == nil do
+		Citizen.Wait(3000)
+	end
+
+	ESX.PlayerData = ESX.GetPlayerData()
 
 	-- Is the player a cop? In that case show all the blips for other cops
 	if ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' then

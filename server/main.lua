@@ -296,7 +296,8 @@ end)
 
 ESX.RegisterServerCallback('esx_policejob:getOtherPlayerData', function(source, cb, target)
 	local sPlayer = ESX.GetPlayerFromId(source)
-	if sPlayer ~= nil and sPlayer.job ~= nil and sPlayer.job.name == 'police' then
+	
+	if sPlayer == nil or sPlayer.job == nil or sPlayer.job.name ~= 'police' then
 		cb({})
 		return
 	end

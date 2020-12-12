@@ -30,7 +30,7 @@ Config.PoliceStations = {
 			Sprite  = 60,
 			Display = 4,
 			Scale   = 0.7,
-			Colour  = 29
+			Colour  = 53
 		},
 
 		Cloakrooms = {
