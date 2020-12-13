@@ -384,7 +384,10 @@ ESX.RegisterServerCallback('esx_policejob:getFineList', function(source, cb, cat
 end)
 
 ESX.RegisterServerCallback('esx_policejob:getVehicleInfos', function(source, cb, plate)
-
+	local xPlayer = ESX.GetPlayerFromId(source)
+	if xPlayer == nil or xPlayer.job == nil or xPlayer.job.name ~= 'police' then
+		return
+	end
 	MySQL.Async.fetchAll('SELECT owner FROM owned_vehicles WHERE plate = @plate', {
 		['@plate'] = plate
 	}, function(result)
@@ -392,18 +395,12 @@ ESX.RegisterServerCallback('esx_policejob:getVehicleInfos', function(source, cb,
 		local retrivedInfo = {
 			plate = plate
 		}
-
+		
 		if result[1] then
-			MySQL.Async.fetchAll('SELECT name, firstname, lastname FROM users WHERE identifier = @identifier',  {
+			MySQL.Async.fetchAll('SELECT firstname, lastname FROM users WHERE identifier = @identifier',  {
 				['@identifier'] = result[1].owner
 			}, function(result2)
-
-				if Config.EnableESXIdentity then
-					retrivedInfo.owner = result2[1].firstname .. ' ' .. result2[1].lastname
-				else
-					retrivedInfo.owner = result2[1].name
-				end
-
+				retrivedInfo.owner = result2[1].firstname .. ' ' .. result2[1].lastname
 				cb(retrivedInfo)
 			end)
 		else

@@ -250,7 +250,7 @@ function OpenPoliceActionsMenu()
 			{label = _U('citizen_interaction'), value = 'citizen_interaction'},
 			{label = _U('vehicle_interaction'), value = 'vehicle_interaction'},
 			{label = _U('object_spawner'), value = 'object_spawner'},
-			{label = "Wanted",               value = 'wanted_menu'}
+			{label = "اشخاص تحت تعقیب",               value = 'wanted_menu'}
 	}}, function(data, menu)
 
 		if data.current.value == 'wanted_menu' then		-- This
@@ -325,9 +325,10 @@ function OpenPoliceActionsMenu()
 				table.insert(elements, {label = _U('vehicle_info'), value = 'vehicle_infos'})
 				table.insert(elements, {label = _U('pick_lock'), value = 'hijack_vehicle'})
 				table.insert(elements, {label = _U('impound'), value = 'impound'})
+			else
+				table.insert(elements, {label = _U('search_database'), value = 'search_database'})
 			end
 
-			table.insert(elements, {label = _U('search_database'), value = 'search_database'})
 
 			ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'vehicle_interaction', {
 				title    = _U('vehicle_interaction'),
@@ -346,24 +347,47 @@ function OpenPoliceActionsMenu()
 						OpenVehicleInfosMenu(vehicleData)
 					elseif action == 'hijack_vehicle' then
 						if IsAnyVehicleNearPoint(coords.x, coords.y, coords.z, 3.0) then
-							TaskStartScenarioInPlace(playerPed, 'WORLD_HUMAN_WELDING', 0, true)
-							Citizen.Wait(20000)
+							
+							if currentTask.busy then
+								exports.pNotify:SendNotification({text = "شما مشغول انجام کار هستید.", type = "info", timeout = 4000})
+								return
+							end
+							
+							currentTask.busy = true
+							
+							SetCurrentPedWeapon(playerPed, GetHashKey('WEAPON_UNARMED'), true) 
+							RequestAnimDict("mp_arresting")
+							while not HasAnimDictLoaded("mp_arresting") do
+								RequestAnimDict("mp_arresting")
+								Citizen.Wait(10)
+							end
+							
+							TaskPlayAnim(playerPed, "mp_arresting", "a_uncuff", 8.0, 8.0, 5000, 1, 1, 0, 0, 0)
+							Citizen.Wait(5000)
+							ClearPedTasks(playerPed)
+							--TaskStartScenarioInPlace(playerPed, 'WORLD_HUMAN_WELDING', 0, true)
+							--Citizen.Wait(20000)
 							ClearPedTasksImmediately(playerPed)
-
+							
+							currentTask.busy = false
+							
 							SetVehicleDoorsLocked(vehicle, 1)
 							SetVehicleDoorsLockedForAllPlayers(vehicle, false)
-							ESX.ShowNotification(_U('vehicle_unlocked'))
+							exports.pNotify:SendNotification({text = _U('vehicle_unlocked'), type = "success", timeout = 4000})
 						end
 					elseif action == 'impound' then
 						-- is the script busy?
+						
 						if currentTask.busy then
+							exports.pNotify:SendNotification({text = "شما مشغول انجام کار هستید.", type = "info", timeout = 4000})
 							return
 						end
+						
+						currentTask.busy = true
 
 						ESX.ShowHelpNotification(_U('impound_prompt'))
 						TaskStartScenarioInPlace(playerPed, 'CODE_HUMAN_MEDIC_TEND_TO_DEAD', 0, true)
 
-						currentTask.busy = true
 						currentTask.task = ESX.SetTimeout(10000, function()
 							ClearPedTasks(playerPed)
 							ImpoundVehicle(vehicle)
@@ -377,7 +401,8 @@ function OpenPoliceActionsMenu()
 
 								vehicle = GetClosestVehicle(coords.x, coords.y, coords.z, 3.0, 0, 71)
 								if not DoesEntityExist(vehicle) and currentTask.busy then
-									ESX.ShowNotification(_U('impound_canceled_moved'))
+									exports.pNotify:SendNotification({text = "انتقال خودرو کنسل شد.", type = "error", timeout = 4000})
+									
 									ESX.ClearTimeout(currentTask.task)
 									ClearPedTasks(playerPed)
 									currentTask.busy = false
@@ -387,7 +412,7 @@ function OpenPoliceActionsMenu()
 						end)
 					end
 				else
-					ESX.ShowNotification(_U('no_vehicles_nearby'))
+					exports.pNotify:SendNotification({text = "شما نزدیک خودرو نیستید.", type = "error", timeout = 4000})
 				end
 
 			end, function(data2, menu2)
@@ -407,7 +432,18 @@ function OpenPoliceActionsMenu()
 				local playerPed = PlayerPedId()
 				local coords, forward = GetEntityCoords(playerPed), GetEntityForwardVector(playerPed)
 				local objectCoords = (coords + forward * 1.0)
+				
+				if currentTask.busy then
+					exports.pNotify:SendNotification({text = "شما مشغول انجام کار هستید.", type = "info", timeout = 4000})
+					return
+				end
 
+				currentTask.busy = true
+				TaskStartScenarioInPlace(playerPed, 'CODE_HUMAN_MEDIC_TEND_TO_DEAD', 0, true)
+				Citizen.Wait(3000)
+				ClearPedTasks(playerPed)
+				
+				currentTask.busy = false
 				ESX.Game.SpawnObject(data2.current.model, objectCoords, function(obj)
 					SetEntityHeading(obj, GetEntityHeading(playerPed))
 					PlaceObjectOnGroundProperly(obj)
@@ -560,8 +596,14 @@ function OpenBodySearchMenu(player)
 			elements = elements
 		}, function(data, menu)
 			if data.current.value then
-				TriggerServerEvent('esx_policejob:confiscatePlayerItem', GetPlayerServerId(player), data.current.itemType, data.current.value, data.current.amount)
-				OpenBodySearchMenu(player)
+				local playerCoords = GetEntityCoords(GetPlayerPed(-1))
+				local playerCoords2 = GetEntityCoords(GetPlayerPed(player))
+				if(Vdist(playerCoords.x, playerCoords.y, playerCoords.z, playerCoords2.x, playerCoords2.y, playerCoords2.z) < 1.3) then
+					TriggerServerEvent('esx_policejob:confiscatePlayerItem', GetPlayerServerId(player), data.current.itemType, data.current.value, data.current.amount)
+					OpenBodySearchMenu(player)
+				else
+					exports.pNotify:SendNotification({text = "شهروند دیگر نزدیک شما نیست.", type = "error", timeout = 4000})
+				end
 			end
 		end, function(data, menu)
 			menu.close()
@@ -1583,6 +1625,18 @@ Citizen.CreateThread(function()
 						CurrentActionData = {}
 					end, { wash = false }) -- disable washing money
 				elseif CurrentAction == 'remove_entity' then
+					
+					if currentTask.busy then
+						exports.pNotify:SendNotification({text = "شما مشغول انجام کار هستید.", type = "info", timeout = 4000})
+						return
+					end
+
+					currentTask.busy = true
+					TaskStartScenarioInPlace(GetPlayerPed(-1), 'CODE_HUMAN_MEDIC_TEND_TO_DEAD', 0, true)
+					Citizen.Wait(3000)
+					ClearPedTasks(GetPlayerPed(-1))
+					
+					currentTask.busy = false
 					DeleteEntity(CurrentActionData.entity)
 				end
 
@@ -1637,6 +1691,10 @@ AddEventHandler('esx_policejob:animtarget', function(target)
 	AttachEntityToEntity(GetPlayerPed(-1), targetPed, 11816, -0.1, 0.45, 0.0, 0.0, 0.0, 20.0, false, false, false, false, 20, false)
 	Citizen.Wait(250)
 	RequestAnimDict('mp_arrest_paired')
+	while not HasAnimDictLoaded("mp_arrest_paired") do
+		RequestAnimDict("mp_arrest_paired")
+		Citizen.Wait(10)
+	end
 	TaskPlayAnim(playerPed, 'mp_arrest_paired', 'crook_p2_back_left', 8.0, -8, 3750 , 2, 0, 0, 0, 0)
 	Citizen.Wait(3760)
 	DetachEntity(GetPlayerPed(-1), true, false)
@@ -1670,6 +1728,10 @@ AddEventHandler('esx_policejob:uncuffanimpolice', function()
 	SetCurrentPedWeapon(playerPed, GetHashKey('WEAPON_UNARMED'), true) 
 	Citizen.Wait(250)
 	RequestAnimDict('mp_arrest_paired')
+	while not HasAnimDictLoaded("mp_arrest_paired") do
+		RequestAnimDict("mp_arrest_paired")
+		Citizen.Wait(10)
+	end
 	TaskPlayAnim(playerPed, 'mp_arresting', 'a_uncuff', 8.0, -8,-1, 2, 0, 0, 0, 0)
 	Citizen.Wait(5500)
 	ClearPedTasks(playerPed)
@@ -1772,6 +1834,6 @@ end
 function ImpoundVehicle(vehicle)
 	--local vehicleName = GetLabelText(GetDisplayNameFromVehicleModel(GetEntityModel(vehicle)))
 	ESX.Game.DeleteVehicle(vehicle)
-	ESX.ShowNotification(_U('impound_successful'))
+	exports.pNotify:SendNotification({text = "خودرو به پارکینگ منتقل شد.", type = "success", timeout = 4000})
 	currentTask.busy = false
 end

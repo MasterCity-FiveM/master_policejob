@@ -63,8 +63,8 @@ Locales['en'] = {
   ['service_out_announce'] = 'operator ~y~%s~s~ has left their service.',
   -- Action Menu
   ['citizen_interaction'] = 'بخش شهروندی',
-  ['vehicle_interaction'] = 'vehicle Interaction',
-  ['object_spawner'] = 'object Spawner',
+  ['vehicle_interaction'] = 'بخش خودرو',
+  ['object_spawner'] = 'موانع',
 
   ['id_card'] = 'کارت ملی',
   ['search'] = 'گشتن فرد',
@@ -82,20 +82,20 @@ Locales['en'] = {
   ['no_players_nearby'] = 'there is no player(s) nearby!',
   ['being_searched'] = 'you are being ~y~searched~s~ by the ~b~Police~s~',
   -- Vehicle interaction
-  ['vehicle_info'] = 'vehicle Info',
-  ['pick_lock'] = 'lockpick Vehicle',
-  ['vehicle_unlocked'] = 'vehicle ~g~Unlocked~s~',
-  ['no_vehicles_nearby'] = 'there is no vehicles nearby',
-  ['impound'] = 'impound vehicle',
+  ['vehicle_info'] = 'اطلاعات خودرو',
+  ['pick_lock'] = 'بازکردن قفل خودرو',
+  ['vehicle_unlocked'] = 'قفل خوردو باز شد.',
+  ['no_vehicles_nearby'] = 'شما نزدیک خودرو نیستید.',
+  ['impound'] = 'ارسال ماشین به پارکینگ',
   ['impound_prompt'] = 'press ~INPUT_CONTEXT~ to cancel the ~y~impound~s~',
   ['impound_canceled'] = 'you canceled the impound',
   ['impound_canceled_moved'] = 'the impound has been canceled because the vehicle moved',
   ['impound_successful'] = 'you have impounded the vehicle',
-  ['search_database'] = 'vehicle information',
-  ['search_database_title'] = 'vehicle information - search with registration number',
+  ['search_database'] = 'اطلاعات خودرو',
+  ['search_database_title'] = 'جستجوی خودرو براساس پلاک',
   ['search_database_error_invalid'] = 'that is ~r~not~s~ a ~y~valid~s~ registration number',
   -- Traffic interaction
-  ['traffic_interaction'] = 'interaction Traffic',
+  ['traffic_interaction'] = 'موانع ترافیکی',
   ['cone'] = 'cone',
   ['barrier'] = 'barrier',
   ['spikestrips'] = 'spikestrips',
@@ -132,9 +132,9 @@ Locales['en'] = {
   ['major_offense'] = 'تخلفات بزرگ',
   ['fine_total'] = 'جریمه: %s',
   -- Vehicle Info Menu
-  ['plate'] = 'plate: %s',
-  ['owner_unknown'] = 'owner: Unknown',
-  ['owner'] = 'owner: %s',
+  ['plate'] = 'پلاک: %s',
+  ['owner_unknown'] = 'مالک: نامعلوم',
+  ['owner'] = 'مالک: %s',
   -- Boss Menu
   ['open_bossmenu'] = 'press ~INPUT_CONTEXT~ to open the menu',
   ['quantity_invalid'] = 'invalid quantity',
@@ -149,7 +149,7 @@ Locales['en'] = {
   ['unrestrained_timer'] = 'you feel your handcuffs slowly losing grip and fading away.',
   -- Notifications
   ['alert_police'] = 'police alert',
-  ['phone_police'] = 'police',
+  ['phone_police'] = 'پلیس',
 
   -- Spacers
 	['spacer1'] = '| Custom Peds |',
