@@ -1,5 +1,6 @@
 ESX = nil
 FineList = {}
+jobItems = {}
 
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
@@ -56,7 +57,7 @@ AddEventHandler('esx_policejob:confiscatePlayerItem', function(target, itemType,
 	elseif itemType == 'item_weapon' then
 		if amount == nil then amount = 0 end
 		targetXPlayer.removeWeapon(itemName, amount)
-		sourceXPlayer.addWeapon   (itemName, amount)
+		sourceXPlayer.addWeapon(itemName, amount)
 
 		TriggerClientEvent("pNotify:SendNotification", _source, { text = "اسلحه " .. ESX.GetWeaponLabel(itemName) .." با " .. amount .. " عدد تیر، از " .. TargetName .. " مصادره شد.", type = "info", timeout = 5000, layout = "bottomCenter"})
 		TriggerClientEvent("pNotify:SendNotification", target, { text = "اسلحه " .. ESX.GetWeaponLabel(itemName) .." با " .. amount .. " عدد تیر، از شما توسط " .. SourceName .. " مصادره شد.", type = "info", timeout = 5000, layout = "bottomCenter"})	
@@ -249,49 +250,48 @@ AddEventHandler('esx_policejob:OutVehicle', function(target)
 	end
 end)
 
-RegisterServerEvent('esx_policejob:getStockItem')
-AddEventHandler('esx_policejob:getStockItem', function(itemName, count)
-	local _source = source
-	local xPlayer = ESX.GetPlayerFromId(_source)
-	local sourceItem = xPlayer.getInventoryItem(itemName)
-
-	TriggerEvent('esx_addoninventory:getSharedInventory', 'society_police', function(inventory)
-		local inventoryItem = inventory.getItem(itemName)
-
-		-- is there enough in the society?
-		if count > 0 and inventoryItem.count >= count then
-
-			-- can the player carry the said amount of x item?
-			if sourceItem.limit ~= -1 and (sourceItem.count + count) > sourceItem.limit then
-				TriggerClientEvent('esx:showNotification', _source, _U('quantity_invalid'))
-			else
-				inventory.removeItem(itemName, count)
-				xPlayer.addInventoryItem(itemName, count)
-				TriggerClientEvent('esx:showNotification', _source, _U('have_withdrawn', count, inventoryItem.label))
-			end
-		else
-			TriggerClientEvent('esx:showNotification', _source, _U('quantity_invalid'))
-		end
-	end)
-end)
-
 RegisterServerEvent('esx_policejob:putStockItems')
 AddEventHandler('esx_policejob:putStockItems', function(itemName, count)
+	local source = source
 	local xPlayer = ESX.GetPlayerFromId(source)
-	local sourceItem = xPlayer.getInventoryItem(itemName)
-
-	TriggerEvent('esx_addoninventory:getSharedInventory', 'society_police', function(inventory)
-		local inventoryItem = inventory.getItem(itemName)
-
-		-- does the player have enough of the item?
-		if sourceItem.count >= count and count > 0 then
-			xPlayer.removeInventoryItem(itemName, count)
-			inventory.addItem(itemName, count)
-			TriggerClientEvent('esx:showNotification', xPlayer.source, _U('have_deposited', count, inventoryItem.label))
-		else
-			TriggerClientEvent('esx:showNotification', xPlayer.source, _U('quantity_invalid'))
+	local item = itemName
+	local sourceItem = xPlayer.getInventoryItem(item)
+	local ItemFound = false
+	local item_amount = tonumber(count)
+	
+	if xPlayer == nil or xPlayer.job == nil or xPlayer.job.name == nil then
+		return
+	end
+	
+	if xPlayer.job.name ~= 'police' or jobItems[xPlayer.job.name] == nil or jobItems[xPlayer.job.name][xPlayer.job.grade_name] == nil or jobItems[xPlayer.job.name][xPlayer.job.grade_name]['item'] == nil then
+		GetJobItems(xPlayer.job.name, xPlayer.job.grade_name, 'item')
+		return
+	end
+	
+	if item_amount < 1 and item_amount > 500 then
+		return
+	end
+	
+	local items = jobItems[xPlayer.job.name][xPlayer.job.grade_name]['item']
+	
+	for i=1, #items, 1 do
+		if items[i].name == item then
+			ItemFound = true
+			break
 		end
-	end)
+	end
+	
+	if not ItemFound then
+		TriggerClientEvent("pNotify:SendNotification", source, { text = "امکان تحویل اموال شخصی وجود ندارد!", type = "error", timeout = 5000, layout = "bottomCenter"})
+		return
+	end
+
+	if sourceItem.count >= item_amount and item_amount > 0 then
+		xPlayer.removeInventoryItem(item, count)
+		TriggerClientEvent("pNotify:SendNotification", source, { text = "از شما بابت تحویل اموال نیروی انتظامی متشکریم.", type = "success", timeout = 4000, layout = "bottomCenter"})
+	else
+		TriggerClientEvent("pNotify:SendNotification", source, { text = _U('quantity_invalid'), type = "error", timeout = 4000, layout = "bottomCenter"})
+	end
 end)
 
 ESX.RegisterServerCallback('esx_policejob:getOtherPlayerData', function(source, cb, target)
@@ -432,171 +432,206 @@ ESX.RegisterServerCallback('esx_policejob:getVehicleFromPlate', function(source,
 	end)
 end)
 
-ESX.RegisterServerCallback('esx_policejob:getArmoryWeapons', function(source, cb)
-	TriggerEvent('esx_datastore:getSharedDataStore', 'society_police', function(store)
-		local weapons = store.get('weapons')
-
-		if weapons == nil then
-			weapons = {}
-		end
-
-		cb(weapons)
-	end)
-end)
-
-ESX.RegisterServerCallback('esx_policejob:addArmoryWeapon', function(source, cb, weaponName, removeWeapon)
+ESX.RegisterServerCallback('esx_policejob:getItems', function(source, cb, item_type)
 	local xPlayer = ESX.GetPlayerFromId(source)
-
-	if removeWeapon then
-		xPlayer.removeWeapon(weaponName)
+	items = {}
+	if xPlayer == nil or xPlayer.job == nil or xPlayer.job.name == nil then
+		cb(items)
+		return
+	end	
+	
+	if xPlayer.job.name ~= 'police' then
+		cb(items)
+		return
 	end
-
-	TriggerEvent('esx_datastore:getSharedDataStore', 'society_police', function(store)
-		local weapons = store.get('weapons')
-
-		if weapons == nil then
-			weapons = {}
-		end
-
-		local foundWeapon = false
-
-		for i=1, #weapons, 1 do
-			if weapons[i].name == weaponName then
-				weapons[i].count = weapons[i].count + 1
-				foundWeapon = true
-				break
-			end
-		end
-
-		if not foundWeapon then
-			table.insert(weapons, {
-				name  = weaponName,
-				count = 1
-			})
-		end
-
-		store.set('weapons', weapons)
-		cb()
+	
+	if jobItems[xPlayer.job.name] == nil then
+		jobItems[xPlayer.job.name] = {}
+	end
+	
+	if jobItems[xPlayer.job.name][xPlayer.job.grade_name] == nil  then
+		jobItems[xPlayer.job.name][xPlayer.job.grade_name] = {}
+	end
+	
+	if jobItems[xPlayer.job.name][xPlayer.job.grade_name][item_type] == nil  then
+		jobItems[xPlayer.job.name][xPlayer.job.grade_name][item_type] = {}
+	else
+		cb(jobItems[xPlayer.job.name][xPlayer.job.grade_name][item_type])
+		return
+	end
+	
+	MySQL.Async.fetchAll('SELECT * FROM job_items WHERE job = @job AND grade = @grade AND item_type = @item_type', {
+		['@job'] = xPlayer.job.name,
+		['@grade'] = xPlayer.job.grade_name,
+		['@item_type'] = item_type
+	}, function(result)
+		jobItems[xPlayer.job.name][xPlayer.job.grade_name][item_type] = result
+		cb(result)
 	end)
 end)
 
-ESX.RegisterServerCallback('esx_policejob:removeArmoryWeapon', function(source, cb, weaponName)
-	local xPlayer = ESX.GetPlayerFromId(source)
-	xPlayer.addWeapon(weaponName, 500)
-
-	TriggerEvent('esx_datastore:getSharedDataStore', 'society_police', function(store)
-
-		local weapons = store.get('weapons')
-
-		if weapons == nil then
-			weapons = {}
-		end
-
-		local foundWeapon = false
-
-		for i=1, #weapons, 1 do
-			if weapons[i].name == weaponName then
-				weapons[i].count = (weapons[i].count > 0 and weapons[i].count - 1 or 0)
-				foundWeapon = true
-				break
-			end
-		end
-
-		if not foundWeapon then
-			table.insert(weapons, {
-				name  = weaponName,
-				count = 0
-			})
-		end
-
-		store.set('weapons', weapons)
-		cb()
+function GetJobItems(job, grade, item_type)
+	if jobItems[job] == nil then
+		jobItems[job] = {}
+	end
+	
+	if jobItems[job][grade] == nil  then
+		jobItems[job][grade] = {}
+	end
+	
+	if jobItems[job][grade][item_type] == nil  then
+		jobItems[job][grade][item_type] = {}
+	else
+		return
+	end
+	
+	MySQL.Async.fetchAll('SELECT * FROM job_items WHERE job = @job AND grade = @grade AND item_type = @item_type', {
+		['@job'] = job,
+		['@grade'] = grade,
+		['@item_type'] = item_type
+	}, function(result)
+		jobItems[job][grade][item_type] = result
 	end)
-end)
+end
 
-ESX.RegisterServerCallback('esx_policejob:buyWeapon', function(source, cb, weaponName, type, componentNum)
+ESX.RegisterServerCallback('esx_policejob:GiveWeapon', function(source, cb, weaponName, amount)
+	local source = source
 	local xPlayer = ESX.GetPlayerFromId(source)
-	local authorizedWeapons, selectedWeapon = Config.AuthorizedWeapons[xPlayer.job.grade_name]
-
-	for k,v in ipairs(authorizedWeapons) do
-		if v.weapon == weaponName then
-			selectedWeapon = v
+	
+	local weapon = weaponName:upper()
+	local ammo_amount = tonumber(amount)
+	local ItemFound = false
+	
+	if xPlayer == nil or xPlayer.job == nil or xPlayer.job.name == nil then
+		cb()
+		return
+	end
+	
+	if ammo_amount < 1 and ammo_amount > 500 then
+		cb()
+		return
+	end
+	
+	if xPlayer.job.name ~= 'police' or jobItems[xPlayer.job.name] == nil or jobItems[xPlayer.job.name][xPlayer.job.grade_name] == nil or jobItems[xPlayer.job.name][xPlayer.job.grade_name]['weapon'] == nil then
+		GetJobItems(xPlayer.job.name, xPlayer.job.grade_name, 'weapon')
+		cb()
+		return
+	end
+	
+	local weapons = jobItems[xPlayer.job.name][xPlayer.job.grade_name]['weapon']
+	
+	for i=1, #weapons, 1 do
+		if weapons[i].name:upper() == weapon then
+			ItemFound = true
 			break
 		end
 	end
-
-	if not selectedWeapon then
-		print(('esx_policejob: %s attempted to buy an invalid weapon.'):format(xPlayer.identifier))
-		cb(false)
-	else
-		-- Weapon
-		if type == 1 then
-			if xPlayer.getMoney() >= selectedWeapon.price then
-				xPlayer.removeMoney(selectedWeapon.price)
-				xPlayer.addWeapon(weaponName, 100)
-
-				cb(true)
-			else
-				cb(false)
-			end
-
-		-- Weapon Component
-		elseif type == 2 then
-			local price = selectedWeapon.components[componentNum]
-			local weaponNum, weapon = ESX.GetWeapon(weaponName)
-
-			local component = weapon.components[componentNum]
-
-			if component then
-				if xPlayer.getMoney() >= price then
-					xPlayer.removeMoney(price)
-					xPlayer.addWeaponComponent(weaponName, component.name)
-
-					cb(true)
-				else
-					cb(false)
-				end
-			else
-				print(('esx_policejob: %s attempted to buy an invalid weapon component.'):format(xPlayer.identifier))
-				cb(false)
-			end
-		end
+	
+	if not ItemFound then
+		TriggerClientEvent("pNotify:SendNotification", source, { text = "شما مجوز دریافت این اسلحه را ندارید.", type = "error", timeout = 5000, layout = "bottomCenter"})
+		cb()
+		return
 	end
+	
+	if xPlayer.hasWeapon(weapon) then
+		TriggerClientEvent("pNotify:SendNotification", source, { text = "شما قبلا این اسلحه را تحویل گرفته اید.", type = "error", timeout = 5000, layout = "bottomCenter"})
+	else
+		xPlayer.addWeapon(weapon, ammo_amount)
+		TriggerClientEvent("pNotify:SendNotification", source, { text = "اسلحه به شما تحویل داده شد.", type = "success", timeout = 5000, layout = "bottomCenter"})
+	end
+	
+	cb()
 end)
 
-function getPriceFromHash(hashKey, jobGrade, type)
-	if type == 'helicopter' then
-		local vehicles = Config.AuthorizedHelicopters[jobGrade]
-
-		for k,v in ipairs(vehicles) do
-			if GetHashKey(v.model) == hashKey then
-				return v.price
-			end
-		end
-	elseif type == 'car' then
-		local vehicles = Config.AuthorizedVehicles[jobGrade]
-		local shared = Config.AuthorizedVehicles['Shared']
-
-		for k,v in ipairs(vehicles) do
-			if GetHashKey(v.model) == hashKey then
-				return v.price
-			end
-		end
-
-		for k,v in ipairs(shared) do
-			if GetHashKey(v.model) == hashKey then
-				return v.price
-			end
+ESX.RegisterServerCallback('esx_policejob:GetWeapon', function(source, cb, weaponName)
+	local source = source
+	local xPlayer = ESX.GetPlayerFromId(source)
+	
+	local weapon = weaponName:upper()
+	local ItemFound = false
+	
+	if xPlayer == nil or xPlayer.job == nil or xPlayer.job.name == nil then
+		cb()
+		return
+	end
+	
+	if xPlayer.job.name ~= 'police' or jobItems[xPlayer.job.name] == nil or jobItems[xPlayer.job.name][xPlayer.job.grade_name] == nil or jobItems[xPlayer.job.name][xPlayer.job.grade_name]['weapon'] == nil then
+		GetJobItems(xPlayer.job.name, xPlayer.job.grade_name, 'weapon')
+		cb()
+		return
+	end
+	
+	local weapons = jobItems[xPlayer.job.name][xPlayer.job.grade_name]['weapon']
+	
+	for i=1, #weapons, 1 do
+		if weapons[i].name:upper() == weapon then
+			ItemFound = true
+			break
 		end
 	end
+	
+	if not ItemFound then
+		TriggerClientEvent("pNotify:SendNotification", source, { text = "شما مجوز تحویل این اسلحه را ندارید.", type = "error", timeout = 5000, layout = "bottomCenter"})
+		cb()
+		return
+	end
+	
+	if xPlayer.hasWeapon(weapon) then
+		xPlayer.removeWeapon(weapon)
+		TriggerClientEvent("pNotify:SendNotification", source, { text = "اسلحه تحویل اسلحه خانه داده شد.", type = "success", timeout = 5000, layout = "bottomCenter"})
+	else
+		TriggerClientEvent("pNotify:SendNotification", source, { text = "اسلحه در جیب شما نیست!", type = "error", timeout = 5000, layout = "bottomCenter"})
+	end
+	
+	cb()
+end)
 
-	return 0
-end
-
-ESX.RegisterServerCallback('esx_policejob:getStockItems', function(source, cb)
-	TriggerEvent('esx_addoninventory:getSharedInventory', 'society_police', function(inventory)
-		cb(inventory.items)
-	end)
+ESX.RegisterServerCallback('esx_policejob:GetItem', function(source, cb, itemName, amount)
+	local source = source
+	local xPlayer = ESX.GetPlayerFromId(source)
+	
+	local item = itemName
+	local ItemFound = false
+	local item_amount = tonumber(amount)
+	
+	if xPlayer == nil or xPlayer.job == nil or xPlayer.job.name == nil then
+		cb()
+		return
+	end
+	
+	if xPlayer.job.name ~= 'police' or jobItems[xPlayer.job.name] == nil or jobItems[xPlayer.job.name][xPlayer.job.grade_name] == nil or jobItems[xPlayer.job.name][xPlayer.job.grade_name]['item'] == nil then
+		GetJobItems(xPlayer.job.name, xPlayer.job.grade_name, 'item')
+		cb()
+		return
+	end
+	
+	if item_amount < 1 and item_amount > 500 then
+		cb()
+		return
+	end
+	
+	local items = jobItems[xPlayer.job.name][xPlayer.job.grade_name]['item']
+	
+	for i=1, #items, 1 do
+		if items[i].name == item then
+			ItemFound = true
+			break
+		end
+	end
+	
+	if not ItemFound then
+		TriggerClientEvent("pNotify:SendNotification", source, { text = "شما مجوز دریافت این وسیله را ندارید.", type = "error", timeout = 5000, layout = "bottomCenter"})
+		cb()
+		return
+	end
+	
+	if GetItemCount(source, item) > 0 then
+		TriggerClientEvent("pNotify:SendNotification", source, { text = "شما قبلا این وسیله را تحویل گرفتید، ابتدا آن را تحویل دهید.", type = "error", timeout = 5000, layout = "bottomCenter"})
+	else
+		xPlayer.addInventoryItem(item, item_amount)
+		TriggerClientEvent("pNotify:SendNotification", source, { text = "وسیله مورد نظر تحویل شما داده شد.", type = "success", timeout = 5000, layout = "bottomCenter"})
+	end
+	cb()
 end)
 
 ESX.RegisterServerCallback('esx_policejob:getPlayerInventory', function(source, cb)
