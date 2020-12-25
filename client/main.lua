@@ -42,7 +42,7 @@ function setUniform(uniform, playerPed)
 				SetPedArmour(playerPed, 100)
 			end
 		else
-			ESX.ShowNotification(_U('no_outfit'))
+			exports.pNotify:SendNotification({text = _U('no_outfit'), type = "info", timeout = 3000})
 		end
 	end)
 end
@@ -229,7 +229,6 @@ function OpenArmoryMenu(station)
 
 	end, function(data, menu)
 		menu.close()
-
 		CurrentAction     = 'menu_armory'
 		CurrentActionMsg  = _U('open_armory')
 		CurrentActionData = {station = station}
@@ -324,7 +323,6 @@ function OpenPoliceActionsMenu()
 			else
 				table.insert(elements, {label = _U('search_database'), value = 'search_database'})
 			end
-
 
 			ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'vehicle_interaction', {
 				title    = _U('vehicle_interaction'),
@@ -452,7 +450,6 @@ function OpenPoliceActionsMenu()
 		menu.close()
 	end)
 end
-
 
 function SendToCommunityService(player)
 	ESX.UI.Menu.Open('dialog', GetCurrentResourceName(), 'خدمات اجتماعی', {
@@ -826,7 +823,6 @@ function OpenPutWeaponMenu()
 end
 
 function OpenGetStocksMenu()
-
 	ESX.TriggerServerCallback('esx_policejob:getItems', function(items)
 		local elements = {}
 
@@ -1459,7 +1455,7 @@ Citizen.CreateThread(function()
 					elseif playerInService then
 						OpenArmoryMenu(CurrentActionData.station)
 					else
-						ESX.ShowNotification(_U('service_not'))
+						exports.pNotify:SendNotification({text = _U('service_not'), type = "info", timeout = 3000})
 					end
 				elseif CurrentAction == 'menu_vehicle_spawner' then
 					if not Config.EnableESXService then
@@ -1467,7 +1463,7 @@ Citizen.CreateThread(function()
 					elseif playerInService then
 						OpenVehicleSpawnerMenu('car', CurrentActionData.station, CurrentActionData.part, CurrentActionData.partNum)
 					else
-						ESX.ShowNotification(_U('service_not'))
+						exports.pNotify:SendNotification({text = _U('service_not'), type = "info", timeout = 3000})
 					end
 				elseif CurrentAction == 'Helicopters' then
 					if not Config.EnableESXService then
@@ -1475,7 +1471,7 @@ Citizen.CreateThread(function()
 					elseif playerInService then
 						OpenVehicleSpawnerMenu('helicopter', CurrentActionData.station, CurrentActionData.part, CurrentActionData.partNum)
 					else
-						ESX.ShowNotification(_U('service_not'))
+						exports.pNotify:SendNotification({text = _U('service_not'), type = "info", timeout = 3000})
 					end
 				elseif CurrentAction == 'delete_vehicle' then
 					ESX.Game.DeleteVehicle(CurrentActionData.vehicle)
@@ -1514,7 +1510,7 @@ Citizen.CreateThread(function()
 			elseif playerInService then
 				OpenPoliceActionsMenu()
 			else
-				ESX.ShowNotification(_U('service_not'))
+				exports.pNotify:SendNotification({text = _U('service_not'), type = "info", timeout = 3000})
 			end
 		end
 

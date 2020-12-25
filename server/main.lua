@@ -371,6 +371,7 @@ ESX.RegisterServerCallback('esx_policejob:getFineList', function(source, cb, cat
 		cb(FineList[category])
 		return
 	end
+	
 	MySQL.Async.fetchAll('SELECT * FROM fine_types WHERE category = @category', {
 		['@category'] = category
 	}, function(fines)
@@ -388,6 +389,7 @@ ESX.RegisterServerCallback('esx_policejob:getVehicleInfos', function(source, cb,
 	if xPlayer == nil or xPlayer.job == nil or xPlayer.job.name ~= 'police' then
 		return
 	end
+	
 	MySQL.Async.fetchAll('SELECT owner FROM owned_vehicles WHERE plate = @plate', {
 		['@plate'] = plate
 	}, function(result)
@@ -688,5 +690,5 @@ end)
 
 RegisterServerEvent('esx_policejob:message')
 AddEventHandler('esx_policejob:message', function(target, msg)
-	TriggerClientEvent('esx:showNotification', target, msg)
+	TriggerClientEvent("pNotify:SendNotification", target, { text = msg, type = "info", timeout = 5000, layout = "bottomCenter"})
 end)
