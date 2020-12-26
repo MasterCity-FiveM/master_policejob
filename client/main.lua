@@ -28,7 +28,8 @@ end
 function setUniform(uniform, playerPed)
 	TriggerEvent('skinchanger:getSkin', function(skin)
 		local uniformObject
-
+		local uniform = uniform
+		
 		if skin.sex == 0 then
 			uniformObject = Config.Uniforms[uniform].male
 		else
@@ -40,7 +41,27 @@ function setUniform(uniform, playerPed)
 
 			if uniform == 'bullet_wear' then
 				SetPedArmour(playerPed, 100)
+			elseif uniform == 'unbullet_wear' then
+				SetPedArmour(playerPed, 0)
 			end
+		else
+			exports.pNotify:SendNotification({text = _U('no_outfit'), type = "info", timeout = 3000})
+		end
+	end)
+end
+
+function setCustomUniform(uniform, playerPed)
+	TriggerEvent('skinchanger:getSkin', function(skin)
+		local uniformObject
+
+		if skin.sex == 0 then
+			uniformObject = uniform.male
+		else
+			uniformObject = uniform.female
+		end
+
+		if uniformObject then
+			TriggerEvent('skinchanger:loadClothes', skin, uniformObject)
 		else
 			exports.pNotify:SendNotification({text = _U('no_outfit'), type = "info", timeout = 3000})
 		end
@@ -54,21 +75,12 @@ function OpenCloakroomMenu()
 	local elements = {
 		{label = _U('citizen_wear'), value = 'citizen_wear'},
 		{label = _U('bullet_wear'), uniform = 'bullet_wear'},
-		{label = _U('gilet_wear'), uniform = 'gilet_wear'},
-		{label = _U('police_wear'), uniform = grade}
+		{label = "برداشتن " .. _U('bullet_wear'), uniform = 'unbullet_wear'}
 	}
 
-	if Config.EnableCustomPeds then
-		table.insert(elements, {label = _U('spacer1')})
-	end
-
-	if Config.EnableCustomPeds then
-		for k,v in ipairs(Config.CustomPeds.shared) do
-			table.insert(elements, {label = v.label, value = 'freemode_ped', maleModel = v.maleModel, femaleModel = v.femaleModel})
-		end
-
-		for k,v in ipairs(Config.CustomPeds[grade]) do
-			table.insert(elements, {label = v.label, value = 'freemode_ped', maleModel = v.maleModel, femaleModel = v.femaleModel})
+	if Config.CustomUniforms[grade] ~= nil then
+		for k,v in ipairs(Config.CustomUniforms[grade]) do
+			table.insert(elements, {label = v.label, value = 'custom_players', model = v.model})
 		end
 	end
 
@@ -169,27 +181,15 @@ function OpenCloakroomMenu()
 			end
 		end
 
+		if data.current.value == 'custom_players' then
+			setCustomUniform(data.current.model, playerPed)
+			return
+		end
+		
 		if data.current.uniform then
 			setUniform(data.current.uniform, playerPed)
-		elseif data.current.value == 'freemode_ped' then
-			local modelHash
-
-			ESX.TriggerServerCallback('esx_skin:getPlayerSkin', function(skin, jobSkin)
-				if skin.sex == 0 then
-					modelHash = GetHashKey(data.current.maleModel)
-				else
-					modelHash = GetHashKey(data.current.femaleModel)
-				end
-
-				ESX.Streaming.RequestModel(modelHash, function()
-					SetPlayerModel(PlayerId(), modelHash)
-					SetModelAsNoLongerNeeded(modelHash)
-					SetPedDefaultComponentVariation(PlayerPedId())
-
-					TriggerEvent('esx:restoreLoadout')
-				end)
-			end)
 		end
+		
 	end, function(data, menu)
 		menu.close()
 

@@ -14,7 +14,6 @@ Config.EnableHandcuffTimer        = true -- enable handcuff timer? will unrestra
 Config.HandcuffTimer              = 10 * 60000 -- 10 mins
 
 Config.EnableJobBlip              = true -- enable blips for cops on duty, requires esx_society
-Config.EnableCustomPeds           = true -- enable custom peds in cloak room? See Config.CustomPeds below to customize peds
 
 Config.EnableESXService           = false -- enable esx service?
 Config.MaxInService               = 30
@@ -85,159 +84,7 @@ Config.PoliceStations = {
 
 }
 
-Config.CustomPeds = {
-	shared = {
-		{label = 'Police', maleModel = 's_m_y_cop_01', femaleModel = 's_f_y_cop_01'},
-		{label = 'PoliceBLK', maleModel = 's_m_y_ranger_01', femaleModel = 's_m_y_ranger_01'},
-		{label = 'PoliceWTE', maleModel = 's_m_y_barman_01', femaleModel = 's_m_y_barman_01'},
-		{label = 'SWAT', maleModel = 's_m_y_blackops_01', femaleModel = 's_m_y_blackops_01'},
-		{label = 'SWAT2', maleModel = 's_m_y_swat_01', femaleModel = 's_m_y_swat_01'},
-		{label = 'PCSO', maleModel = 's_m_y_sheriff_01', femaleModel = 's_m_y_sheriff_01'},
-		{label = 'PCSO2', maleModel = 's_m_m_chemsec_01', femaleModel = 's_m_m_chemsec_01'},
-		{label = 'Detective', maleModel = 's_m_m_ciasec_01', femaleModel = 's_m_m_ciasec_01'},
-		{label = 'Detective2', maleModel = 's_m_m_fibsec_01', femaleModel = 's_m_m_fibsec_01'},
-		{label = 'Dog Handler', maleModel = 's_m_m_prisguard_01', femaleModel = 's_m_m_prisguard_01'},
-		{label = 'Highway', maleModel = 's_m_y_hwaycop_01', femaleModel = 's_m_y_hwaycop_01'},
-	},
-
-	recruit = {},
-
-	officer = {},
-
-	sergeant = {},
-
-	lieutenant = {},
-
-	boss = {}
-}
-
--- CHECK SKINCHANGER CLIENT MAIN.LUA for matching elements
 Config.Uniforms = {
-	recruit = {
-		male = {
-			tshirt_1 = 59,  tshirt_2 = 1,
-			torso_1 = 55,   torso_2 = 0,
-			decals_1 = 0,   decals_2 = 0,
-			arms = 41,
-			pants_1 = 25,   pants_2 = 0,
-			shoes_1 = 25,   shoes_2 = 0,
-			helmet_1 = 46,  helmet_2 = 0,
-			chain_1 = 0,    chain_2 = 0,
-			ears_1 = 2,     ears_2 = 0
-		},
-		female = {
-			tshirt_1 = 36,  tshirt_2 = 1,
-			torso_1 = 48,   torso_2 = 0,
-			decals_1 = 0,   decals_2 = 0,
-			arms = 44,
-			pants_1 = 34,   pants_2 = 0,
-			shoes_1 = 27,   shoes_2 = 0,
-			helmet_1 = 45,  helmet_2 = 0,
-			chain_1 = 0,    chain_2 = 0,
-			ears_1 = 2,     ears_2 = 0
-		}
-	},
-
-	officer = {
-		male = {
-			tshirt_1 = 58,  tshirt_2 = 0,
-			torso_1 = 55,   torso_2 = 0,
-			decals_1 = 0,   decals_2 = 0,
-			arms = 41,
-			pants_1 = 25,   pants_2 = 0,
-			shoes_1 = 25,   shoes_2 = 0,
-			helmet_1 = -1,  helmet_2 = 0,
-			chain_1 = 0,    chain_2 = 0,
-			ears_1 = 2,     ears_2 = 0
-		},
-		female = {
-			tshirt_1 = 35,  tshirt_2 = 0,
-			torso_1 = 48,   torso_2 = 0,
-			decals_1 = 0,   decals_2 = 0,
-			arms = 44,
-			pants_1 = 34,   pants_2 = 0,
-			shoes_1 = 27,   shoes_2 = 0,
-			helmet_1 = -1,  helmet_2 = 0,
-			chain_1 = 0,    chain_2 = 0,
-			ears_1 = 2,     ears_2 = 0
-		}
-	},
-
-	sergeant = {
-		male = {
-			tshirt_1 = 58,  tshirt_2 = 0,
-			torso_1 = 55,   torso_2 = 0,
-			decals_1 = 8,   decals_2 = 1,
-			arms = 41,
-			pants_1 = 25,   pants_2 = 0,
-			shoes_1 = 25,   shoes_2 = 0,
-			helmet_1 = -1,  helmet_2 = 0,
-			chain_1 = 0,    chain_2 = 0,
-			ears_1 = 2,     ears_2 = 0
-		},
-		female = {
-			tshirt_1 = 35,  tshirt_2 = 0,
-			torso_1 = 48,   torso_2 = 0,
-			decals_1 = 7,   decals_2 = 1,
-			arms = 44,
-			pants_1 = 34,   pants_2 = 0,
-			shoes_1 = 27,   shoes_2 = 0,
-			helmet_1 = -1,  helmet_2 = 0,
-			chain_1 = 0,    chain_2 = 0,
-			ears_1 = 2,     ears_2 = 0
-		}
-	},
-
-	lieutenant = {
-		male = {
-			tshirt_1 = 58,  tshirt_2 = 0,
-			torso_1 = 55,   torso_2 = 0,
-			decals_1 = 8,   decals_2 = 2,
-			arms = 41,
-			pants_1 = 25,   pants_2 = 0,
-			shoes_1 = 25,   shoes_2 = 0,
-			helmet_1 = -1,  helmet_2 = 0,
-			chain_1 = 0,    chain_2 = 0,
-			ears_1 = 2,     ears_2 = 0
-		},
-		female = {
-			tshirt_1 = 35,  tshirt_2 = 0,
-			torso_1 = 48,   torso_2 = 0,
-			decals_1 = 7,   decals_2 = 2,
-			arms = 44,
-			pants_1 = 34,   pants_2 = 0,
-			shoes_1 = 27,   shoes_2 = 0,
-			helmet_1 = -1,  helmet_2 = 0,
-			chain_1 = 0,    chain_2 = 0,
-			ears_1 = 2,     ears_2 = 0
-		}
-	},
-
-	boss = {
-		male = {
-			tshirt_1 = 58,  tshirt_2 = 0,
-			torso_1 = 55,   torso_2 = 0,
-			decals_1 = 8,   decals_2 = 3,
-			arms = 41,
-			pants_1 = 25,   pants_2 = 0,
-			shoes_1 = 25,   shoes_2 = 0,
-			helmet_1 = -1,  helmet_2 = 0,
-			chain_1 = 0,    chain_2 = 0,
-			ears_1 = 2,     ears_2 = 0
-		},
-		female = {
-			tshirt_1 = 35,  tshirt_2 = 0,
-			torso_1 = 48,   torso_2 = 0,
-			decals_1 = 7,   decals_2 = 3,
-			arms = 44,
-			pants_1 = 34,   pants_2 = 0,
-			shoes_1 = 27,   shoes_2 = 0,
-			helmet_1 = -1,  helmet_2 = 0,
-			chain_1 = 0,    chain_2 = 0,
-			ears_1 = 2,     ears_2 = 0
-		}
-	},
-
 	bullet_wear = {
 		male = {
 			bproof_1 = 11,  bproof_2 = 1
@@ -246,13 +93,361 @@ Config.Uniforms = {
 			bproof_1 = 13,  bproof_2 = 1
 		}
 	},
-
-	gilet_wear = {
+	
+	unbullet_wear = {
 		male = {
-			tshirt_1 = 59,  tshirt_2 = 1
+			bproof_1 = 0,  bproof_2 = 0
 		},
 		female = {
-			tshirt_1 = 36,  tshirt_2 = 1
+			bproof_1 = 0,  bproof_2 = 0
 		}
 	}
 }
+
+Config.CustomUniforms = {
+	sarbaz = {
+		{
+			label = "لباس سرباز - شوکر",
+			model = {
+				male = {
+					tshirt_1 = 38,  tshirt_2 = 0,
+					torso_1 = 55,   torso_2 = 0,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 19,
+					pants_1 = 35,   pants_2 = 0,
+					shoes_1 = 51,   shoes_2 = 0,
+					helmet_1 = 10,  helmet_2 = 6,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 0,     ears_2 = 0
+				},
+				female = {
+					tshirt_1 = 51,  tshirt_2 = 0,
+					torso_1 = 48,   torso_2 = 0,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 31,
+					pants_1 = 34,   pants_2 = 0,
+					shoes_1 = 52,   shoes_2 = 0,
+					helmet_1 = 10,  helmet_2 = 2,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 0,     ears_2 = 0
+				}
+			}
+		},
+		{
+			label = "لباس سرباز - باتون",
+			model = {
+				male = {
+					tshirt_1 = 37,  tshirt_2 = 0,
+					torso_1 = 55,   torso_2 = 0,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 19,
+					pants_1 = 35,   pants_2 = 0,
+					shoes_1 = 51,   shoes_2 = 0,
+					helmet_1 = 10,  helmet_2 = 6,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 0,     ears_2 = 0
+				},
+				female = {
+					tshirt_1 = 8,  tshirt_2 = 0,
+					torso_1 = 48,   torso_2 = 0,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 31,
+					pants_1 = 34,   pants_2 = 0,
+					shoes_1 = 52,   shoes_2 = 0,
+					helmet_1 = 10,  helmet_2 = 2,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 0,     ears_2 = 0
+				}
+			}
+		}
+	},
+
+	sotvan = {
+		{
+			label = "لباس پلیس",
+			model = {
+				male = {
+					tshirt_1 = 56,  tshirt_2 = 0,
+					torso_1 = 101,   torso_2 = 1,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 20,
+					pants_1 = 25,   pants_2 = 6,
+					shoes_1 = 51,   shoes_2 = 0,
+					helmet_1 = 11,  helmet_2 = 0,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 0,     ears_2 = 0
+				},
+				female = {
+					tshirt_1 = 33,  tshirt_2 = 0,
+					torso_1 = 92,   torso_2 = 0,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 26,
+					pants_1 = 47,   pants_2 = 0,
+					shoes_1 = 27,   shoes_2 = 0,
+					helmet_1 = -1,  helmet_2 = 0,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 2,     ears_2 = 0
+				}
+			}
+		},
+		{
+			label = "لباس پلیس + کلاه",
+			model = {
+				male = {
+					tshirt_1 = 56,  tshirt_2 = 0,
+					torso_1 = 101,   torso_2 = 1,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 20,
+					pants_1 = 25,   pants_2 = 6,
+					shoes_1 = 51,   shoes_2 = 0,
+					helmet_1 = 58,  helmet_2 = 2,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 0,     ears_2 = 0
+				},
+				female = {
+					tshirt_1 = 33,  tshirt_2 = 0,
+					torso_1 = 92,   torso_2 = 0,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 26,
+					pants_1 = 47,   pants_2 = 0,
+					shoes_1 = 27,   shoes_2 = 0,
+					helmet_1 = 58,  helmet_2 = 2,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 2,     ears_2 = 0
+				}
+			}
+		}
+	},
+	
+	sarvan = {
+		{
+			label = "لباس پلیس",
+			model = {
+				male = {
+					tshirt_1 = 56,  tshirt_2 = 0,
+					torso_1 = 101,   torso_2 = 1,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 20,
+					pants_1 = 25,   pants_2 = 6,
+					shoes_1 = 51,   shoes_2 = 0,
+					helmet_1 = 11,  helmet_2 = 0,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 0,     ears_2 = 0
+				},
+				female = {
+					tshirt_1 = 33,  tshirt_2 = 0,
+					torso_1 = 92,   torso_2 = 0,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 26,
+					pants_1 = 47,   pants_2 = 0,
+					shoes_1 = 27,   shoes_2 = 0,
+					helmet_1 = -1,  helmet_2 = 0,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 2,     ears_2 = 0
+				}
+			}
+		},
+		{
+			label = "لباس پلیس + کلاه",
+			model = {
+				male = {
+					tshirt_1 = 56,  tshirt_2 = 0,
+					torso_1 = 101,   torso_2 = 1,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 20,
+					pants_1 = 25,   pants_2 = 6,
+					shoes_1 = 51,   shoes_2 = 0,
+					helmet_1 = 58,  helmet_2 = 2,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 0,     ears_2 = 0
+				},
+				female = {
+					tshirt_1 = 33,  tshirt_2 = 0,
+					torso_1 = 92,   torso_2 = 0,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 26,
+					pants_1 = 47,   pants_2 = 0,
+					shoes_1 = 27,   shoes_2 = 0,
+					helmet_1 = 58,  helmet_2 = 2,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 2,     ears_2 = 0
+				}
+			}
+		}
+	},
+
+	sargord = {
+		{
+			label = "لباس پلیس",
+			model = {
+				male = {
+					tshirt_1 = 56,  tshirt_2 = 0,
+					torso_1 = 101,   torso_2 = 1,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 20,
+					pants_1 = 25,   pants_2 = 6,
+					shoes_1 = 51,   shoes_2 = 0,
+					helmet_1 = 11,  helmet_2 = 0,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 0,     ears_2 = 0
+				},
+				female = {
+					tshirt_1 = 33,  tshirt_2 = 0,
+					torso_1 = 92,   torso_2 = 0,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 26,
+					pants_1 = 47,   pants_2 = 0,
+					shoes_1 = 27,   shoes_2 = 0,
+					helmet_1 = -1,  helmet_2 = 0,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 2,     ears_2 = 0
+				}
+			}
+		},
+		{
+			label = "لباس پلیس + کلاه",
+			model = {
+				male = {
+					tshirt_1 = 56,  tshirt_2 = 0,
+					torso_1 = 101,   torso_2 = 1,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 20,
+					pants_1 = 25,   pants_2 = 6,
+					shoes_1 = 51,   shoes_2 = 0,
+					helmet_1 = 58,  helmet_2 = 2,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 0,     ears_2 = 0
+				},
+				female = {
+					tshirt_1 = 33,  tshirt_2 = 0,
+					torso_1 = 92,   torso_2 = 0,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 26,
+					pants_1 = 47,   pants_2 = 0,
+					shoes_1 = 27,   shoes_2 = 0,
+					helmet_1 = 58,  helmet_2 = 2,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 2,     ears_2 = 0
+				}
+			}
+		}
+	},
+	
+	sarhang = {
+		{
+			label = "لباس پلیس",
+			model = {
+				male = {
+					tshirt_1 = 53,  tshirt_2 = 1,
+					torso_1 = 111,   torso_2 = 0,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 22,
+					pants_1 = 35,   pants_2 = 0,
+					shoes_1 = 51,   shoes_2 = 0,
+					helmet_1 = 11,  helmet_2 = 0,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 0,     ears_2 = 0
+				},
+				female = {
+					tshirt_1 = 33,  tshirt_2 = 0,
+					torso_1 = 92,   torso_2 = 0,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 26,
+					pants_1 = 47,   pants_2 = 0,
+					shoes_1 = 27,   shoes_2 = 0,
+					helmet_1 = -1,  helmet_2 = 0,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 2,     ears_2 = 0
+				}
+			}
+		},
+		{
+			label = "لباس پلیس + کلاه",
+			model = {
+				male = {
+					tshirt_1 = 53,  tshirt_2 = 1,
+					torso_1 = 111,   torso_2 = 0,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 22,
+					pants_1 = 35,   pants_2 = 0,
+					shoes_1 = 51,   shoes_2 = 0,
+					helmet_1 = 63,  helmet_2 = 9,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 0,     ears_2 = 0
+				},
+				female = {
+					tshirt_1 = 33,  tshirt_2 = 0,
+					torso_1 = 92,   torso_2 = 0,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 26,
+					pants_1 = 47,   pants_2 = 0,
+					shoes_1 = 27,   shoes_2 = 0,
+					helmet_1 = 58,  helmet_2 = 2,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 2,     ears_2 = 0
+				}
+			}
+		}
+	},
+	
+	janeshinf = {
+		{
+			label = "لباس جانشین فرماندهی",
+			model = {
+				male = {
+					tshirt_1 = 16,  tshirt_2 = 0,
+					torso_1 = 13,   torso_2 = 2,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 11,
+					pants_1 = 28,   pants_2 = 0,
+					shoes_1 = 10,   shoes_2 = 0,
+					helmet_1 = 11,  helmet_2 = 0,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 0,     ears_2 = 0
+				},
+				female = {
+					tshirt_1 = 33,  tshirt_2 = 0,
+					torso_1 = 92,   torso_2 = 0,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 26,
+					pants_1 = 47,   pants_2 = 0,
+					shoes_1 = 27,   shoes_2 = 0,
+					helmet_1 = -1,  helmet_2 = 0,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 2,     ears_2 = 0
+				}
+			}
+		}
+	},
+
+	boss = {
+		{
+			label = "لباس فرمانده",
+			model = {
+				male = {
+					tshirt_1 = 16,  tshirt_2 = 0,
+					torso_1 = 12,   torso_2 = 7,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 12,
+					pants_1 = 28,   pants_2 = 0,
+					shoes_1 = 10,   shoes_2 = 0,
+					helmet_1 = 11,  helmet_2 = 0,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 0,     ears_2 = 0
+				},
+				female = {
+					tshirt_1 = 33,  tshirt_2 = 0,
+					torso_1 = 92,   torso_2 = 0,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 26,
+					pants_1 = 47,   pants_2 = 0,
+					shoes_1 = 27,   shoes_2 = 0,
+					helmet_1 = -1,  helmet_2 = 0,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 2,     ears_2 = 0
+				}
+			}
+		}
+	}
+}
+
