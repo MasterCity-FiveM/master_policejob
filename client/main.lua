@@ -91,7 +91,7 @@ function OpenCloakroomMenu()
 	end
 	
 	if ESX.PlayerData.job.job_sub ~= nil and Config.SubJobUniforms[ESX.PlayerData.job.job_sub] ~= nil then
-		for k,v in ipairs(Config.SubJobUniforms[grade]) do
+		for k,v in ipairs(Config.SubJobUniforms[ESX.PlayerData.job.job_sub]) do
 			table.insert(elements, {label = v.label, value = 'custom_players', model = v.model})
 		end
 	end
@@ -918,6 +918,11 @@ AddEventHandler('esx:setJob', function(job)
 
 	Citizen.Wait(5000)
 	TriggerServerEvent('esx_policejob:forceBlip')
+end)
+
+RegisterNetEvent('esx:setJobSub')
+AddEventHandler('esx:setJobSub', function(job)
+	ESX.PlayerData.job.job_sub = job
 end)
 
 RegisterNetEvent('esx_phone:loaded')

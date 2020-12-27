@@ -87,7 +87,7 @@ Config.PoliceStations = {
 Config.Uniforms = {
 	bullet_wear = {
 		male = {
-			bproof_1 = 11,  bproof_2 = 1
+			bproof_1 = 12,  bproof_2 = 3
 		},
 		female = {
 			bproof_1 = 13,  bproof_2 = 1
@@ -110,15 +110,50 @@ Config.SubJobUniforms = {
 			label = "یگان ویژه 1",
 			model = {
 				male = {
-					tshirt_1 = 38,  tshirt_2 = 0,
-					torso_1 = 55,   torso_2 = 0,
+					tshirt_1 = 53,  tshirt_2 = 1,
+					torso_1 = 49,   torso_2 = 2,
+					decals_1 = 3,   decals_2 = 0,
+					arms = 38,
+					pants_1 = 31,   pants_2 = 2,
+					shoes_1 = 25,   shoes_2 = 0,
+					mask_1  = 52,    mask_2  = 0,
+					bproof_1  = 16, bproof_2  = 0,
+					helmet_1 = 117,  helmet_2 = 0,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 0,     ears_2 = 0,
+					glasses_1 = 24,     glasses_2 = 2
+				},
+				female = {
+					tshirt_1 = 51,  tshirt_2 = 0,
+					torso_1 = 48,   torso_2 = 0,
 					decals_1 = 0,   decals_2 = 0,
-					arms = 19,
-					pants_1 = 35,   pants_2 = 0,
-					shoes_1 = 51,   shoes_2 = 0,
-					helmet_1 = 10,  helmet_2 = 6,
+					arms = 31,
+					pants_1 = 34,   pants_2 = 0,
+					shoes_1 = 52,   shoes_2 = 0,
+					helmet_1 = 10,  helmet_2 = 2,
 					chain_1 = 0,    chain_2 = 0,
 					ears_1 = 0,     ears_2 = 0
+				}
+			}
+		}
+	},
+	ZARBAT = {
+		{
+			label = "گروه ضربت 1",
+			model = {
+				male = {
+					tshirt_1 = 15,  tshirt_2 = 0,
+					torso_1 = 53,   torso_2 = 0,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 38,
+					pants_1 = 37,   pants_2 = 0,
+					shoes_1 = 25,   shoes_2 = 0,
+					mask_1  = 130,    mask_2  = 0,
+					bproof_1  = 15, bproof_2  = 2,
+					helmet_1 = 117,  helmet_2 = 0,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 0,     ears_2 = 0,
+					glasses_1 = 0,     glasses_2 = 0
 				},
 				female = {
 					tshirt_1 = 51,  tshirt_2 = 0,
@@ -139,48 +174,24 @@ Config.SubJobUniforms = {
 Config.CustomUniforms = {
 	sarbaz = {
 		{
-			label = "لباس سرباز - شوکر",
+			label = "لباس سرباز",
 			model = {
 				male = {
-					tshirt_1 = 38,  tshirt_2 = 0,
+					tshirt_1 = 44,  tshirt_2 = 0,
 					torso_1 = 55,   torso_2 = 0,
 					decals_1 = 0,   decals_2 = 0,
-					arms = 19,
+					arms = 30,
 					pants_1 = 35,   pants_2 = 0,
-					shoes_1 = 51,   shoes_2 = 0,
-					helmet_1 = 10,  helmet_2 = 6,
+					shoes_1 = 15,   shoes_2 = 0,
+					mask_1  = 0,    mask_2  = 23,
+					bproof_1  = 12, bproof_2  = 3,
+					helmet_1 = 46,  helmet_2 = 0,
 					chain_1 = 0,    chain_2 = 0,
-					ears_1 = 0,     ears_2 = 0
+					ears_1 = 0,     ears_2 = 0,
+					glasses_1 = 0,     glasses_2 = 0
 				},
 				female = {
 					tshirt_1 = 51,  tshirt_2 = 0,
-					torso_1 = 48,   torso_2 = 0,
-					decals_1 = 0,   decals_2 = 0,
-					arms = 31,
-					pants_1 = 34,   pants_2 = 0,
-					shoes_1 = 52,   shoes_2 = 0,
-					helmet_1 = 10,  helmet_2 = 2,
-					chain_1 = 0,    chain_2 = 0,
-					ears_1 = 0,     ears_2 = 0
-				}
-			}
-		},
-		{
-			label = "لباس سرباز - باتون",
-			model = {
-				male = {
-					tshirt_1 = 37,  tshirt_2 = 0,
-					torso_1 = 55,   torso_2 = 0,
-					decals_1 = 0,   decals_2 = 0,
-					arms = 19,
-					pants_1 = 35,   pants_2 = 0,
-					shoes_1 = 51,   shoes_2 = 0,
-					helmet_1 = 10,  helmet_2 = 6,
-					chain_1 = 0,    chain_2 = 0,
-					ears_1 = 0,     ears_2 = 0
-				},
-				female = {
-					tshirt_1 = 8,  tshirt_2 = 0,
 					torso_1 = 48,   torso_2 = 0,
 					decals_1 = 0,   decals_2 = 0,
 					arms = 31,
@@ -196,18 +207,21 @@ Config.CustomUniforms = {
 
 	sotvan = {
 		{
-			label = "لباس پلیس",
+			label = "لباس پلیس 1",
 			model = {
 				male = {
-					tshirt_1 = 56,  tshirt_2 = 0,
-					torso_1 = 101,   torso_2 = 1,
+					tshirt_1 = 38,  tshirt_2 = 0,
+					torso_1 = 102,   torso_2 = 0,
 					decals_1 = 0,   decals_2 = 0,
-					arms = 20,
-					pants_1 = 25,   pants_2 = 6,
-					shoes_1 = 51,   shoes_2 = 0,
-					helmet_1 = 11,  helmet_2 = 0,
+					arms = 19,
+					pants_1 = 52,   pants_2 = 1,
+					shoes_1 = 24,   shoes_2 = 0,
+					mask_1  = 0,    mask_2  = 0,
+					bproof_1  = 12, bproof_2  = 3,
+					helmet_1 = -1,  helmet_2 = 0,
 					chain_1 = 0,    chain_2 = 0,
-					ears_1 = 0,     ears_2 = 0
+					ears_1 = 0,     ears_2 = 0,
+					glasses_1 = 0,     glasses_2 = 0
 				},
 				female = {
 					tshirt_1 = 33,  tshirt_2 = 0,
@@ -217,33 +231,6 @@ Config.CustomUniforms = {
 					pants_1 = 47,   pants_2 = 0,
 					shoes_1 = 27,   shoes_2 = 0,
 					helmet_1 = -1,  helmet_2 = 0,
-					chain_1 = 0,    chain_2 = 0,
-					ears_1 = 2,     ears_2 = 0
-				}
-			}
-		},
-		{
-			label = "لباس پلیس + کلاه",
-			model = {
-				male = {
-					tshirt_1 = 56,  tshirt_2 = 0,
-					torso_1 = 101,   torso_2 = 1,
-					decals_1 = 0,   decals_2 = 0,
-					arms = 20,
-					pants_1 = 25,   pants_2 = 6,
-					shoes_1 = 51,   shoes_2 = 0,
-					helmet_1 = 58,  helmet_2 = 2,
-					chain_1 = 0,    chain_2 = 0,
-					ears_1 = 0,     ears_2 = 0
-				},
-				female = {
-					tshirt_1 = 33,  tshirt_2 = 0,
-					torso_1 = 92,   torso_2 = 0,
-					decals_1 = 0,   decals_2 = 0,
-					arms = 26,
-					pants_1 = 47,   pants_2 = 0,
-					shoes_1 = 27,   shoes_2 = 0,
-					helmet_1 = 58,  helmet_2 = 2,
 					chain_1 = 0,    chain_2 = 0,
 					ears_1 = 2,     ears_2 = 0
 				}
@@ -253,18 +240,21 @@ Config.CustomUniforms = {
 	
 	sarvan = {
 		{
-			label = "لباس پلیس",
+			label = "لباس پلیس 2",
 			model = {
 				male = {
-					tshirt_1 = 56,  tshirt_2 = 0,
-					torso_1 = 101,   torso_2 = 1,
-					decals_1 = 0,   decals_2 = 0,
-					arms = 20,
-					pants_1 = 25,   pants_2 = 6,
-					shoes_1 = 51,   shoes_2 = 0,
-					helmet_1 = 11,  helmet_2 = 0,
+					tshirt_1 = 37,  tshirt_2 = 0,
+					torso_1 = 101,   torso_2 = 0,
+					decals_1 = 11,   decals_2 = 0,
+					arms = 38,
+					pants_1 = 52,   pants_2 = 1,
+					shoes_1 = 24,   shoes_2 = 0,
+					mask_1  = 0,    mask_2  = 35,
+					bproof_1  = 12, bproof_2  = 3,
+					helmet_1 = -1,  helmet_2 = 0,
 					chain_1 = 0,    chain_2 = 0,
-					ears_1 = 0,     ears_2 = 0
+					ears_1 = 0,     ears_2 = 0,
+					glasses_1 = 0,     glasses_2 = 0
 				},
 				female = {
 					tshirt_1 = 33,  tshirt_2 = 0,
@@ -274,33 +264,6 @@ Config.CustomUniforms = {
 					pants_1 = 47,   pants_2 = 0,
 					shoes_1 = 27,   shoes_2 = 0,
 					helmet_1 = -1,  helmet_2 = 0,
-					chain_1 = 0,    chain_2 = 0,
-					ears_1 = 2,     ears_2 = 0
-				}
-			}
-		},
-		{
-			label = "لباس پلیس + کلاه",
-			model = {
-				male = {
-					tshirt_1 = 56,  tshirt_2 = 0,
-					torso_1 = 101,   torso_2 = 1,
-					decals_1 = 0,   decals_2 = 0,
-					arms = 20,
-					pants_1 = 25,   pants_2 = 6,
-					shoes_1 = 51,   shoes_2 = 0,
-					helmet_1 = 58,  helmet_2 = 2,
-					chain_1 = 0,    chain_2 = 0,
-					ears_1 = 0,     ears_2 = 0
-				},
-				female = {
-					tshirt_1 = 33,  tshirt_2 = 0,
-					torso_1 = 92,   torso_2 = 0,
-					decals_1 = 0,   decals_2 = 0,
-					arms = 26,
-					pants_1 = 47,   pants_2 = 0,
-					shoes_1 = 27,   shoes_2 = 0,
-					helmet_1 = 58,  helmet_2 = 2,
 					chain_1 = 0,    chain_2 = 0,
 					ears_1 = 2,     ears_2 = 0
 				}
@@ -310,18 +273,21 @@ Config.CustomUniforms = {
 
 	sargord = {
 		{
-			label = "لباس پلیس",
+			label = "لباس پلیس 3",
 			model = {
 				male = {
 					tshirt_1 = 56,  tshirt_2 = 0,
-					torso_1 = 101,   torso_2 = 1,
-					decals_1 = 0,   decals_2 = 0,
-					arms = 20,
-					pants_1 = 25,   pants_2 = 6,
-					shoes_1 = 51,   shoes_2 = 0,
-					helmet_1 = 11,  helmet_2 = 0,
+					torso_1 = 101,   torso_2 = 0,
+					decals_1 = 12,   decals_2 = 3,
+					arms = 38,
+					pants_1 = 52,   pants_2 = 1,
+					shoes_1 = 24,   shoes_2 = 0,
+					mask_1  = 0,    mask_2  = 179,
+					bproof_1  = 12, bproof_2  = 3,
+					helmet_1 = 10,  helmet_2 = 6,
 					chain_1 = 0,    chain_2 = 0,
-					ears_1 = 0,     ears_2 = 0
+					ears_1 = 0,     ears_2 = 0,
+					glasses_1 = 0,     glasses_2 = 0
 				},
 				female = {
 					tshirt_1 = 33,  tshirt_2 = 0,
@@ -331,33 +297,6 @@ Config.CustomUniforms = {
 					pants_1 = 47,   pants_2 = 0,
 					shoes_1 = 27,   shoes_2 = 0,
 					helmet_1 = -1,  helmet_2 = 0,
-					chain_1 = 0,    chain_2 = 0,
-					ears_1 = 2,     ears_2 = 0
-				}
-			}
-		},
-		{
-			label = "لباس پلیس + کلاه",
-			model = {
-				male = {
-					tshirt_1 = 56,  tshirt_2 = 0,
-					torso_1 = 101,   torso_2 = 1,
-					decals_1 = 0,   decals_2 = 0,
-					arms = 20,
-					pants_1 = 25,   pants_2 = 6,
-					shoes_1 = 51,   shoes_2 = 0,
-					helmet_1 = 58,  helmet_2 = 2,
-					chain_1 = 0,    chain_2 = 0,
-					ears_1 = 0,     ears_2 = 0
-				},
-				female = {
-					tshirt_1 = 33,  tshirt_2 = 0,
-					torso_1 = 92,   torso_2 = 0,
-					decals_1 = 0,   decals_2 = 0,
-					arms = 26,
-					pants_1 = 47,   pants_2 = 0,
-					shoes_1 = 27,   shoes_2 = 0,
-					helmet_1 = 58,  helmet_2 = 2,
 					chain_1 = 0,    chain_2 = 0,
 					ears_1 = 2,     ears_2 = 0
 				}
@@ -367,18 +306,21 @@ Config.CustomUniforms = {
 	
 	sarhang = {
 		{
-			label = "لباس پلیس",
+			label = "لباس پلیس 4",
 			model = {
 				male = {
-					tshirt_1 = 53,  tshirt_2 = 1,
-					torso_1 = 111,   torso_2 = 0,
-					decals_1 = 0,   decals_2 = 0,
-					arms = 22,
-					pants_1 = 35,   pants_2 = 0,
-					shoes_1 = 51,   shoes_2 = 0,
-					helmet_1 = 11,  helmet_2 = 0,
-					chain_1 = 0,    chain_2 = 0,
-					ears_1 = 0,     ears_2 = 0
+					tshirt_1 = 54,  tshirt_2 = 0,
+					torso_1 = 12,   torso_2 = 6,
+					decals_1 = 12,   decals_2 = 6,
+					arms = 38,
+					pants_1 = 28,   pants_2 = 0,
+					shoes_1 = 10,   shoes_2 = 0,
+					mask_1  = 0,    mask_2  = 0,
+					bproof_1  = 12, bproof_2  = 3,
+					helmet_1 = 28,  helmet_2 = 1,
+					chain_1 = 28,    chain_2 = 2,
+					ears_1 = 0,     ears_2 = 0,
+					glasses_1 = 0,     glasses_2 = 0
 				},
 				female = {
 					tshirt_1 = 33,  tshirt_2 = 0,
@@ -388,33 +330,6 @@ Config.CustomUniforms = {
 					pants_1 = 47,   pants_2 = 0,
 					shoes_1 = 27,   shoes_2 = 0,
 					helmet_1 = -1,  helmet_2 = 0,
-					chain_1 = 0,    chain_2 = 0,
-					ears_1 = 2,     ears_2 = 0
-				}
-			}
-		},
-		{
-			label = "لباس پلیس + کلاه",
-			model = {
-				male = {
-					tshirt_1 = 53,  tshirt_2 = 1,
-					torso_1 = 111,   torso_2 = 0,
-					decals_1 = 0,   decals_2 = 0,
-					arms = 22,
-					pants_1 = 35,   pants_2 = 0,
-					shoes_1 = 51,   shoes_2 = 0,
-					helmet_1 = 63,  helmet_2 = 9,
-					chain_1 = 0,    chain_2 = 0,
-					ears_1 = 0,     ears_2 = 0
-				},
-				female = {
-					tshirt_1 = 33,  tshirt_2 = 0,
-					torso_1 = 92,   torso_2 = 0,
-					decals_1 = 0,   decals_2 = 0,
-					arms = 26,
-					pants_1 = 47,   pants_2 = 0,
-					shoes_1 = 27,   shoes_2 = 0,
-					helmet_1 = 58,  helmet_2 = 2,
 					chain_1 = 0,    chain_2 = 0,
 					ears_1 = 2,     ears_2 = 0
 				}
@@ -427,15 +342,18 @@ Config.CustomUniforms = {
 			label = "لباس جانشین فرماندهی",
 			model = {
 				male = {
-					tshirt_1 = 16,  tshirt_2 = 0,
-					torso_1 = 13,   torso_2 = 2,
-					decals_1 = 0,   decals_2 = 0,
-					arms = 11,
+					tshirt_1 = 20,  tshirt_2 = 1,
+					torso_1 = 12,   torso_2 = 1,
+					decals_1 = 11,   decals_2 = 4,
+					arms = 38,
 					pants_1 = 28,   pants_2 = 0,
 					shoes_1 = 10,   shoes_2 = 0,
-					helmet_1 = 11,  helmet_2 = 0,
-					chain_1 = 0,    chain_2 = 0,
-					ears_1 = 0,     ears_2 = 0
+					mask_1  = 0,    mask_2  = 52,
+					bproof_1  = 12, bproof_2  = 3,
+					helmet_1 = -1,  helmet_2 = 0,
+					chain_1 = 28,    chain_2 = 2,
+					ears_1 = 0,     ears_2 = 0,
+					glasses_1 = 0,     glasses_2 = 0
 				},
 				female = {
 					tshirt_1 = 33,  tshirt_2 = 0,
@@ -457,15 +375,18 @@ Config.CustomUniforms = {
 			label = "لباس فرمانده",
 			model = {
 				male = {
-					tshirt_1 = 16,  tshirt_2 = 0,
-					torso_1 = 12,   torso_2 = 7,
+					tshirt_1 = 130,  tshirt_2 = 0,
+					torso_1 = 12,   torso_2 = 0,
 					decals_1 = 0,   decals_2 = 0,
-					arms = 12,
+					arms = 38,
 					pants_1 = 28,   pants_2 = 0,
 					shoes_1 = 10,   shoes_2 = 0,
-					helmet_1 = 11,  helmet_2 = 0,
-					chain_1 = 0,    chain_2 = 0,
-					ears_1 = 0,     ears_2 = 0
+					mask_1  = 0,    mask_2  = 52,
+					bproof_1  = 12, bproof_2  = 3,
+					helmet_1 = -1,  helmet_2 = 0,
+					chain_1 = 28,    chain_2 = 2,
+					ears_1 = 0,     ears_2 = 0,
+					glasses_1 = 0,     glasses_2 = 0
 				},
 				female = {
 					tshirt_1 = 33,  tshirt_2 = 0,
