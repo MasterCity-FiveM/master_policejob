@@ -315,6 +315,7 @@ ESX.RegisterServerCallback('esx_policejob:getOtherPlayerData', function(source, 
 		local height    = result[1].height
 
 		local data = {
+			id   	  = target,
 			name      = GetPlayerName(target),
 			job       = xPlayer.job,
 			inventory = xPlayer.inventory,

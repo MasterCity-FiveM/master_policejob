@@ -104,6 +104,38 @@ Config.Uniforms = {
 	}
 }
 
+Config.SubJobUniforms = {
+	VIZHE = {
+		{
+			label = "یگان ویژه 1",
+			model = {
+				male = {
+					tshirt_1 = 38,  tshirt_2 = 0,
+					torso_1 = 55,   torso_2 = 0,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 19,
+					pants_1 = 35,   pants_2 = 0,
+					shoes_1 = 51,   shoes_2 = 0,
+					helmet_1 = 10,  helmet_2 = 6,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 0,     ears_2 = 0
+				},
+				female = {
+					tshirt_1 = 51,  tshirt_2 = 0,
+					torso_1 = 48,   torso_2 = 0,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 31,
+					pants_1 = 34,   pants_2 = 0,
+					shoes_1 = 52,   shoes_2 = 0,
+					helmet_1 = 10,  helmet_2 = 2,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 0,     ears_2 = 0
+				}
+			}
+		}
+	}
+}
+
 Config.CustomUniforms = {
 	sarbaz = {
 		{

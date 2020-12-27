@@ -39,7 +39,7 @@ function setUniform(uniform, playerPed)
 		if uniformObject then
 			TriggerEvent('skinchanger:loadClothes', skin, uniformObject)
 
-			if uniform == 'bullet_wear' then
+			if uniform == 'bullet_wear' or (uniformObject.bproof_1 ~= nil and uniformObject.bproof_1 > 0) then
 				SetPedArmour(playerPed, 100)
 			elseif uniform == 'unbullet_wear' then
 				SetPedArmour(playerPed, 0)
@@ -60,6 +60,12 @@ function setCustomUniform(uniform, playerPed)
 			uniformObject = uniform.female
 		end
 
+		if uniformObject.bproof_1 ~= nil and uniformObject.bproof_1 > 0 then
+			SetPedArmour(playerPed, 100)
+		else
+			SetPedArmour(playerPed, 0)
+		end
+		
 		if uniformObject then
 			TriggerEvent('skinchanger:loadClothes', skin, uniformObject)
 		else
@@ -80,6 +86,12 @@ function OpenCloakroomMenu()
 
 	if Config.CustomUniforms[grade] ~= nil then
 		for k,v in ipairs(Config.CustomUniforms[grade]) do
+			table.insert(elements, {label = v.label, value = 'custom_players', model = v.model})
+		end
+	end
+	
+	if ESX.PlayerData.job.job_sub ~= nil and Config.SubJobUniforms[ESX.PlayerData.job.job_sub] ~= nil then
+		for k,v in ipairs(Config.SubJobUniforms[grade]) do
 			table.insert(elements, {label = v.label, value = 'custom_players', model = v.model})
 		end
 	end
@@ -514,7 +526,11 @@ function OpenIdentityCardMenu(player)
 			{label = nameLabel},
 			{label = jobLabel}
 		}
-
+		
+		if data.id then
+			table.insert(elements, {label = _U('userID', data.id)})
+		end
+		
 		if Config.EnableESXIdentity then
 			table.insert(elements, {label = sexLabel})
 			-- table.insert(elements, {label = idLabel})
