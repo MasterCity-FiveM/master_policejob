@@ -135,11 +135,9 @@ Config.SubJobUniforms = {
 					ears_1 = 0,     ears_2 = 0
 				}
 			}
-		}
-	},
-	ZARBAT = {
+		},
 		{
-			label = "گروه ضربت 1",
+			label = "یگان ویژه 2",
 			model = {
 				male = {
 					tshirt_1 = 15,  tshirt_2 = 0,
@@ -154,6 +152,68 @@ Config.SubJobUniforms = {
 					chain_1 = 0,    chain_2 = 0,
 					ears_1 = 0,     ears_2 = 0,
 					glasses_1 = 0,     glasses_2 = 0
+				},
+				female = {
+					tshirt_1 = 51,  tshirt_2 = 0,
+					torso_1 = 48,   torso_2 = 0,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 31,
+					pants_1 = 34,   pants_2 = 0,
+					shoes_1 = 52,   shoes_2 = 0,
+					helmet_1 = 10,  helmet_2 = 2,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 0,     ears_2 = 0
+				}
+			}
+		}
+	},
+	ZARBAT = {
+		{
+			label = "گروه ضربت 1",
+			model = {
+				male = {
+					tshirt_1 = 15,  tshirt_2 = 0,
+					torso_1 = 49,   torso_2 = 4,
+					decals_1 = 5,   decals_2 = 0,
+					arms = 38,
+					pants_1 = 87,   pants_2 = 10,
+					shoes_1 = 25,   shoes_2 = 0,
+					mask_1  = 52,    mask_2  = 10,
+					bproof_1  = 7, bproof_2  = 0,
+					helmet_1 = 59,  helmet_2 = 0,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 0,     ears_2 = 0,
+					glasses_1 = 15,     glasses_2 = 0
+				},
+				female = {
+					tshirt_1 = 51,  tshirt_2 = 0,
+					torso_1 = 48,   torso_2 = 0,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 31,
+					pants_1 = 34,   pants_2 = 0,
+					shoes_1 = 52,   shoes_2 = 0,
+					helmet_1 = 10,  helmet_2 = 2,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 0,     ears_2 = 0
+				}
+			}
+		},
+		{
+			label = "گروه ضربت 2",
+			model = {
+				male = {
+					tshirt_1 = 15,  tshirt_2 = 0,
+					torso_1 = 139,   torso_2 = 3,
+					decals_1 = 0,   decals_2 = 0,
+					arms = 27,
+					pants_1 = 28,   pants_2 = 0,
+					shoes_1 = 10,   shoes_2 = 0,
+					mask_1  = 0,    mask_2  = 0,
+					bproof_1  = 7, bproof_2  = 0,
+					helmet_1 = 58,  helmet_2 = 2,
+					chain_1 = 0,    chain_2 = 0,
+					ears_1 = 0,     ears_2 = 0,
+					glasses_1 = 15,     glasses_2 = 6
 				},
 				female = {
 					tshirt_1 = 51,  tshirt_2 = 0,

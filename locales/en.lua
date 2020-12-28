@@ -146,7 +146,7 @@ Locales['en'] = {
   ['police_stock'] = 'لوازم پلیس',
   -- Misc
   ['remove_prop'] = 'Dokme ~INPUT_CONTEXT~ ra Baraye Bardsahtn Mavane Feshar dahid',
-  ['map_blip'] = 'اداره پلیس',
+  ['map_blip'] = 'Edare Police',
   ['unrestrained_timer'] = 'دست بند های شما باز شد',
   -- Notifications
   ['alert_police'] = 'police alert',
