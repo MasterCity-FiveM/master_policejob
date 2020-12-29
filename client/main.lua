@@ -146,7 +146,7 @@ function OpenCloakroomMenu()
 
 						TriggerServerEvent('esx_service:disableService', 'police')
 						TriggerEvent('esx_policejob:updateBlip')
-						ESX.ShowNotification(_U('service_out'))
+						exports.pNotify:SendNotification({text = _U('service_out'), type = "info", timeout = 3000})
 					end
 				end, 'police')
 			end
@@ -174,7 +174,7 @@ function OpenCloakroomMenu()
 
 							TriggerServerEvent('esx_service:notifyAllInService', notification, 'police')
 							TriggerEvent('esx_policejob:updateBlip')
-							ESX.ShowNotification(_U('service_in'))
+							exports.pNotify:SendNotification({text = _U('service_in'), type = "info", timeout = 3000})
 						end
 					end, 'police')
 
@@ -1469,7 +1469,13 @@ Citizen.CreateThread(function()
 				if CurrentAction == 'menu_cloakroom' then
 					OpenCloakroomMenu()
 				elseif CurrentAction == 'menu_jail' then
-					TriggerEvent("esx-qalle-jail:openJailMenu")
+					ESX.TriggerServerCallback('esx_service:isInService', function(isInService)
+						if isInService then
+							TriggerEvent("esx-qalle-jail:openJailMenu")
+						else
+							exports.pNotify:SendNotification({text = _U('service_not'), type = "info", timeout = 3000})
+						end
+					end, 'police')
 				elseif CurrentAction == 'menu_armory' then
 					if not Config.EnableESXService then
 						OpenArmoryMenu(CurrentActionData.station)

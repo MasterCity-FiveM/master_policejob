@@ -55,12 +55,12 @@ Locales['en'] = {
   ['confirm_yes'] = 'yes',
   -- Service
   ['service_max'] = 'you cannot enter service, max officers in service: %s/%s',
-  ['service_not'] = 'you have not entered service! You\'ll have to get changed first.',
-  ['service_anonunce'] = 'service information',
-  ['service_in'] = 'you\'ve entered service, welcome!',
-  ['service_in_announce'] = 'operator ~y~%s~s~ has entered service!',
-  ['service_out'] = 'you have left service.',
-  ['service_out_announce'] = 'operator ~y~%s~s~ has left their service.',
+  ['service_not'] = 'شما در حال انجام وظیفه نیستید، ابتدا فرم پلیس به تن کنید.',
+  ['service_anonunce'] = 'Etelaiye',
+  ['service_in'] = 'خوش آمدید، امیدواریم روز کاری خوبی داشته باشید.',
+  ['service_in_announce'] = 'Shahrvand ~y~%s~s~ be list afrade dar hale anjame vazife ezafe shod.',
+  ['service_out'] = 'از خدمات شما سپاسگذاریم، شما دیگر در حال انجام وظیفه نیستید.',
+  ['service_out_announce'] = 'Shahrvand ~y~%s~s~ az List afrade dar hale anjame vazife kharej shod.',
   -- Action Menu
   ['citizen_interaction'] = 'بخش شهروندی',
   ['vehicle_interaction'] = 'بخش خودرو',

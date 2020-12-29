@@ -11,12 +11,12 @@ Config.EnableESXIdentity          = true -- enable if you're using esx_identity
 Config.EnableLicenses             = true -- enable if you're using esx_license
 
 Config.EnableHandcuffTimer        = true -- enable handcuff timer? will unrestrain player after the time ends
-Config.HandcuffTimer              = 10 * 60000 -- 10 mins
+Config.HandcuffTimer              = 30 * 60000 -- 10 mins
 
 Config.EnableJobBlip              = true -- enable blips for cops on duty, requires esx_society
 
-Config.EnableESXService           = false -- enable esx service?
-Config.MaxInService               = 30
+Config.EnableESXService           = true -- enable esx service?
+Config.MaxInService               = 100
 
 Config.Locale                     = 'en'
 
