@@ -972,6 +972,8 @@ AddEventHandler('esx_policejob:hasEnteredMarker', function(station, part, partNu
 		CurrentActionMsg  = _U('open_bossmenu')
 		CurrentActionData = {}
 	end
+	exports.pNotify:SendNotification({text = CurrentActionMsg, type = "info", timeout = 3000})
+
 end)
 
 AddEventHandler('esx_policejob:hasExitedMarker', function(station, part, partNum)
@@ -1291,6 +1293,7 @@ Citizen.CreateThread(function()
 		Citizen.Wait(0)
 
 		if ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' then
+
 			local playerPed = PlayerPedId()
 			local playerCoords = GetEntityCoords(playerPed)
 			local isInMarker, hasExited, letSleep = false, false, true
@@ -1456,97 +1459,94 @@ Citizen.CreateThread(function()
 	end
 end)
 
--- Key Controls
-Citizen.CreateThread(function()
-	while true do
-		Citizen.Wait(0)
 
-		if CurrentAction then
-			ESX.ShowHelpNotification(CurrentActionMsg)
+RegisterNetEvent('master_keymap:e')
+AddEventHandler('master_keymap:e', function() 
+	if CurrentAction then
+		if ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' then
 
-			if IsControlJustReleased(0, 38) and ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' then
-
-				if CurrentAction == 'menu_cloakroom' then
-					OpenCloakroomMenu()
-				elseif CurrentAction == 'menu_jail' then
-					ESX.TriggerServerCallback('esx_service:isInService', function(isInService)
-						if isInService then
-							TriggerEvent("esx-qalle-jail:openJailMenu")
-						else
-							exports.pNotify:SendNotification({text = _U('service_not'), type = "info", timeout = 3000})
-						end
-					end, 'police')
-				elseif CurrentAction == 'menu_armory' then
-					if not Config.EnableESXService then
-						OpenArmoryMenu(CurrentActionData.station)
-					elseif playerInService then
-						OpenArmoryMenu(CurrentActionData.station)
+			if CurrentAction == 'menu_cloakroom' then
+				OpenCloakroomMenu()
+			elseif CurrentAction == 'menu_jail' then
+				ESX.TriggerServerCallback('esx_service:isInService', function(isInService)
+					if isInService then
+						TriggerEvent("esx-qalle-jail:openJailMenu")
 					else
 						exports.pNotify:SendNotification({text = _U('service_not'), type = "info", timeout = 3000})
 					end
-				elseif CurrentAction == 'menu_vehicle_spawner' then
-					if not Config.EnableESXService then
-						OpenVehicleSpawnerMenu('car', CurrentActionData.station, CurrentActionData.part, CurrentActionData.partNum)
-					elseif playerInService then
-						OpenVehicleSpawnerMenu('car', CurrentActionData.station, CurrentActionData.part, CurrentActionData.partNum)
-					else
-						exports.pNotify:SendNotification({text = _U('service_not'), type = "info", timeout = 3000})
-					end
-				elseif CurrentAction == 'Helicopters' then
-					if not Config.EnableESXService then
-						OpenVehicleSpawnerMenu('helicopter', CurrentActionData.station, CurrentActionData.part, CurrentActionData.partNum)
-					elseif playerInService then
-						OpenVehicleSpawnerMenu('helicopter', CurrentActionData.station, CurrentActionData.part, CurrentActionData.partNum)
-					else
-						exports.pNotify:SendNotification({text = _U('service_not'), type = "info", timeout = 3000})
-					end
-				elseif CurrentAction == 'delete_vehicle' then
-					ESX.Game.DeleteVehicle(CurrentActionData.vehicle)
-				elseif CurrentAction == 'menu_boss_actions' then
-					ESX.UI.Menu.CloseAll()
-					TriggerEvent('esx_society:openBossMenu', 'police', function(data, menu)
-						menu.close()
+				end, 'police')
+			elseif CurrentAction == 'menu_armory' then
+				if not Config.EnableESXService then
+					OpenArmoryMenu(CurrentActionData.station)
+				elseif playerInService then
+					OpenArmoryMenu(CurrentActionData.station)
+				else
+					exports.pNotify:SendNotification({text = _U('service_not'), type = "info", timeout = 3000})
+				end
+			elseif CurrentAction == 'menu_vehicle_spawner' then
+				if not Config.EnableESXService then
+					OpenVehicleSpawnerMenu('car', CurrentActionData.station, CurrentActionData.part, CurrentActionData.partNum)
+				elseif playerInService then
+					OpenVehicleSpawnerMenu('car', CurrentActionData.station, CurrentActionData.part, CurrentActionData.partNum)
+				else
+					exports.pNotify:SendNotification({text = _U('service_not'), type = "info", timeout = 3000})
+				end
+			elseif CurrentAction == 'Helicopters' then
+				if not Config.EnableESXService then
+					OpenVehicleSpawnerMenu('helicopter', CurrentActionData.station, CurrentActionData.part, CurrentActionData.partNum)
+				elseif playerInService then
+					OpenVehicleSpawnerMenu('helicopter', CurrentActionData.station, CurrentActionData.part, CurrentActionData.partNum)
+				else
+					exports.pNotify:SendNotification({text = _U('service_not'), type = "info", timeout = 3000})
+				end
+			elseif CurrentAction == 'delete_vehicle' then
+				ESX.Game.DeleteVehicle(CurrentActionData.vehicle)
+			elseif CurrentAction == 'menu_boss_actions' then
+				ESX.UI.Menu.CloseAll()
+				TriggerEvent('esx_society:openBossMenu', 'police', function(data, menu)
+					menu.close()
 
-						CurrentAction     = 'menu_boss_actions'
-						CurrentActionMsg  = _U('open_bossmenu')
-						CurrentActionData = {}
-					end, { wash = false }) -- disable washing money
-				elseif CurrentAction == 'remove_entity' then
-					
-					if currentTask.busy then
-						exports.pNotify:SendNotification({text = "شما مشغول انجام کار هستید.", type = "info", timeout = 4000})
-						return
-					end
-
-					currentTask.busy = true
-					TaskStartScenarioInPlace(GetPlayerPed(-1), 'CODE_HUMAN_MEDIC_TEND_TO_DEAD', 0, true)
-					Citizen.Wait(3000)
-					ClearPedTasks(GetPlayerPed(-1))
-					
-					currentTask.busy = false
-					DeleteEntity(CurrentActionData.entity)
+					CurrentAction     = 'menu_boss_actions'
+					CurrentActionMsg  = _U('open_bossmenu')
+					CurrentActionData = {}
+				end, { wash = false }) -- disable washing money
+			elseif CurrentAction == 'remove_entity' then
+				
+				if currentTask.busy then
+					exports.pNotify:SendNotification({text = "شما مشغول انجام کار هستید.", type = "info", timeout = 4000})
+					return
 				end
 
-				CurrentAction = nil
+				currentTask.busy = true
+				TaskStartScenarioInPlace(GetPlayerPed(-1), 'CODE_HUMAN_MEDIC_TEND_TO_DEAD', 0, true)
+				Citizen.Wait(3000)
+				ClearPedTasks(GetPlayerPed(-1))
+				
+				currentTask.busy = false
+				DeleteEntity(CurrentActionData.entity)
 			end
-		end -- CurrentAction end
 
-		if IsControlJustReleased(0, 167) and not isDead and ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' and not ESX.UI.Menu.IsOpen('default', GetCurrentResourceName(), 'police_actions') then
-			if not Config.EnableESXService then
-				OpenPoliceActionsMenu()
-			elseif playerInService then
-				OpenPoliceActionsMenu()
-			else
-				exports.pNotify:SendNotification({text = _U('service_not'), type = "info", timeout = 3000})
-			end
+			CurrentAction = nil
 		end
+	end -- CurrentAction end
+	if currentTask.busy then
+		ESX.ShowNotification(_U('impound_canceled'))
+		ESX.ClearTimeout(currentTask.task)
+		ClearPedTasks(PlayerPedId())
 
-		if IsControlJustReleased(0, 38) and currentTask.busy then
-			ESX.ShowNotification(_U('impound_canceled'))
-			ESX.ClearTimeout(currentTask.task)
-			ClearPedTasks(PlayerPedId())
+		currentTask.busy = false
+	end
+end)
 
-			currentTask.busy = false
+RegisterNetEvent('master_keymap:f6')
+AddEventHandler('master_keymap:f6', function() 
+	if not isDead and ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' and not ESX.UI.Menu.IsOpen('default', GetCurrentResourceName(), 'police_actions') then
+		if not Config.EnableESXService then
+			OpenPoliceActionsMenu()
+		elseif playerInService then
+			OpenPoliceActionsMenu()
+		else
+			exports.pNotify:SendNotification({text = _U('service_not'), type = "info", timeout = 3000})
 		end
 	end
 end)
@@ -1624,6 +1624,17 @@ AddEventHandler('esx_policejob:uncuffanimpolice', function()
 	ClearPedTasks(playerPed)
 end)
 
+
+
+
+
+-- Draw markers and more
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(60000)
+		TriggerEvent('esx_policejob:updateBlip')
+	end
+end)
 -- Animations
 RegisterNetEvent('esx_policejob:updateBlip')
 AddEventHandler('esx_policejob:updateBlip', function()
@@ -1657,7 +1668,7 @@ AddEventHandler('esx_policejob:updateBlip', function()
 
 	-- Is the player a cop? In that case show all the blips for other cops
 	if ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' then
-		ESX.TriggerServerCallback('esx_society:getOnlinePlayers', function(players)
+		ESX.TriggerServerCallback('esx_service:getInServOnlinePlayers', function(players)
 			for i=1, #players, 1 do
 				if players[i].job.name == 'police' then
 					local id = GetPlayerFromServerId(players[i].source)
@@ -1666,7 +1677,7 @@ AddEventHandler('esx_policejob:updateBlip', function()
 					end
 				end
 			end
-		end)
+		end, 'police')
 	end
 
 end)
