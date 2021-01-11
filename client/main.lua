@@ -1459,7 +1459,6 @@ Citizen.CreateThread(function()
 	end
 end)
 
-
 RegisterNetEvent('master_keymap:e')
 AddEventHandler('master_keymap:e', function() 
 	if CurrentAction then
