@@ -972,8 +972,10 @@ AddEventHandler('esx_policejob:hasEnteredMarker', function(station, part, partNu
 		CurrentActionMsg  = _U('open_bossmenu')
 		CurrentActionData = {}
 	end
-	exports.pNotify:SendNotification({text = CurrentActionMsg, type = "info", timeout = 3000})
-
+	
+	if CurrentActionMsg ~= nil then
+		exports.pNotify:SendNotification({text = CurrentActionMsg, type = "info", timeout = 4000})
+	end
 end)
 
 AddEventHandler('esx_policejob:hasExitedMarker', function(station, part, partNum)

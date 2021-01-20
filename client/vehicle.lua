@@ -111,7 +111,7 @@ function StoreNearbyVehicle(playerCoords)
 		if DoesEntityExist(entity) and NetworkHasControlOfEntity(entity) then
 			ESX.Game.DeleteVehicle(entity)
 			exports.pNotify:SendNotification({text = "خودرو به پارکینگ منتقل شد.", type = "success", timeout = 4000})
-			return;
+			return
 		end
 	end
 	exports.pNotify:SendNotification({text = "خودرو به پارکینگ منتقل نشد، اگر شهروندی در خودرو می باشد، می بایست پیاده شود.", type = "error", timeout = 6000})	
@@ -131,7 +131,7 @@ function GetAvailableVehicleSpawnPoint(station, part, partNum)
 	if found then
 		return true, foundSpawnPoint
 	else
-		ESX.ShowNotification(_U('vehicle_blocked'))
+		exports.pNotify:SendNotification({text = _U('vehicle_blocked'), type = "error", timeout = 6000})	
 		return false
 	end
 end
