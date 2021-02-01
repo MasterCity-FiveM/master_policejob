@@ -55,7 +55,7 @@ Locales['en'] = {
   ['confirm_yes'] = 'yes',
   -- Service
   ['service_max'] = 'you cannot enter service, max officers in service: %s/%s',
-  ['service_not'] = 'شما در حال انجام وظیفه نیستید، ابتدا فرم پلیس به تن کنید.',
+  ['service_not'] = 'شما در حال انجام وظیفه نیستید، لطفا ابتدا لباس کار به تن کنید.',
   ['service_anonunce'] = 'Etelaiye',
   ['service_in'] = 'خوش آمدید، امیدواریم روز کاری خوبی داشته باشید.',
   ['service_in_announce'] = 'Shahrvand ~y~%s~s~ be list afrade dar hale anjame vazife ezafe shod.',

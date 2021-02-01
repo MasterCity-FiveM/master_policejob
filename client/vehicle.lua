@@ -1,7 +1,7 @@
 
 local spawnedVehicles = {}
 
-function OpenVehicleSpawnerMenu(type, station, part, partNum)
+function OpenVehicleSpawnerMenu(type, station, part, partNum, StationData)
 	local playerCoords = GetEntityCoords(PlayerPedId())
 	PlayerData = ESX.GetPlayerData()
 
@@ -49,7 +49,7 @@ function OpenVehicleSpawnerMenu(type, station, part, partNum)
 							elements = garage
 						}, function(data2, menu2)
 							if data2.current.stored then
-								local foundSpawn, spawnPoint = GetAvailableVehicleSpawnPoint(station, part, partNum)
+								local foundSpawn, spawnPoint = GetAvailableVehicleSpawnPoint(station, part, partNum, StationData)
 
 								if foundSpawn then
 									menu2.close()
@@ -117,8 +117,8 @@ function StoreNearbyVehicle(playerCoords)
 	exports.pNotify:SendNotification({text = "خودرو به پارکینگ منتقل نشد، اگر شهروندی در خودرو می باشد، می بایست پیاده شود.", type = "error", timeout = 6000})	
 end
 
-function GetAvailableVehicleSpawnPoint(station, part, partNum)
-	local spawnPoints = Config.PoliceStations[station][part][partNum].SpawnPoints
+function GetAvailableVehicleSpawnPoint(station, part, partNum, StationData)
+	local spawnPoints = StationData[part][partNum].SpawnPoints
 	local found, foundSpawnPoint = false, nil
 
 	for i=1, #spawnPoints, 1 do

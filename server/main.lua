@@ -4,13 +4,23 @@ jobItems = {}
 
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
+
 if Config.MaxInService ~= -1 then
 	TriggerEvent('esx_service:activateService', 'police', Config.MaxInService)
+	TriggerEvent('esx_service:activateService', 'sheriff', Config.MaxInService)
+	TriggerEvent('esx_service:activateService', 'fbi', Config.MaxInService)
+	TriggerEvent('esx_service:activateService', 'dadsetani', Config.MaxInService)
 end
 
 TriggerEvent('esx_phone:registerNumber', 'police', _U('alert_police'), true, true)
-TriggerEvent('esx_society:registerSociety', 'police', 'Police', 'society_police', 'society_police', 'society_police', {type = 'public'})
+TriggerEvent('esx_phone:registerNumber', 'sheriff', 'Sheriff Alert', true, true)
+TriggerEvent('esx_phone:registerNumber', 'fbi', 'FBI Alert', true, true)
+TriggerEvent('esx_phone:registerNumber', 'dadsetani', 'Dadsetani Alert', true, true)
 
+TriggerEvent('esx_society:registerSociety', 'police', 'Police', 'society_police', 'society_police', 'society_police', {type = 'public'})
+TriggerEvent('esx_society:registerSociety', 'sheriff', 'Sheriff', 'society_sheriff', 'society_sheriff', 'society_sheriff', {type = 'public'})
+TriggerEvent('esx_society:registerSociety', 'fbi', 'FBI', 'fbi_society', 'fbi_society', 'fbi_society', {type = 'public'})
+TriggerEvent('esx_society:registerSociety', 'dadsetani', 'Dadsetani', 'society_dadsetani', 'society_dadsetani', 'society_dadsetani', {type = 'public'})
 
 RegisterServerEvent('esx_policejob:confiscatePlayerItem')
 AddEventHandler('esx_policejob:confiscatePlayerItem', function(target, itemType, itemName, amount)
@@ -18,8 +28,7 @@ AddEventHandler('esx_policejob:confiscatePlayerItem', function(target, itemType,
 	local sourceXPlayer = ESX.GetPlayerFromId(_source)
 	local targetXPlayer = ESX.GetPlayerFromId(target)
 
-	if sourceXPlayer.job.name ~= 'police' then
-		print(('esx_policejob: %s attempted to confiscate!'):format(xPlayer.identifier))
+	if sourceXPlayer.job.name ~= 'police' and sourceXPlayer.job.name ~= 'sheriff' and sourceXPlayer.job.name ~= 'fbi' and not (sourceXPlayer.job.name == 'dadsetani' and sourceXPlayer.job.grade_name == 'bodyguard') then
 		return
 	end
 	
@@ -81,7 +90,7 @@ AddEventHandler('esx_policejob:handcuff', function(target, foot)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	local tPlayer = ESX.GetPlayerFromId(target)
 	
-	if xPlayer and xPlayer ~= nil and tPlayer and tPlayer ~= nil and xPlayer.job.name == 'police' then
+	if xPlayer and xPlayer ~= nil and tPlayer and tPlayer ~= nil and (xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') then
 		local SourceName = GetPlayerName(source)
 		local TargetName = GetPlayerName(target)
 		
@@ -150,7 +159,7 @@ AddEventHandler('esx_policejob:drag', function(target)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	local tPlayer = ESX.GetPlayerFromId(target)
 
-	if xPlayer and xPlayer ~= nil and tPlayer and tPlayer ~= nil and xPlayer.job.name == 'police' then
+	if xPlayer and xPlayer ~= nil and tPlayer and tPlayer ~= nil and (xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') then
 		local SourceName = GetPlayerName(source)
 		local TargetName = GetPlayerName(target)
 		
@@ -233,7 +242,7 @@ RegisterServerEvent('esx_policejob:putInVehicle')
 AddEventHandler('esx_policejob:putInVehicle', function(target)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	local tPlayer = ESX.GetPlayerFromId(target)
-	if xPlayer and xPlayer ~= nil and tPlayer and tPlayer ~= nil and xPlayer.job.name == 'police' and tPlayer.get('HandCuff') then
+	if xPlayer and xPlayer ~= nil and tPlayer and tPlayer ~= nil and (xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') and tPlayer.get('HandCuff') then
 		xPlayer.set('EscortPlayer', nil)
 		tPlayer.set('EscortBy', nil)
 		TriggerClientEvent('esx_policejob:dragCopOff', source)
@@ -246,7 +255,7 @@ RegisterServerEvent('esx_policejob:OutVehicle')
 AddEventHandler('esx_policejob:OutVehicle', function(target)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	local tPlayer = ESX.GetPlayerFromId(target)
-	if xPlayer and xPlayer ~= nil and tPlayer and tPlayer ~= nil and xPlayer.job.name == 'police' then	
+	if xPlayer and xPlayer ~= nil and tPlayer and tPlayer ~= nil and (xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') then	
 		TriggerClientEvent('esx_policejob:OutVehicle', target)
 	end
 end)
@@ -264,7 +273,7 @@ AddEventHandler('esx_policejob:putStockItems', function(itemName, count)
 		return
 	end
 	
-	if xPlayer.job.name ~= 'police' or jobItems[xPlayer.job.name] == nil or jobItems[xPlayer.job.name][xPlayer.job.grade_name] == nil or jobItems[xPlayer.job.name][xPlayer.job.grade_name]['item'] == nil then
+	if jobItems[xPlayer.job.name] == nil or jobItems[xPlayer.job.name][xPlayer.job.grade_name] == nil or jobItems[xPlayer.job.name][xPlayer.job.grade_name]['item'] == nil then
 		GetJobItems(xPlayer.job.name, xPlayer.job.grade_name, 'item')
 		return
 	end
@@ -298,7 +307,7 @@ end)
 ESX.RegisterServerCallback('esx_policejob:getOtherPlayerData', function(source, cb, target)
 	local sPlayer = ESX.GetPlayerFromId(source)
 	
-	if sPlayer == nil or sPlayer.job == nil or sPlayer.job.name ~= 'police' then
+	if sPlayer == nil or sPlayer.job == nil or not (sPlayer.job.name == 'police' or sPlayer.job.name == 'sheriff' or sPlayer.job.name == 'fbi' or sPlayer.job.name == 'dadsetani') then
 		cb({})
 		return
 	end
@@ -388,7 +397,7 @@ end)
 
 ESX.RegisterServerCallback('esx_policejob:getVehicleInfos', function(source, cb, plate)
 	local xPlayer = ESX.GetPlayerFromId(source)
-	if xPlayer == nil or xPlayer.job == nil or xPlayer.job.name ~= 'police' then
+	if xPlayer == nil or xPlayer.job == nil or not (xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') then
 		return
 	end
 	
@@ -444,7 +453,7 @@ ESX.RegisterServerCallback('esx_policejob:getItems', function(source, cb, item_t
 		return
 	end	
 	
-	if xPlayer.job.name ~= 'police' then
+	if not (xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') then
 		cb(items)
 		return
 	end
@@ -464,14 +473,26 @@ ESX.RegisterServerCallback('esx_policejob:getItems', function(source, cb, item_t
 		return
 	end
 	
-	MySQL.Async.fetchAll('SELECT * FROM job_items WHERE job = @job AND grade = @grade AND item_type = @item_type', {
-		['@job'] = xPlayer.job.name,
-		['@grade'] = xPlayer.job.grade_name,
-		['@item_type'] = item_type
-	}, function(result)
-		jobItems[xPlayer.job.name][xPlayer.job.grade_name][item_type] = result
-		cb(result)
-	end)
+	if xPlayer.job_sub ~= nil then
+		MySQL.Async.fetchAll('SELECT * FROM job_items WHERE job = @job AND (grade = @grade or grade = @subjob) AND item_type = @item_type', {
+			['@job'] = xPlayer.job.name,
+			['@grade'] = xPlayer.job.grade_name,
+			['@item_type'] = item_type,
+			['@subjob'] = xPlayer.job_sub
+		}, function(result)
+			jobItems[xPlayer.job.name][xPlayer.job.grade_name .. '_' .. xPlayer.job_sub][item_type] = result
+			cb(result)
+		end)
+	else
+		MySQL.Async.fetchAll('SELECT * FROM job_items WHERE job = @job AND grade = @grade AND item_type = @item_type', {
+			['@job'] = xPlayer.job.name,
+			['@grade'] = xPlayer.job.grade_name,
+			['@item_type'] = item_type
+		}, function(result)
+			jobItems[xPlayer.job.name][xPlayer.job.grade_name][item_type] = result
+			cb(result)
+		end)
+	end
 end)
 
 function GetJobItems(job, grade, item_type)
@@ -516,7 +537,7 @@ ESX.RegisterServerCallback('esx_policejob:GiveWeapon', function(source, cb, weap
 		return
 	end
 	
-	if xPlayer.job.name ~= 'police' or jobItems[xPlayer.job.name] == nil or jobItems[xPlayer.job.name][xPlayer.job.grade_name] == nil or jobItems[xPlayer.job.name][xPlayer.job.grade_name]['weapon'] == nil then
+	if not (xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') or jobItems[xPlayer.job.name] == nil or jobItems[xPlayer.job.name][xPlayer.job.grade_name] == nil or jobItems[xPlayer.job.name][xPlayer.job.grade_name]['weapon'] == nil then
 		GetJobItems(xPlayer.job.name, xPlayer.job.grade_name, 'weapon')
 		cb()
 		return
@@ -559,7 +580,7 @@ ESX.RegisterServerCallback('esx_policejob:GetWeapon', function(source, cb, weapo
 		return
 	end
 	
-	if xPlayer.job.name ~= 'police' or jobItems[xPlayer.job.name] == nil or jobItems[xPlayer.job.name][xPlayer.job.grade_name] == nil or jobItems[xPlayer.job.name][xPlayer.job.grade_name]['weapon'] == nil then
+	if jobItems[xPlayer.job.name] == nil or jobItems[xPlayer.job.name][xPlayer.job.grade_name] == nil or jobItems[xPlayer.job.name][xPlayer.job.grade_name]['weapon'] == nil then
 		GetJobItems(xPlayer.job.name, xPlayer.job.grade_name, 'weapon')
 		cb()
 		return
@@ -603,7 +624,7 @@ ESX.RegisterServerCallback('esx_policejob:GetItem', function(source, cb, itemNam
 		return
 	end
 	
-	if xPlayer.job.name ~= 'police' or jobItems[xPlayer.job.name] == nil or jobItems[xPlayer.job.name][xPlayer.job.grade_name] == nil or jobItems[xPlayer.job.name][xPlayer.job.grade_name]['item'] == nil then
+	if jobItems[xPlayer.job.name] == nil or jobItems[xPlayer.job.name][xPlayer.job.grade_name] == nil or jobItems[xPlayer.job.name][xPlayer.job.grade_name]['item'] == nil then
 		GetJobItems(xPlayer.job.name, xPlayer.job.grade_name, 'item')
 		cb()
 		return
@@ -654,7 +675,7 @@ AddEventHandler('playerDropped', function()
 		local xPlayer = ESX.GetPlayerFromId(_source)
 
 		-- Is it worth telling all clients to refresh?
-		if xPlayer ~= nil and xPlayer.job ~= nil and xPlayer.job.name == 'police' then
+		if xPlayer ~= nil and xPlayer.job ~= nil and (xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') then
 			Citizen.Wait(5000)
 			TriggerClientEvent('esx_policejob:updateBlip', -1)
 		end
@@ -666,7 +687,7 @@ AddEventHandler('esx_policejob:spawned', function()
 	local _source = source
 	local xPlayer = ESX.GetPlayerFromId(_source)
 
-	if xPlayer ~= nil and xPlayer.job ~= nil and xPlayer.job.name == 'police' then
+	if xPlayer ~= nil and xPlayer.job ~= nil and (xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') then
 		Citizen.Wait(5000)
 		TriggerClientEvent('esx_policejob:updateBlip', -1)
 	end
@@ -687,6 +708,9 @@ end)
 AddEventHandler('onResourceStop', function(resource)
 	if resource == GetCurrentResourceName() then
 		TriggerEvent('esx_phone:removeNumber', 'police')
+		TriggerEvent('esx_phone:removeNumber', 'fbi')
+		TriggerEvent('esx_phone:removeNumber', 'sheriff')
+		TriggerEvent('esx_phone:removeNumber', 'dadsetani')
 	end
 end)
 

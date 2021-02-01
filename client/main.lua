@@ -31,9 +31,9 @@ function setUniform(uniform, playerPed)
 		local uniform = uniform
 		
 		if skin.sex == 0 then
-			uniformObject = Config.Uniforms[uniform].male
+			uniformObject = Config.Uniforms[ESX.PlayerData.job.name][uniform].male
 		else
-			uniformObject = Config.Uniforms[uniform].female
+			uniformObject = Config.Uniforms[ESX.PlayerData.job.name][uniform].female
 		end
 
 		if uniformObject then
@@ -84,14 +84,14 @@ function OpenCloakroomMenu()
 		{label = "برداشتن " .. _U('bullet_wear'), uniform = 'unbullet_wear'}
 	}
 
-	if Config.CustomUniforms[grade] ~= nil then
-		for k,v in ipairs(Config.CustomUniforms[grade]) do
+	if Config.CustomUniforms[ESX.PlayerData.job.name][grade] ~= nil then
+		for k,v in ipairs(Config.CustomUniforms[ESX.PlayerData.job.name][grade]) do
 			table.insert(elements, {label = v.label, value = 'custom_players', model = v.model})
 		end
 	end
 	
-	if ESX.PlayerData.job.job_sub ~= nil and Config.SubJobUniforms[ESX.PlayerData.job.job_sub] ~= nil then
-		for k,v in ipairs(Config.SubJobUniforms[ESX.PlayerData.job.job_sub]) do
+	if ESX.PlayerData.job.job_sub ~= nil and Config.SubJobUniforms[ESX.PlayerData.job.name][ESX.PlayerData.job.job_sub] ~= nil then
+		for k,v in ipairs(Config.SubJobUniforms[ESX.PlayerData.job.name][ESX.PlayerData.job.job_sub]) do
 			table.insert(elements, {label = v.label, value = 'custom_players', model = v.model})
 		end
 	end
@@ -142,13 +142,13 @@ function OpenCloakroomMenu()
 							iconType = 1
 						}
 
-						TriggerServerEvent('esx_service:notifyAllInService', notification, 'police')
+						TriggerServerEvent('esx_service:notifyAllInService', notification, ESX.PlayerData.job.name)
 
-						TriggerServerEvent('esx_service:disableService', 'police')
+						TriggerServerEvent('esx_service:disableService', ESX.PlayerData.job.name)
 						TriggerEvent('esx_policejob:updateBlip')
 						exports.pNotify:SendNotification({text = _U('service_out'), type = "info", timeout = 3000})
 					end
-				end, 'police')
+				end, ESX.PlayerData.job.name)
 			end
 		end
 
@@ -172,16 +172,16 @@ function OpenCloakroomMenu()
 								iconType = 1
 							}
 
-							TriggerServerEvent('esx_service:notifyAllInService', notification, 'police')
+							TriggerServerEvent('esx_service:notifyAllInService', notification, ESX.PlayerData.job.name)
 							TriggerEvent('esx_policejob:updateBlip')
 							exports.pNotify:SendNotification({text = _U('service_in'), type = "info", timeout = 3000})
 						end
-					end, 'police')
+					end, ESX.PlayerData.job.name)
 
 				else
 					awaitService = true
 				end
-			end, 'police')
+			end, ESX.PlayerData.job.name)
 
 			while awaitService == nil do
 				Citizen.Wait(5)
@@ -251,7 +251,7 @@ function OpenPoliceActionsMenu()
 	ESX.UI.Menu.CloseAll()
 
 	ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'police_actions', {
-		title    = 'Police',
+		title    = ESX.PlayerData.job.label_fa,
 		align    = 'right',
 		elements = {
 			{label = _U('citizen_interaction'), value = 'citizen_interaction'},
@@ -937,16 +937,16 @@ AddEventHandler('esx_phone:loaded', function(phoneNumber, contacts)
 end)
 
 -- don't show dispatches if the player isn't in service
-AddEventHandler('esx_phone:cancelMessage', function(dispatchNumber)
+--[[AddEventHandler('esx_phone:cancelMessage', function(dispatchNumber)
 	if ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' and ESX.PlayerData.job.name == dispatchNumber then
 		-- if esx_service is enabled
 		if Config.EnableESXService and not playerInService then
 			CancelEvent()
 		end
 	end
-end)
+end)]]--
 
-AddEventHandler('esx_policejob:hasEnteredMarker', function(station, part, partNum)
+AddEventHandler('esx_policejob:hasEnteredMarker', function(station, part, partNum, jobData)
 	if part == 'Cloakroom' then
 		CurrentAction     = 'menu_cloakroom'
 		CurrentActionMsg  = _U('open_cloackroom')
@@ -962,15 +962,19 @@ AddEventHandler('esx_policejob:hasEnteredMarker', function(station, part, partNu
 	elseif part == 'Vehicles' then
 		CurrentAction     = 'menu_vehicle_spawner'
 		CurrentActionMsg  = _U('garage_prompt')
-		CurrentActionData = {station = station, part = part, partNum = partNum}
+		CurrentActionData = {station = station, part = part, partNum = partNum, data = jobData}
 	elseif part == 'Helicopters' then
 		CurrentAction     = 'Helicopters'
 		CurrentActionMsg  = _U('helicopter_prompt')
-		CurrentActionData = {station = station, part = part, partNum = partNum}
+		CurrentActionData = {station = station, part = part, partNum = partNum, data = jobData}
 	elseif part == 'BossActions' then
 		CurrentAction     = 'menu_boss_actions'
 		CurrentActionMsg  = _U('open_bossmenu')
 		CurrentActionData = {}
+	elseif part == 'FastTravelsPrompt' then
+		CurrentAction     = 'FastTravelsPrompt'
+		CurrentActionMsg  = 'جهت استفاده از آسانسور E بزنید.'
+		CurrentActionData = {to = jobData.FastTravelsPrompt[partNum].To.coords, heading = jobData.FastTravelsPrompt[partNum].To.heading}
 	end
 	
 	if CurrentActionMsg ~= nil then
@@ -978,11 +982,34 @@ AddEventHandler('esx_policejob:hasEnteredMarker', function(station, part, partNu
 	end
 end)
 
+
+function FastTravel(coords, heading)
+	TeleportFadeEffect(PlayerPedId(), coords, heading)
+end
+
+function TeleportFadeEffect(entity, coords, heading)
+	Citizen.CreateThread(function()
+		DoScreenFadeOut(800)
+
+		while not IsScreenFadedOut() do
+			Citizen.Wait(0)
+		end
+
+		ESX.Game.Teleport(entity, coords, function()
+			DoScreenFadeIn(800)
+
+			if heading then
+				SetEntityHeading(entity, heading)
+			end
+		end)
+	end)
+end
+
 AddEventHandler('esx_policejob:hasExitedMarker', function(station, part, partNum)
 	if not isInShopMenu then
 		ESX.UI.Menu.CloseAll()
 	end
-
+	
 	CurrentAction = nil
 end)
 
@@ -1284,120 +1311,203 @@ Citizen.CreateThread(function()
 		SetBlipAsShortRange(blip, true)
 
 		BeginTextCommandSetBlipName('STRING')
-		AddTextComponentSubstringPlayerName(_U('map_blip'))
+		AddTextComponentSubstringPlayerName(v.Blip.name)
+		EndTextCommandSetBlipName(blip)
+	end
+	
+	for k,v in pairs(Config.SheriffStation) do
+		local blip = AddBlipForCoord(v.Blip.Coords)
+
+		SetBlipSprite (blip, v.Blip.Sprite)
+		SetBlipDisplay(blip, v.Blip.Display)
+		SetBlipScale(blip, 1.2)
+		SetBlipColour (blip, v.Blip.Colour)
+		SetBlipAsShortRange(blip, true)
+
+		BeginTextCommandSetBlipName('STRING')
+		AddTextComponentSubstringPlayerName(v.Blip.name)
+		EndTextCommandSetBlipName(blip)
+	end
+	
+	for k,v in pairs(Config.FBIStation) do
+		local blip = AddBlipForCoord(v.Blip.Coords)
+
+		SetBlipSprite (blip, v.Blip.Sprite)
+		SetBlipDisplay(blip, v.Blip.Display)
+		SetBlipScale(blip, 1.2)
+		SetBlipColour (blip, v.Blip.Colour)
+		SetBlipAsShortRange(blip, true)
+
+		BeginTextCommandSetBlipName('STRING')
+		AddTextComponentSubstringPlayerName(v.Blip.name)
+		EndTextCommandSetBlipName(blip)
+	end
+	
+	for k,v in pairs(Config.JusticeStation) do
+		local blip = AddBlipForCoord(v.Blip.Coords)
+
+		SetBlipSprite (blip, v.Blip.Sprite)
+		SetBlipDisplay(blip, v.Blip.Display)
+		SetBlipScale(blip, 1.2)
+		SetBlipColour (blip, v.Blip.Colour)
+		SetBlipAsShortRange(blip, true)
+
+		BeginTextCommandSetBlipName('STRING')
+		AddTextComponentSubstringPlayerName(v.Blip.name)
 		EndTextCommandSetBlipName(blip)
 	end
 end)
+
+local isInMarker, hasExited, letSleep = false, false, true
+local currentStation, currentPart, currentPartNum
+	
+function CreateJobBlips(v, k)
+	local playerPed = PlayerPedId()
+	local playerCoords = GetEntityCoords(playerPed)
+	
+	for i=1, #v.Cloakrooms, 1 do
+		local distance = #(playerCoords - v.Cloakrooms[i])
+
+		if distance < Config.DrawDistance then
+			DrawMarker(20, v.Cloakrooms[i], 0.0, 0.0, 0.0, 0, 0.0, 0.0, 1.0, 1.0, 1.0, Config.MarkerColor.r, Config.MarkerColor.g, Config.MarkerColor.b, 100, false, true, 2, true, false, false, false)
+			letSleep = false
+
+			if distance < Config.MarkerSize.x then
+				isInMarker, currentStation, currentPart, currentPartNum = true, k, 'Cloakroom', i
+			end
+		end
+	end
+
+	for i=1, #v.Armories, 1 do
+		local distance = #(playerCoords - v.Armories[i])
+
+		if distance < Config.DrawDistance then
+			DrawMarker(21, v.Armories[i], 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.5, 0.5, Config.MarkerColor.r, Config.MarkerColor.g, Config.MarkerColor.b, 100, false, true, 2, true, false, false, false)
+			letSleep = false
+
+			if distance < Config.MarkerSize.x then
+				isInMarker, currentStation, currentPart, currentPartNum = true, k, 'Armory', i
+			end
+		end
+	end
+
+	for i=1, #v.Jail, 1 do
+		local distance = #(playerCoords - v.Jail[i])
+
+		if distance < Config.DrawDistance then
+			DrawMarker(21, v.Jail[i], 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.5, 0.5, Config.MarkerColor.r, Config.MarkerColor.g, Config.MarkerColor.b, 100, false, true, 2, true, false, false, false)
+			letSleep = false
+
+			if distance < Config.MarkerSize.x then
+				isInMarker, currentStation, currentPart, currentPartNum = true, k, 'Jail', i
+			end
+		end
+	end
+
+	for i=1, #v.Vehicles, 1 do
+		local distance = #(playerCoords - v.Vehicles[i].Spawner)
+
+		if distance < Config.DrawDistance then
+			DrawMarker(36, v.Vehicles[i].Spawner, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, Config.MarkerColor.r, Config.MarkerColor.g, Config.MarkerColor.b, 100, false, true, 2, true, false, false, false)
+			letSleep = false
+
+			if distance < Config.MarkerSize.x then
+				isInMarker, currentStation, currentPart, currentPartNum = true, k, 'Vehicles', i
+			end
+		end
+	end
+
+	if v.Helicopters ~= nil then
+		for i=1, #v.Helicopters, 1 do
+			local distance =  #(playerCoords - v.Helicopters[i].Spawner)
+
+			if distance < Config.DrawDistance then
+				DrawMarker(34, v.Helicopters[i].Spawner, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, Config.MarkerColor.r, Config.MarkerColor.g, Config.MarkerColor.b, 100, false, true, 2, true, false, false, false)
+				letSleep = false
+
+				if distance < Config.MarkerSize.x then
+					isInMarker, currentStation, currentPart, currentPartNum = true, k, 'Helicopters', i
+				end
+			end
+		end
+	end
+
+	if v.FastTravelsPrompt ~= nil then
+		for i=1, #v.FastTravelsPrompt, 1 do
+			local distance =  #(playerCoords - v.FastTravelsPrompt[i].From)
+
+			if distance < Config.DrawDistance then
+				DrawMarker(21, v.FastTravelsPrompt[i].From, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, Config.MarkerColor.r, Config.MarkerColor.g, Config.MarkerColor.b, 100, false, true, 2, true, false, false, false)
+				letSleep = false
+
+				if distance < Config.MarkerSize.x then
+					isInMarker, currentStation, currentPart, currentPartNum = true, k, 'FastTravelsPrompt', i
+				end
+			end
+		end
+	end
+	
+	--[[if Config.EnablePlayerManagement and ESX.PlayerData.job.grade_name == 'boss' then
+		for i=1, #v.BossActions, 1 do
+			local distance = #(playerCoords - v.BossActions[i])
+
+			if distance < Config.DrawDistance then
+				DrawMarker(22, v.BossActions[i], 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, Config.MarkerColor.r, Config.MarkerColor.g, Config.MarkerColor.b, 100, false, true, 2, true, false, false, false)
+				letSleep = false
+
+				if distance < Config.MarkerSize.x then
+					isInMarker, currentStation, currentPart, currentPartNum = true, k, 'BossActions', i
+				end
+			end
+		end
+	end]]--
+				
+end
 
 -- Draw markers and more
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(0)
 
-		if ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' then
-
-			local playerPed = PlayerPedId()
-			local playerCoords = GetEntityCoords(playerPed)
-			local isInMarker, hasExited, letSleep = false, false, true
-			local currentStation, currentPart, currentPartNum
-
-			for k,v in pairs(Config.PoliceStations) do
-				for i=1, #v.Cloakrooms, 1 do
-					local distance = #(playerCoords - v.Cloakrooms[i])
-
-					if distance < Config.DrawDistance then
-						DrawMarker(20, v.Cloakrooms[i], 0.0, 0.0, 0.0, 0, 0.0, 0.0, 1.0, 1.0, 1.0, Config.MarkerColor.r, Config.MarkerColor.g, Config.MarkerColor.b, 100, false, true, 2, true, false, false, false)
-						letSleep = false
-
-						if distance < Config.MarkerSize.x then
-							isInMarker, currentStation, currentPart, currentPartNum = true, k, 'Cloakroom', i
-						end
-					end
+		if ESX.PlayerData.job and (ESX.PlayerData.job.name == 'police' or ESX.PlayerData.job.name == 'sheriff' or ESX.PlayerData.job.name == 'fbi' or ESX.PlayerData.job.name == 'dadsetani') then
+			
+			isInMarker, hasExited, letSleep = false, false, true
+			currentStation, currentPart, currentPartNum = nil, nil, nil
+			jobData = nil
+			if ESX.PlayerData.job.name == 'police' then
+				for k,v in pairs(Config.PoliceStations) do
+					jobData = v
+					CreateJobBlips(v, k)
 				end
-
-				for i=1, #v.Armories, 1 do
-					local distance = #(playerCoords - v.Armories[i])
-
-					if distance < Config.DrawDistance then
-						DrawMarker(21, v.Armories[i], 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.5, 0.5, Config.MarkerColor.r, Config.MarkerColor.g, Config.MarkerColor.b, 100, false, true, 2, true, false, false, false)
-						letSleep = false
-
-						if distance < Config.MarkerSize.x then
-							isInMarker, currentStation, currentPart, currentPartNum = true, k, 'Armory', i
-						end
-					end
+			elseif ESX.PlayerData.job.name == 'sheriff' then
+				for k,v in pairs(Config.SheriffStation) do
+					jobData = v
+					CreateJobBlips(v, k)
 				end
-
-				for i=1, #v.Jail, 1 do
-					local distance = #(playerCoords - v.Jail[i])
-
-					if distance < Config.DrawDistance then
-						DrawMarker(21, v.Jail[i], 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.5, 0.5, Config.MarkerColor.r, Config.MarkerColor.g, Config.MarkerColor.b, 100, false, true, 2, true, false, false, false)
-						letSleep = false
-
-						if distance < Config.MarkerSize.x then
-							isInMarker, currentStation, currentPart, currentPartNum = true, k, 'Jail', i
-						end
-					end
+			elseif ESX.PlayerData.job.name == 'fbi' then
+				for k,v in pairs(Config.FBIStation) do
+					jobData = v
+					CreateJobBlips(v, k)
 				end
-
-				for i=1, #v.Vehicles, 1 do
-					local distance = #(playerCoords - v.Vehicles[i].Spawner)
-
-					if distance < Config.DrawDistance then
-						DrawMarker(36, v.Vehicles[i].Spawner, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, Config.MarkerColor.r, Config.MarkerColor.g, Config.MarkerColor.b, 100, false, true, 2, true, false, false, false)
-						letSleep = false
-
-						if distance < Config.MarkerSize.x then
-							isInMarker, currentStation, currentPart, currentPartNum = true, k, 'Vehicles', i
-						end
-					end
-				end
-
-				for i=1, #v.Helicopters, 1 do
-					local distance =  #(playerCoords - v.Helicopters[i].Spawner)
-
-					if distance < Config.DrawDistance then
-						DrawMarker(34, v.Helicopters[i].Spawner, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, Config.MarkerColor.r, Config.MarkerColor.g, Config.MarkerColor.b, 100, false, true, 2, true, false, false, false)
-						letSleep = false
-
-						if distance < Config.MarkerSize.x then
-							isInMarker, currentStation, currentPart, currentPartNum = true, k, 'Helicopters', i
-						end
-					end
-				end
-
-				if Config.EnablePlayerManagement and ESX.PlayerData.job.grade_name == 'boss' then
-					for i=1, #v.BossActions, 1 do
-						local distance = #(playerCoords - v.BossActions[i])
-
-						if distance < Config.DrawDistance then
-							DrawMarker(22, v.BossActions[i], 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, Config.MarkerColor.r, Config.MarkerColor.g, Config.MarkerColor.b, 100, false, true, 2, true, false, false, false)
-							letSleep = false
-
-							if distance < Config.MarkerSize.x then
-								isInMarker, currentStation, currentPart, currentPartNum = true, k, 'BossActions', i
-							end
-						end
-					end
+			elseif ESX.PlayerData.job.name == 'dadsetani' then
+				for k,v in pairs(Config.JusticeStation) do
+					jobData = v
+					CreateJobBlips(v, k)
 				end
 			end
 
 			if isInMarker and not HasAlreadyEnteredMarker or (isInMarker and (LastStation ~= currentStation or LastPart ~= currentPart or LastPartNum ~= currentPartNum)) then
-				if
-					(LastStation and LastPart and LastPartNum) and
-					(LastStation ~= currentStation or LastPart ~= currentPart or LastPartNum ~= currentPartNum)
-				then
+				if (LastStation and LastPart and LastPartNum) and (LastStation ~= currentStation or LastPart ~= currentPart or LastPartNum ~= currentPartNum) then
 					TriggerEvent('esx_policejob:hasExitedMarker', LastStation, LastPart, LastPartNum)
 					hasExited = true
 				end
-
+				
 				HasAlreadyEnteredMarker = true
 				LastStation             = currentStation
 				LastPart                = currentPart
 				LastPartNum             = currentPartNum
 
-				TriggerEvent('esx_policejob:hasEnteredMarker', currentStation, currentPart, currentPartNum)
+				TriggerEvent('esx_policejob:hasEnteredMarker', currentStation, currentPart, currentPartNum, jobData)
 			end
 
 			if not hasExited and not isInMarker and HasAlreadyEnteredMarker then
@@ -1406,10 +1516,10 @@ Citizen.CreateThread(function()
 			end
 
 			if letSleep then
-				Citizen.Wait(500)
+				Citizen.Wait(2000)
 			end
 		else
-			Citizen.Wait(500)
+			Citizen.Wait(10000)
 		end
 	end
 end)
@@ -1464,8 +1574,7 @@ end)
 RegisterNetEvent('master_keymap:e')
 AddEventHandler('master_keymap:e', function() 
 	if CurrentAction then
-		if ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' then
-
+		if ESX.PlayerData.job and (ESX.PlayerData.job.name == 'police' or ESX.PlayerData.job.name == 'sheriff' or ESX.PlayerData.job.name == 'fbi' or ESX.PlayerData.job.name == 'dadsetani') then
 			if CurrentAction == 'menu_cloakroom' then
 				OpenCloakroomMenu()
 			elseif CurrentAction == 'menu_jail' then
@@ -1475,7 +1584,7 @@ AddEventHandler('master_keymap:e', function()
 					else
 						exports.pNotify:SendNotification({text = _U('service_not'), type = "info", timeout = 3000})
 					end
-				end, 'police')
+				end, ESX.PlayerData.job.name)
 			elseif CurrentAction == 'menu_armory' then
 				if not Config.EnableESXService then
 					OpenArmoryMenu(CurrentActionData.station)
@@ -1486,20 +1595,24 @@ AddEventHandler('master_keymap:e', function()
 				end
 			elseif CurrentAction == 'menu_vehicle_spawner' then
 				if not Config.EnableESXService then
-					OpenVehicleSpawnerMenu('car', CurrentActionData.station, CurrentActionData.part, CurrentActionData.partNum)
+					OpenVehicleSpawnerMenu('car', CurrentActionData.station, CurrentActionData.part, CurrentActionData.partNum, CurrentActionData.data)
 				elseif playerInService then
-					OpenVehicleSpawnerMenu('car', CurrentActionData.station, CurrentActionData.part, CurrentActionData.partNum)
+					OpenVehicleSpawnerMenu('car', CurrentActionData.station, CurrentActionData.part, CurrentActionData.partNum, CurrentActionData.data)
 				else
 					exports.pNotify:SendNotification({text = _U('service_not'), type = "info", timeout = 3000})
 				end
 			elseif CurrentAction == 'Helicopters' then
 				if not Config.EnableESXService then
-					OpenVehicleSpawnerMenu('helicopter', CurrentActionData.station, CurrentActionData.part, CurrentActionData.partNum)
+					OpenVehicleSpawnerMenu('helicopter', CurrentActionData.station, CurrentActionData.part, CurrentActionData.partNum, CurrentActionData.data)
 				elseif playerInService then
-					OpenVehicleSpawnerMenu('helicopter', CurrentActionData.station, CurrentActionData.part, CurrentActionData.partNum)
+					OpenVehicleSpawnerMenu('helicopter', CurrentActionData.station, CurrentActionData.part, CurrentActionData.partNum, CurrentActionData.data)
 				else
 					exports.pNotify:SendNotification({text = _U('service_not'), type = "info", timeout = 3000})
 				end
+			elseif CurrentAction == 'FastTravelsPrompt' then
+			
+				FastTravel(CurrentActionData.to, CurrentActionData.heading)
+				--CurrentActionData.Data.to
 			elseif CurrentAction == 'delete_vehicle' then
 				ESX.Game.DeleteVehicle(CurrentActionData.vehicle)
 			elseif CurrentAction == 'menu_boss_actions' then
@@ -1541,7 +1654,7 @@ end)
 
 RegisterNetEvent('master_keymap:f6')
 AddEventHandler('master_keymap:f6', function() 
-	if not isDead and ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' and not ESX.UI.Menu.IsOpen('default', GetCurrentResourceName(), 'police_actions') then
+	if not isDead and ESX.PlayerData.job and (ESX.PlayerData.job.name == 'police' or ESX.PlayerData.job.name == 'sheriff' or ESX.PlayerData.job.name == 'fbi' or ESX.PlayerData.job.name == 'dadsetani') and not ESX.UI.Menu.IsOpen('default', GetCurrentResourceName(), 'police_actions') then
 		if not Config.EnableESXService then
 			OpenPoliceActionsMenu()
 		elseif playerInService then
@@ -1668,17 +1781,17 @@ AddEventHandler('esx_policejob:updateBlip', function()
 	ESX.PlayerData = ESX.GetPlayerData()
 
 	-- Is the player a cop? In that case show all the blips for other cops
-	if ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' then
+	if ESX.PlayerData.job and (ESX.PlayerData.job.name == 'police' or ESX.PlayerData.job.name == 'sheriff' or ESX.PlayerData.job.name == 'fbi' or ESX.PlayerData.job.name == 'dadsetani') then
 		ESX.TriggerServerCallback('esx_service:getInServOnlinePlayers', function(players)
 			for i=1, #players, 1 do
-				if players[i].job.name == 'police' then
+				if players[i].job.name == ESX.PlayerData.job.name then
 					local id = GetPlayerFromServerId(players[i].source)
 					if NetworkIsPlayerActive(id) and GetPlayerPed(id) ~= PlayerPedId() then
 						createBlip(id)
 					end
 				end
 			end
-		end, 'police')
+		end, ESX.PlayerData.job.name)
 	end
 
 end)
@@ -1700,10 +1813,10 @@ end)
 AddEventHandler('onResourceStop', function(resource)
 	if resource == GetCurrentResourceName() then
 		TriggerEvent('esx_policejob:unrestrain')
-		TriggerEvent('esx_phone:removeSpecialContact', 'police')
+		TriggerEvent('esx_phone:removeSpecialContact', ESX.PlayerData.job.name)
 
 		if Config.EnableESXService then
-			TriggerServerEvent('esx_service:disableService', 'police')
+			TriggerServerEvent('esx_service:disableService', ESX.PlayerData.job.name)
 		end
 
 		if Config.EnableHandcuffTimer and handcuffTimer.active then
