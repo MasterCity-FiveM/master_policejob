@@ -19,7 +19,7 @@ TriggerEvent('esx_phone:registerNumber', 'dadsetani', 'Dadsetani Alert', true, t
 
 TriggerEvent('esx_society:registerSociety', 'police', 'Police', 'society_police', 'society_police', 'society_police', {type = 'public'})
 TriggerEvent('esx_society:registerSociety', 'sheriff', 'Sheriff', 'society_sheriff', 'society_sheriff', 'society_sheriff', {type = 'public'})
-TriggerEvent('esx_society:registerSociety', 'fbi', 'FBI', 'fbi_society', 'fbi_society', 'fbi_society', {type = 'public'})
+TriggerEvent('esx_society:registerSociety', 'fbi', 'FBI', 'society_fbi', 'society_fbi', 'society_fbi', {type = 'public'})
 TriggerEvent('esx_society:registerSociety', 'dadsetani', 'Dadsetani', 'society_dadsetani', 'society_dadsetani', 'society_dadsetani', {type = 'public'})
 
 RegisterServerEvent('esx_policejob:confiscatePlayerItem')

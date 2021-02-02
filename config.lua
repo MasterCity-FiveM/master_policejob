@@ -183,6 +183,16 @@ Config.FBIStation = {
 				From = vector3(2155.16, 2920.945, -61.91138),
 				To = { coords = vector3(138.8957, -762.8307, 45.74219), heading = 0.0 },
 				Marker = { type = 1, x = 1.5, y = 1.5, z = 0.5, r = 102, g = 0, b = 102, rotate = false },
+			},
+			{
+				From = vector3(78.1055, -702.211, 31.82422),
+				To = { coords = vector3(140.9934, -765.9692, 45.74219), heading = 0.0 },
+				Marker = { type = 1, x = 1.5, y = 1.5, z = 0.5, r = 102, g = 0, b = 102, rotate = false },
+			},
+			{
+				From = vector3(140.9934, -765.9692, 45.74219),
+				To = { coords = vector3(78.1055, -702.211, 31.82422), heading = 0.0 },
+				Marker = { type = 1, x = 1.5, y = 1.5, z = 0.5, r = 102, g = 0, b = 102, rotate = false },
 			}
 		}
 	}
@@ -1042,7 +1052,297 @@ Config.CustomUniforms = {
 			}
 		}
 	},
-	fbi = {},
-	dadsetani = {}
+	fbi = {
+		agent = {
+			{
+				label = "لباس یک",
+				model = {
+					male = {
+						tshirt_1 = 28,  tshirt_2 = 0,
+						torso_1 = 35,   torso_2 = 0,
+						decals_1 = 0,   decals_2 = 0,
+						arms = 38,
+						pants_1 = 28,   pants_2 = 0,
+						shoes_1 = 10,   shoes_2 = 0,
+						mask_1  = 0,    mask_2  = 0,
+						bproof_1  = 0, bproof_2  = 0,
+						helmet_1 = 10,  helmet_2 = 4,
+						chain_1 = 0,    chain_2 = 38,
+						ears_1 = 0,     ears_2 = 0,
+						glasses_1 = 0,     glasses_2 = 0
+					},
+					female = {
+						tshirt_1 = 33,  tshirt_2 = 0,
+						torso_1 = 92,   torso_2 = 0,
+						decals_1 = 0,   decals_2 = 0,
+						arms = 26,
+						pants_1 = 47,   pants_2 = 0,
+						shoes_1 = 27,   shoes_2 = 0,
+						helmet_1 = -1,  helmet_2 = 0,
+						chain_1 = 0,    chain_2 = 0,
+						ears_1 = 2,     ears_2 = 0
+					}
+				}
+			}
+		},
+		specialagent = {
+			{
+				label = "لباس دو",
+				model = {
+					male = {
+						tshirt_1 = 15,  tshirt_2 = 0,
+						torso_1 = 51,   torso_2 = 0,
+						decals_1 = 0,   decals_2 = 0,
+						arms = 30,
+						pants_1 = 52,   pants_2 = 1,
+						shoes_1 = 25,   shoes_2 = 0,
+						mask_1  = 0,    mask_2  = 0,
+						bproof_1  = 7, bproof_2  = 2,
+						helmet_1 = 58,  helmet_2 = 2,
+						chain_1 = 6,    chain_2 = 0,
+						ears_1 = 0,     ears_2 = 0,
+						glasses_1 = 0,     glasses_2 = 0
+					},
+					female = {
+						tshirt_1 = 33,  tshirt_2 = 0,
+						torso_1 = 92,   torso_2 = 0,
+						decals_1 = 0,   decals_2 = 0,
+						arms = 26,
+						pants_1 = 47,   pants_2 = 0,
+						shoes_1 = 27,   shoes_2 = 0,
+						helmet_1 = -1,  helmet_2 = 0,
+						chain_1 = 0,    chain_2 = 0,
+						ears_1 = 2,     ears_2 = 0
+					}
+				}
+			}
+		},
+		janeshinf = {
+			{
+				label = "لباس سه",
+				model = {
+					male = {
+						tshirt_1 = 130,  tshirt_2 = 0,
+						torso_1 = 12,   torso_2 = 0,
+						decals_1 = 0,   decals_2 = 0,
+						arms = 38,
+						pants_1 = 28,   pants_2 = 5,
+						shoes_1 = 10,   shoes_2 = 0,
+						mask_1  = 0,    mask_2  = 0,
+						bproof_1  = 12, bproof_2  = 2,
+						helmet_1 = 13,  helmet_2 = 3,
+						chain_1 = 28,    chain_2 = 2,
+						ears_1 = 0,     ears_2 = 0,
+						glasses_1 = 0,     glasses_2 = 0
+					},
+					female = {
+						tshirt_1 = 33,  tshirt_2 = 0,
+						torso_1 = 92,   torso_2 = 0,
+						decals_1 = 0,   decals_2 = 0,
+						arms = 26,
+						pants_1 = 47,   pants_2 = 0,
+						shoes_1 = 27,   shoes_2 = 0,
+						helmet_1 = -1,  helmet_2 = 0,
+						chain_1 = 0,    chain_2 = 0,
+						ears_1 = 2,     ears_2 = 0
+					}
+				}
+			}
+		},
+		boss = {
+			{
+				label = "لباس یک",
+				model = {
+					male = {
+						tshirt_1 = 130,  tshirt_2 = 0,
+						torso_1 = 12,   torso_2 = 0,
+						decals_1 = 0,   decals_2 = 0,
+						arms = 38,
+						pants_1 = 28,   pants_2 = 5,
+						shoes_1 = 10,   shoes_2 = 0,
+						mask_1  = 0,    mask_2  = 0,
+						bproof_1  = 12, bproof_2  = 2,
+						helmet_1 = 13,  helmet_2 = 3,
+						chain_1 = 28,    chain_2 = 2,
+						ears_1 = 0,     ears_2 = 0,
+						glasses_1 = 0,     glasses_2 = 0
+					},
+					female = {
+						tshirt_1 = 33,  tshirt_2 = 0,
+						torso_1 = 92,   torso_2 = 0,
+						decals_1 = 0,   decals_2 = 0,
+						arms = 26,
+						pants_1 = 47,   pants_2 = 0,
+						shoes_1 = 27,   shoes_2 = 0,
+						helmet_1 = -1,  helmet_2 = 0,
+						chain_1 = 0,    chain_2 = 0,
+						ears_1 = 2,     ears_2 = 0
+					}
+				}
+			}
+		}
+	},
+	dadsetani = {
+		bodyguard = {
+			{
+				label = "لباس 1",
+				model = {
+					male = {
+						tshirt_1 = 44,  tshirt_2 = 0,
+						torso_1 = 55,   torso_2 = 0,
+						decals_1 = 0,   decals_2 = 0,
+						arms = 30,
+						pants_1 = 35,   pants_2 = 0,
+						shoes_1 = 15,   shoes_2 = 0,
+						mask_1  = 0,    mask_2  = 23,
+						bproof_1  = 12, bproof_2  = 3,
+						helmet_1 = 46,  helmet_2 = 0,
+						chain_1 = 0,    chain_2 = 0,
+						ears_1 = 0,     ears_2 = 0,
+						glasses_1 = 0,     glasses_2 = 0
+					},
+					female = {
+						tshirt_1 = 51,  tshirt_2 = 0,
+						torso_1 = 48,   torso_2 = 0,
+						decals_1 = 0,   decals_2 = 0,
+						arms = 31,
+						pants_1 = 34,   pants_2 = 0,
+						shoes_1 = 52,   shoes_2 = 0,
+						helmet_1 = 10,  helmet_2 = 2,
+						chain_1 = 0,    chain_2 = 0,
+						ears_1 = 0,     ears_2 = 0
+					}
+				}
+			}
+		},
+		vakil1 = {
+			{
+				label = "لباس 1",
+				model = {
+					male = {
+						tshirt_1 = 44,  tshirt_2 = 0,
+						torso_1 = 55,   torso_2 = 0,
+						decals_1 = 0,   decals_2 = 0,
+						arms = 30,
+						pants_1 = 35,   pants_2 = 0,
+						shoes_1 = 15,   shoes_2 = 0,
+						mask_1  = 0,    mask_2  = 23,
+						bproof_1  = 12, bproof_2  = 3,
+						helmet_1 = 46,  helmet_2 = 0,
+						chain_1 = 0,    chain_2 = 0,
+						ears_1 = 0,     ears_2 = 0,
+						glasses_1 = 0,     glasses_2 = 0
+					},
+					female = {
+						tshirt_1 = 51,  tshirt_2 = 0,
+						torso_1 = 48,   torso_2 = 0,
+						decals_1 = 0,   decals_2 = 0,
+						arms = 31,
+						pants_1 = 34,   pants_2 = 0,
+						shoes_1 = 52,   shoes_2 = 0,
+						helmet_1 = 10,  helmet_2 = 2,
+						chain_1 = 0,    chain_2 = 0,
+						ears_1 = 0,     ears_2 = 0
+					}
+				}
+			}
+		},
+		vakil2 = {
+			{
+				label = "لباس 1",
+				model = {
+					male = {
+						tshirt_1 = 44,  tshirt_2 = 0,
+						torso_1 = 55,   torso_2 = 0,
+						decals_1 = 0,   decals_2 = 0,
+						arms = 30,
+						pants_1 = 35,   pants_2 = 0,
+						shoes_1 = 15,   shoes_2 = 0,
+						mask_1  = 0,    mask_2  = 23,
+						bproof_1  = 12, bproof_2  = 3,
+						helmet_1 = 46,  helmet_2 = 0,
+						chain_1 = 0,    chain_2 = 0,
+						ears_1 = 0,     ears_2 = 0,
+						glasses_1 = 0,     glasses_2 = 0
+					},
+					female = {
+						tshirt_1 = 51,  tshirt_2 = 0,
+						torso_1 = 48,   torso_2 = 0,
+						decals_1 = 0,   decals_2 = 0,
+						arms = 31,
+						pants_1 = 34,   pants_2 = 0,
+						shoes_1 = 52,   shoes_2 = 0,
+						helmet_1 = 10,  helmet_2 = 2,
+						chain_1 = 0,    chain_2 = 0,
+						ears_1 = 0,     ears_2 = 0
+					}
+				}
+			}
+		},
+		ghazi = {
+			{
+				label = "لباس 1",
+				model = {
+					male = {
+						tshirt_1 = 44,  tshirt_2 = 0,
+						torso_1 = 55,   torso_2 = 0,
+						decals_1 = 0,   decals_2 = 0,
+						arms = 30,
+						pants_1 = 35,   pants_2 = 0,
+						shoes_1 = 15,   shoes_2 = 0,
+						mask_1  = 0,    mask_2  = 23,
+						bproof_1  = 12, bproof_2  = 3,
+						helmet_1 = 46,  helmet_2 = 0,
+						chain_1 = 0,    chain_2 = 0,
+						ears_1 = 0,     ears_2 = 0,
+						glasses_1 = 0,     glasses_2 = 0
+					},
+					female = {
+						tshirt_1 = 51,  tshirt_2 = 0,
+						torso_1 = 48,   torso_2 = 0,
+						decals_1 = 0,   decals_2 = 0,
+						arms = 31,
+						pants_1 = 34,   pants_2 = 0,
+						shoes_1 = 52,   shoes_2 = 0,
+						helmet_1 = 10,  helmet_2 = 2,
+						chain_1 = 0,    chain_2 = 0,
+						ears_1 = 0,     ears_2 = 0
+					}
+				}
+			}
+		},
+		dadsetan = {
+			{
+				label = "لباس 1",
+				model = {
+					male = {
+						tshirt_1 = 44,  tshirt_2 = 0,
+						torso_1 = 55,   torso_2 = 0,
+						decals_1 = 0,   decals_2 = 0,
+						arms = 30,
+						pants_1 = 35,   pants_2 = 0,
+						shoes_1 = 15,   shoes_2 = 0,
+						mask_1  = 0,    mask_2  = 23,
+						bproof_1  = 12, bproof_2  = 3,
+						helmet_1 = 46,  helmet_2 = 0,
+						chain_1 = 0,    chain_2 = 0,
+						ears_1 = 0,     ears_2 = 0,
+						glasses_1 = 0,     glasses_2 = 0
+					},
+					female = {
+						tshirt_1 = 51,  tshirt_2 = 0,
+						torso_1 = 48,   torso_2 = 0,
+						decals_1 = 0,   decals_2 = 0,
+						arms = 31,
+						pants_1 = 34,   pants_2 = 0,
+						shoes_1 = 52,   shoes_2 = 0,
+						helmet_1 = 10,  helmet_2 = 2,
+						chain_1 = 0,    chain_2 = 0,
+						ears_1 = 0,     ears_2 = 0
+					}
+				}
+			}
+		}
+	}
 }
 

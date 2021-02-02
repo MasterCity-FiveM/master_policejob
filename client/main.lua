@@ -11,10 +11,31 @@ Citizen.CreateThread(function()
 	end
 
 	while ESX.GetPlayerData().job == nil do
-		Citizen.Wait(1000)
+		Citizen.Wait(2000)
 	end
 
 	ESX.PlayerData = ESX.GetPlayerData()
+	
+	if ESX.GetPlayerData().job.name == 'fbi' then
+		ESX.TriggerServerCallback('esx_service:enableService', function(canTakeService, maxInService, inServiceCount)
+			if not canTakeService then
+				ESX.ShowNotification(_U('service_max', inServiceCount, maxInService))
+			else
+				awaitService = true
+				playerInService = true
+
+				local notification = {
+					title    = _U('service_anonunce'),
+					subject  = '',
+					msg      = _U('service_in_announce', GetPlayerName(PlayerId())),
+					iconType = 1
+				}
+
+				TriggerServerEvent('esx_service:notifyAllInService', notification, ESX.PlayerData.job.name)
+				TriggerEvent('esx_policejob:updateBlip')
+			end
+		end, ESX.PlayerData.job.name)
+	end
 end)
 
 function cleanPlayer(playerPed)
@@ -79,10 +100,17 @@ function OpenCloakroomMenu()
 	local grade = ESX.PlayerData.job.grade_name
 
 	local elements = {
-		{label = _U('citizen_wear'), value = 'citizen_wear'},
-		{label = _U('bullet_wear'), uniform = 'bullet_wear'},
-		{label = "برداشتن " .. _U('bullet_wear'), uniform = 'unbullet_wear'}
-	}
+			{label = _U('citizen_wear'), value = 'citizen_wear'},
+			{label = _U('bullet_wear'), uniform = 'bullet_wear'},
+			{label = "برداشتن " .. _U('bullet_wear'), uniform = 'unbullet_wear'}
+		}
+		
+	if ESX.PlayerData.job.name == 'dadsetani' then
+		elements = {
+			{label = _U('citizen_wear'), value = 'citizen_wear'}
+		}		
+	end
+	
 
 	if Config.CustomUniforms[ESX.PlayerData.job.name][grade] ~= nil then
 		for k,v in ipairs(Config.CustomUniforms[ESX.PlayerData.job.name][grade]) do
@@ -129,10 +157,9 @@ function OpenCloakroomMenu()
 				  TriggerEvent('esx:restoreLoadout')
 			end)
 		
-
 			if Config.EnableESXService then
 				ESX.TriggerServerCallback('esx_service:isInService', function(isInService)
-					if isInService then
+					if isInService and ESX.PlayerData.job.name ~= 'fbi' then
 						playerInService = false
 
 						local notification = {
