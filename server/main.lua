@@ -38,8 +38,15 @@ AddEventHandler('esx_policejob:confiscatePlayerItem', function(target, itemType,
 	
 	local SourceName = GetPlayerName(_source)
 	local TargetName = GetPlayerName(target)
-
+	
+	
+	
 	if itemType == 'item_standard' then
+		if GetItemCount(target, itemName) < amount then
+			TriggerClientEvent("pNotify:SendNotification", _source, { text = "این مورد در جیب شهروند نمیباشد.", type = "error", timeout = 5000, layout = "bottomCenter"})
+			return
+		end
+		
 		local targetItem = targetXPlayer.getInventoryItem(itemName)
 		local sourceItem = sourceXPlayer.getInventoryItem(itemName)
 
@@ -60,11 +67,19 @@ AddEventHandler('esx_policejob:confiscatePlayerItem', function(target, itemType,
 		end
 
 	elseif itemType == 'item_account' then
+		if targetXPlayer.getAccountMoney(itemName) <= amount then
+			TriggerClientEvent("pNotify:SendNotification", _source, { text = "این مورد در جیب شهروند نمیباشد.", type = "error", timeout = 5000, layout = "bottomCenter"})
+			return
+		end
 		targetXPlayer.removeAccountMoney(itemName, amount)
 		sourceXPlayer.addAccountMoney   (itemName, amount)
 		TriggerClientEvent("pNotify:SendNotification", _source, { text = "تعداد " .. amount .. " عدد،" .. itemName .. " از " .. TargetName .. " مصادره شد.", type = "info", timeout = 5000, layout = "bottomCenter"})
 		TriggerClientEvent("pNotify:SendNotification", target, { text = "تعداد " .. amount .. " عدد،" .. itemName .. " از  شما توسط " .. SourceName .. " مصادره شد.", type = "info", timeout = 5000, layout = "bottomCenter"})
 	elseif itemType == 'item_weapon' then
+		if not targetXPlayer.hasWeapon(itemName) then
+			TriggerClientEvent("pNotify:SendNotification", _source, { text = "این مورد در جیب شهروند نمیباشد.", type = "error", timeout = 5000, layout = "bottomCenter"})
+			return
+		end
 		if amount == nil then amount = 0 end
 		targetXPlayer.removeWeapon(itemName, amount)
 		sourceXPlayer.addWeapon(itemName, amount)
