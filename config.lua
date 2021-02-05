@@ -109,8 +109,8 @@ Config.SheriffStation = {
 				Spawner = vector3(1855.332, 3679.279, 33.77881),
 				InsideShop = vector3(228.5, -993.5, -99.5),
 				SpawnPoints = {
-					{coords = vector3(1853.09, 3676.958, 33.77881), heading = 90.0, radius = 6.0},
-					{coords = vector3(1849.991, 3675.099, 33.77881), heading = 90.0, radius = 6.0}
+					{coords = vector3(1854.237, 3675.31, 33.00366), heading = 215.0, radius = 6.0},
+					{coords = vector3(1847.538, 3671.644, 32.98682), heading = 209.0, radius = 6.0}
 				}
 			}
 		},
@@ -157,8 +157,8 @@ Config.FBIStation = {
 				Spawner = vector3(96.35605, -723.5736, 33.12158),
 				InsideShop = vector3(228.5, -993.5, -99.5),
 				SpawnPoints = {
-					{coords = vector3(96.17143, -728.9011, 33.12158), heading = 90.0, radius = 6.0},
-					{coords = vector3(99.85056, -730.444, 33.12158), heading = 90.0, radius = 6.0}
+					{coords = vector3(96.17143, -728.9011, 33.12158), heading = 340.0, radius = 6.0},
+					{coords = vector3(103.85056, -730.444, 33.12158), heading = 340.0, radius = 6.0}
 				}
 			}
 		},
@@ -228,8 +228,8 @@ Config.JusticeStation = {
 				Spawner = vector3(235.8462, -1072.629, 29.27991),
 				InsideShop = vector3(228.5, -993.5, -99.5),
 				SpawnPoints = {
-					{coords = vector3(222.6725, -1079.222, 29.26306), heading = 90.0, radius = 6.0},
-					{coords = vector3(222.5538, -1090.536, 29.24609), heading = 90.0, radius = 6.0}
+					{coords = vector3(222.6725, -1079.222, 29.26306), heading = 357.0, radius = 6.0},
+					{coords = vector3(222.5538, -1090.536, 29.24609), heading = 357.0, radius = 6.0}
 				}
 			}
 		},
