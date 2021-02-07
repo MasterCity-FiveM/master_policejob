@@ -1,4 +1,4 @@
-Locales['en'] = {
+﻿Locales['en'] = {
   -- Cloakroom
   ['cloakroom'] = 'اتاق تعویض لباس',
   ['citizen_wear'] = 'لباس شهروندی',
@@ -77,10 +77,10 @@ Locales['en'] = {
   ['unpaid_bills'] = 'جریمه های پرداخت نشده',
   ['license_check'] = 'مدیریت گواهینامه ها',
   ['license_revoke'] = 'توقیف گواهینامه',
-  ['license_revoked'] = 'گواهینامه ~b~%s~s~ شما ~y~باطل شد~s~!',
-  ['licence_you_revoked'] = 'شما ~b~%s~s~ را که متعلق به ~y~%s~s~ بود باطل کردید',
+  ['license_revoked'] = 'گواهینامه %s شما باطل شد!',
+  ['licence_you_revoked'] = 'شما %s را که متعلق به %s بود باطل کردید',
   ['no_players_nearby'] = 'هیچ شخصی نزدیک شما نیست!',
-  ['being_searched'] = 'شما در حال ~y~بازرسی بدنی~s~ توسط ~b~پلیس~s~ هستید',
+  ['being_searched'] = 'شما در حال بازرسی بدنی توسط پلیس هستید',
   -- Vehicle interaction
   ['vehicle_info'] = 'اطلاعات خودرو',
   ['pick_lock'] = 'بازکردن قفل خودرو',
