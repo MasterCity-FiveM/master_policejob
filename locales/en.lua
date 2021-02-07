@@ -1,4 +1,4 @@
-﻿Locales['en'] = {
+Locales['en'] = {
   -- Cloakroom
   ['cloakroom'] = 'اتاق تعویض لباس',
   ['citizen_wear'] = 'لباس شهروندی',
