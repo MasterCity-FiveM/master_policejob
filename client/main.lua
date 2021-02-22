@@ -1876,3 +1876,11 @@ function ImpoundVehicle(vehicle)
 	exports.pNotify:SendNotification({text = "خودرو به پارکینگ منتقل شد.", type = "success", timeout = 4000})
 	currentTask.busy = false
 end
+
+
+----------
+-- Mapping 
+----------
+Citizen.CreateThread(function()
+	LoadInterior(GetInteriorAtCoords(440.84, -983.14, 30.69))
+end)

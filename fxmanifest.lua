@@ -6,6 +6,18 @@ description 'ESX Police Job'
 
 version '1.3.0'
 
+this_is_a_map 'yes'
+
+files {
+	'data/vehicles.meta',
+	'data/carcols.meta',
+	'data/carvariations.meta',
+}
+
+data_file 'VEHICLE_METADATA_FILE' 'data/vehicles.meta'
+data_file 'CARCOLS_FILE' 'data/carcols.meta'
+data_file 'VEHICLE_VARIATION_FILE' 'data/carvariations.meta'
+
 server_scripts {
 	'@mysql-async/lib/MySQL.lua',
 	'@es_extended/locale.lua',
@@ -43,5 +55,4 @@ client_scripts {
 dependencies {
 	'es_extended',
 	'esx_billing',
-	'master_vehicles'
 }
