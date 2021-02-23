@@ -163,6 +163,15 @@ Config.FBIStation = {
 			}
 		},
 		
+		Helicopters = {
+			{
+				Spawner = vector3(-69.65274, -813.6791, 326.1736),
+				InsideShop = vector3(477.0, -1106.4, 43.0),
+				SpawnPoints = {
+					{coords = vector3(-75.42857, -819.1912, 326.1736), heading = 308.97637, radius = 10.0}
+				}
+			}
+		},
 		FastTravelsPrompt = {
 			{
 				From = vector3(136.0615, -761.8022, 45.74219),
@@ -192,6 +201,16 @@ Config.FBIStation = {
 			{
 				From = vector3(140.9934, -765.9692, 45.74219),
 				To = { coords = vector3(78.1055, -702.211, 31.82422), heading = 0.0 },
+				Marker = { type = 1, x = 1.5, y = 1.5, z = 0.5, r = 102, g = 0, b = 102, rotate = false },
+			},
+			{
+				From = vector3(139.3714, -770.611, 45.74219),
+				To = { coords = vector3(-75.53406, -824.9275, 321.2872), heading = 0.0 },
+				Marker = { type = 1, x = 1.5, y = 1.5, z = 0.5, r = 102, g = 0, b = 102, rotate = false },
+			},
+			{
+				From = vector3(-75.53406, -824.9275, 321.2872),
+				To = { coords = vector3(139.3714, -770.611, 45.74219), heading = 0.0 },
 				Marker = { type = 1, x = 1.5, y = 1.5, z = 0.5, r = 102, g = 0, b = 102, rotate = false },
 			}
 		}
