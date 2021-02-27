@@ -1681,7 +1681,7 @@ end)
 
 RegisterNetEvent('master_keymap:f6')
 AddEventHandler('master_keymap:f6', function() 
-	if not isDead and ESX.PlayerData.job and (ESX.PlayerData.job.name == 'police' or ESX.PlayerData.job.name == 'sheriff' or ESX.PlayerData.job.name == 'fbi' or ESX.PlayerData.job.name == 'dadsetani') and not ESX.UI.Menu.IsOpen('default', GetCurrentResourceName(), 'police_actions') then
+	if not isDead and ESX.PlayerData.job and (ESX.PlayerData.job.name == 'police' or ESX.PlayerData.job.name == 'sheriff' or ESX.PlayerData.job.name == 'fbi' or ESX.PlayerData.job.name == 'dadsetani') then
 		if not Config.EnableESXService then
 			OpenPoliceActionsMenu()
 		elseif playerInService then
