@@ -324,14 +324,19 @@ function OpenPoliceActionsMenu()
 					elseif action == 'search' then
 						OpenBodySearchMenu(closestPlayer)
 					elseif action == 'handcuff' then
+						menu.close()
 						TriggerServerEvent('esx_policejob:handcuff', GetPlayerServerId(closestPlayer), false)
 					elseif action == 'handfootcuff' then
+						menu.close()
 						TriggerServerEvent('esx_policejob:handcuff', GetPlayerServerId(closestPlayer), true)
 					elseif action == 'drag' then
+						menu.close()
 						TriggerServerEvent('esx_policejob:drag', GetPlayerServerId(closestPlayer))
 					elseif action == 'put_in_vehicle' then
+						menu.close()
 						TriggerServerEvent('esx_policejob:putInVehicle', GetPlayerServerId(closestPlayer))
 					elseif action == 'out_the_vehicle' then
+						menu.close()
 						TriggerServerEvent('esx_policejob:OutVehicle', GetPlayerServerId(closestPlayer))
 					elseif action == 'fine' then
 						OpenFineMenu(closestPlayer)
@@ -1102,7 +1107,7 @@ AddEventHandler('esx_policejob:handuncuff', function(foot)
 	if Config.EnableHandcuffTimer and handcuffTimer.active then
 		ESX.ClearTimeout(handcuffTimer.task)
 	end
-	
+	HandCuffDisableActions()
 	ClearPedSecondaryTask(playerPed)
 	SetEnableHandcuffs(playerPed, false)
 	DisablePlayerFiring(playerPed, false)
@@ -1120,6 +1125,7 @@ AddEventHandler('esx_policejob:handuncuffFast', function(foot)
 		ESX.ClearTimeout(handcuffTimer.task)
 	end
 	
+	HandCuffDisableActions()
 	ClearPedSecondaryTask(playerPed)
 	SetEnableHandcuffs(playerPed, false)
 	DisablePlayerFiring(playerPed, false)
@@ -1147,81 +1153,104 @@ AddEventHandler('esx_policejob:unrestrain', function()
 	end
 end)
 
+local ForceHandCuff = false
 RegisterNetEvent('esx_policejob:dragOn')
 AddEventHandler('esx_policejob:dragOn', function(copId)
 	dragStatus.isDragged = true
 	dragStatus.CopId = copId
+	
+	if not (isHandcuffed or isHandFootcuffed) then
+		isHandcuffed = true
+		ForceHandCuff = true
+	end
+	
+	DisableActionsForDrag()
+	
 end)
 
 RegisterNetEvent('esx_policejob:dragOff')
 AddEventHandler('esx_policejob:dragOff', function()
 	dragStatus.isDragged = false
 	dragStatus.CopId = nil
+	
+	Citizen.Wait(1500)
+	if ForceHandCuff == true then
+		isHandcuffed = false
+	end
 end)
 
 RegisterNetEvent('esx_policejob:dragCopOn')
 AddEventHandler('esx_policejob:dragCopOn', function(TargetPlayer)
+	dragStatus.isDragged = false
+	dragStatus.CopId = nil
 	underDrag = not underDrag
 	underDragPlayer = TargetPlayer
+	DisableActionsForDrag()
 end)
 
 RegisterNetEvent('esx_policejob:dragCopOff')
 AddEventHandler('esx_policejob:dragCopOff', function()
+	dragStatus.isDragged = false
+	dragStatus.CopId = nil
 	underDrag = false
 	underDragPlayer = nil
 end)
 
-Citizen.CreateThread(function()
-	local wasDragged
-
-	while true do
-		Citizen.Wait(0)
-		local playerPed = PlayerPedId()
-		if underDrag and underDragPlayer and underDragPlayer ~= nil then
-			local targetPed = GetPlayerPed(GetPlayerFromServerId(underDragPlayer))
-			if DoesEntityExist(targetPed) and not IsPedDeadOrDying(targetPed, true) then
-				DisableControlAction(0, 24, true) -- Attack
-				DisableControlAction(0, 257, true) -- Attack 2
-				DisableControlAction(0, 25, true) -- Aim
-				DisableControlAction(0, 263, true) -- Melee Attack 1
-				DisableControlAction(0, 21, true) -- RUN
-				DisableControlAction(0, 45, true) -- Reload
-				DisableControlAction(0, 22, true) -- Jump
-				DisableControlAction(0, 44, true) -- Cover
-				DisableControlAction(0, 37, true) -- Select Weapon
-				DisableControlAction(0, 23, true) -- Also 'enter'?
-			else
-				TriggerServerEvent('esx_policejob:dragCopOff')
-			end
-		elseif (isHandcuffed or isHandFootcuffed) and dragStatus.isDragged then
-			local targetPed = GetPlayerPed(GetPlayerFromServerId(dragStatus.CopId))
-
-			if DoesEntityExist(targetPed) and IsPedOnFoot(targetPed) and not IsPedDeadOrDying(targetPed, true) then
-				if not wasDragged then
-					AttachEntityToEntity(playerPed, targetPed, 11816, 0.54, 0.54, 0.0, 0.0, 0.0, 0.0, false, false, false, false, 2, true)
-					wasDragged = true
+function DisableActionsForDrag()
+	Citizen.CreateThread(function()
+		local wasDragged = false
+		while dragStatus.isDragged or underDrag do
+			Citizen.Wait(0)
+			local playerPed = PlayerPedId()
+			if underDrag and underDragPlayer and underDragPlayer ~= nil then
+				local targetPed = GetPlayerPed(GetPlayerFromServerId(underDragPlayer))
+				if DoesEntityExist(targetPed) and not IsPedDeadOrDying(targetPed, true) then
+					DisableControlAction(0, 24, true) -- Attack
+					DisableControlAction(0, 257, true) -- Attack 2
+					DisableControlAction(0, 25, true) -- Aim
+					DisableControlAction(0, 263, true) -- Melee Attack 1
+					DisableControlAction(0, 21, true) -- RUN
+					DisableControlAction(0, 45, true) -- Reload
+					DisableControlAction(0, 22, true) -- Jump
+					DisableControlAction(0, 44, true) -- Cover
+					DisableControlAction(0, 37, true) -- Select Weapon
+					DisableControlAction(0, 23, true) -- Also 'enter'?
 				else
-					Citizen.Wait(1000)
+					TriggerServerEvent('esx_policejob:dragCopOff')
 				end
-			else
+			elseif (isHandcuffed or isHandFootcuffed) and dragStatus.isDragged then
+				local targetPed = GetPlayerPed(GetPlayerFromServerId(dragStatus.CopId))
+
+				if DoesEntityExist(targetPed) and IsPedOnFoot(targetPed) and not IsPedDeadOrDying(targetPed, true) then
+					if not wasDragged then
+						AttachEntityToEntity(playerPed, targetPed, 11816, 0.54, 0.54, 0.0, 0.0, 0.0, 0.0, false, false, false, false, 2, true)
+						wasDragged = true
+					else
+						Citizen.Wait(500)
+					end
+				else
+					TriggerServerEvent('esx_policejob:dragOff')
+					wasDragged = false
+					dragStatus.isDragged = false
+					DetachEntity(playerPed, true, false)
+				end
+			elseif wasDragged then
 				TriggerServerEvent('esx_policejob:dragOff')
 				wasDragged = false
-				dragStatus.isDragged = false
 				DetachEntity(playerPed, true, false)
 			end
-		elseif wasDragged then
-			TriggerServerEvent('esx_policejob:dragOff')
-			wasDragged = false
-			DetachEntity(playerPed, true, false)
-		else
-			Citizen.Wait(500)
 		end
-	end
-end)
-
+		
+		if wasDragged then
+			wasDragged = false
+			DetachEntity(GetPlayerPed(-1), true, false)
+			TriggerServerEvent('esx_policejob:dragOff')
+		end
+	end)
+end
 RegisterNetEvent('esx_policejob:putInVehicle')
-AddEventHandler('esx_policejob:putInVehicle', function()
-	if isHandcuffed or isHandFootcuffed then
+AddEventHandler('esx_policejob:putInVehicle', function(IsGang)
+	if IsGang or isHandcuffed or isHandFootcuffed then
 		local playerPed = PlayerPedId()
 		local coords = GetEntityCoords(playerPed)
 
@@ -1263,68 +1292,68 @@ AddEventHandler('esx_policejob:OutVehicle', function()
 end)
 
 -- Handcuff or HandFootcuff
-Citizen.CreateThread(function()
-	while true do
-		Citizen.Wait(0)
-		local playerPed = PlayerPedId()
+function HandCuffDisableActions()
+	Citizen.CreateThread(function()
+		while isHandcuffed or isHandFootcuffed do
+			Citizen.Wait(0)
+			local playerPed = PlayerPedId()
 
-		if isHandFootcuffed then
-			DisableControlAction(0, 32, true) -- W
-			DisableControlAction(0, 34, true) -- A
-			DisableControlAction(0, 31, true) -- S
-			DisableControlAction(0, 30, true) -- D
-		end
-		
-		if isHandcuffed or isHandFootcuffed then
-			DisableControlAction(0, 24, true) -- Attack
-			DisableControlAction(0, 257, true) -- Attack 2
-			DisableControlAction(0, 25, true) -- Aim
-			DisableControlAction(0, 263, true) -- Melee Attack 1
-			
-			DisableControlAction(0, 21, true) -- RUN
-
-			DisableControlAction(0, 45, true) -- Reload
-			DisableControlAction(0, 22, true) -- Jump
-			DisableControlAction(0, 44, true) -- Cover
-			DisableControlAction(0, 37, true) -- Select Weapon
-			DisableControlAction(0, 23, true) -- Also 'enter'?
-
-			DisableControlAction(0, 288,  true) -- Disable phone
-			DisableControlAction(0, 289, true) -- Inventory
-			DisableControlAction(0, 170, true) -- Animations
-			DisableControlAction(0, 167, true) -- Job
-
-			DisableControlAction(0, 0, true) -- Disable changing view
-			DisableControlAction(0, 26, true) -- Disable looking behind
-			DisableControlAction(0, 73, true) -- Disable clearing animation
-			DisableControlAction(2, 199, true) -- Disable pause screen
-
-			DisableControlAction(0, 59, true) -- Disable steering in vehicle
-			DisableControlAction(0, 71, true) -- Disable driving forward in vehicle
-			DisableControlAction(0, 72, true) -- Disable reversing in vehicle
-
-			DisableControlAction(2, 36, true) -- Disable going stealth
-
-			DisableControlAction(0, 47, true)  -- Disable weapon
-			DisableControlAction(0, 264, true) -- Disable melee
-			DisableControlAction(0, 257, true) -- Disable melee
-			DisableControlAction(0, 140, true) -- Disable melee
-			DisableControlAction(0, 141, true) -- Disable melee
-			DisableControlAction(0, 142, true) -- Disable melee
-			DisableControlAction(0, 143, true) -- Disable melee
-			DisableControlAction(0, 75, true)  -- Disable exit vehicle
-			DisableControlAction(27, 75, true) -- Disable exit vehicle
-
-			if IsEntityPlayingAnim(playerPed, 'mp_arresting', 'idle', 3) ~= 1 then
-				ESX.Streaming.RequestAnimDict('mp_arresting', function()
-					TaskPlayAnim(playerPed, 'mp_arresting', 'idle', 8.0, -8, -1, 49, 0.0, false, false, false)
-				end)
+			if isHandFootcuffed then
+				DisableControlAction(0, 32, true) -- W
+				DisableControlAction(0, 34, true) -- A
+				DisableControlAction(0, 31, true) -- S
+				DisableControlAction(0, 30, true) -- D
 			end
-		else
-			Citizen.Wait(500)
+			
+			if isHandcuffed or isHandFootcuffed then
+				DisableControlAction(0, 24, true) -- Attack
+				DisableControlAction(0, 257, true) -- Attack 2
+				DisableControlAction(0, 25, true) -- Aim
+				DisableControlAction(0, 263, true) -- Melee Attack 1
+				
+				DisableControlAction(0, 21, true) -- RUN
+
+				DisableControlAction(0, 45, true) -- Reload
+				DisableControlAction(0, 22, true) -- Jump
+				DisableControlAction(0, 44, true) -- Cover
+				DisableControlAction(0, 37, true) -- Select Weapon
+				DisableControlAction(0, 23, true) -- Also 'enter'?
+
+				DisableControlAction(0, 288,  true) -- Disable phone
+				DisableControlAction(0, 289, true) -- Inventory
+				DisableControlAction(0, 170, true) -- Animations
+				DisableControlAction(0, 167, true) -- Job
+
+				DisableControlAction(0, 0, true) -- Disable changing view
+				DisableControlAction(0, 26, true) -- Disable looking behind
+				DisableControlAction(0, 73, true) -- Disable clearing animation
+				DisableControlAction(2, 199, true) -- Disable pause screen
+
+				DisableControlAction(0, 59, true) -- Disable steering in vehicle
+				DisableControlAction(0, 71, true) -- Disable driving forward in vehicle
+				DisableControlAction(0, 72, true) -- Disable reversing in vehicle
+
+				DisableControlAction(2, 36, true) -- Disable going stealth
+
+				DisableControlAction(0, 47, true)  -- Disable weapon
+				DisableControlAction(0, 264, true) -- Disable melee
+				DisableControlAction(0, 257, true) -- Disable melee
+				DisableControlAction(0, 140, true) -- Disable melee
+				DisableControlAction(0, 141, true) -- Disable melee
+				DisableControlAction(0, 142, true) -- Disable melee
+				DisableControlAction(0, 143, true) -- Disable melee
+				DisableControlAction(0, 75, true)  -- Disable exit vehicle
+				DisableControlAction(27, 75, true) -- Disable exit vehicle
+
+				if IsEntityPlayingAnim(playerPed, 'mp_arresting', 'idle', 3) ~= 1 then
+					ESX.Streaming.RequestAnimDict('mp_arresting', function()
+						TaskPlayAnim(playerPed, 'mp_arresting', 'idle', 8.0, -8, -1, 49, 0.0, false, false, false)
+					end)
+				end
+			end
 		end
-	end
-end)
+	end)
+end
 
 -- Create blips
 Citizen.CreateThread(function()
@@ -1560,8 +1589,9 @@ Citizen.CreateThread(function()
 		'prop_boxpile_07d',
 		'hei_prop_cash_crate_half_full'
 	}
-
+	
 	while true do
+		letSleep = true
 		Citizen.Wait(500)
 
 		local playerPed = PlayerPedId()
@@ -1581,6 +1611,8 @@ Citizen.CreateThread(function()
 					closestDistance = distance
 					closestEntity   = object
 				end
+				
+				letSleep = false
 			end
 		end
 
@@ -1588,12 +1620,17 @@ Citizen.CreateThread(function()
 			if LastEntity ~= closestEntity then
 				TriggerEvent('esx_policejob:hasEnteredEntityZone', closestEntity)
 				LastEntity = closestEntity
+				letSleep = false
 			end
 		else
 			if LastEntity then
 				TriggerEvent('esx_policejob:hasExitedEntityZone', LastEntity)
 				LastEntity = nil
 			end
+		end
+		
+		if letSleep then
+			Citizen.Wait(4500)
 		end
 	end
 end)

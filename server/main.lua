@@ -262,7 +262,7 @@ AddEventHandler('esx_policejob:putInVehicle', function(target)
 		tPlayer.set('EscortBy', nil)
 		TriggerClientEvent('esx_policejob:dragCopOff', source)
 		TriggerClientEvent('esx_policejob:dragOff', source)
-		TriggerClientEvent('esx_policejob:putInVehicle', target)
+		TriggerClientEvent('esx_policejob:putInVehicle', target, false)
 	end
 end)
 
