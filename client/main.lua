@@ -154,7 +154,7 @@ function OpenCloakroomMenu()
           		SetModelAsNoLongerNeeded(model)
 
           		TriggerEvent('skinchanger:loadSkin', skin)
-				  TriggerEvent('esx:restoreLoadout')
+				TriggerEvent('esx:restoreLoadout')
 			end)
 		
 			if Config.EnableESXService then
