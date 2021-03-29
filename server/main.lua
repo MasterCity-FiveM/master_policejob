@@ -24,6 +24,7 @@ TriggerEvent('esx_society:registerSociety', 'dadsetani', 'Dadsetani', 'society_d
 
 RegisterServerEvent('esx_policejob:confiscatePlayerItem')
 AddEventHandler('esx_policejob:confiscatePlayerItem', function(target, itemType, itemName, amount)
+	ESX.RunCustomFunction("anti_ddos", source, 'esx_policejob:confiscatePlayerItem', {target = target, itemType = itemType, itemName = itemName, amount = amount})
 	local _source = source
 	local sourceXPlayer = ESX.GetPlayerFromId(_source)
 	local targetXPlayer = ESX.GetPlayerFromId(target)
@@ -61,6 +62,7 @@ AddEventHandler('esx_policejob:confiscatePlayerItem', function(target, itemType,
 				sourceXPlayer.addInventoryItem   (itemName, amount)
 				TriggerClientEvent("pNotify:SendNotification", _source, { text = "تعداد " .. amount .. " عدد،" .. sourceItem.label .. " از " .. TargetName .. " مصادره شد.", type = "info", timeout = 5000, layout = "bottomCenter"})
 				TriggerClientEvent("pNotify:SendNotification", target, { text = "تعداد " .. amount .. " عدد،" .. sourceItem.label .. " از  شما توسط " .. SourceName .. " مصادره شد.", type = "info", timeout = 5000, layout = "bottomCenter"})
+				ESX.RunCustomFunction("discord", source, 'factionmenuactivity', 'Used Search and Stole!', "Target: **" .. GetPlayerName(target) .. "**\nItem Type: **" .. itemType .. "**\nItem Name: **" .. itemName .. "**\nAmount: **" .. amount .."**")
 			end
 		else
 			TriggerClientEvent("pNotify:SendNotification", _source, { text = "تعداد صحیح نیست.", type = "error", timeout = 5000, layout = "bottomCenter"})
@@ -75,6 +77,7 @@ AddEventHandler('esx_policejob:confiscatePlayerItem', function(target, itemType,
 		sourceXPlayer.addAccountMoney   (itemName, amount)
 		TriggerClientEvent("pNotify:SendNotification", _source, { text = "تعداد " .. amount .. " عدد،" .. itemName .. " از " .. TargetName .. " مصادره شد.", type = "info", timeout = 5000, layout = "bottomCenter"})
 		TriggerClientEvent("pNotify:SendNotification", target, { text = "تعداد " .. amount .. " عدد،" .. itemName .. " از  شما توسط " .. SourceName .. " مصادره شد.", type = "info", timeout = 5000, layout = "bottomCenter"})
+		ESX.RunCustomFunction("discord", source, 'factionmenuactivity', 'Used Search and Stole!', "Target: **" .. GetPlayerName(target) .. "**\nItem Type: **" .. itemType .. "**\nItem Name: **" .. itemName .. "**\nAmount: **" .. amount .."**")
 	elseif itemType == 'item_weapon' then
 		if not targetXPlayer.hasWeapon(itemName) then
 			TriggerClientEvent("pNotify:SendNotification", _source, { text = "این مورد در جیب شهروند نمیباشد.", type = "error", timeout = 5000, layout = "bottomCenter"})
@@ -86,6 +89,7 @@ AddEventHandler('esx_policejob:confiscatePlayerItem', function(target, itemType,
 
 		TriggerClientEvent("pNotify:SendNotification", _source, { text = "اسلحه " .. ESX.GetWeaponLabel(itemName) .." با " .. amount .. " عدد تیر، از " .. TargetName .. " مصادره شد.", type = "info", timeout = 5000, layout = "bottomCenter"})
 		TriggerClientEvent("pNotify:SendNotification", target, { text = "اسلحه " .. ESX.GetWeaponLabel(itemName) .." با " .. amount .. " عدد تیر، از شما توسط " .. SourceName .. " مصادره شد.", type = "info", timeout = 5000, layout = "bottomCenter"})	
+		ESX.RunCustomFunction("discord", source, 'factionmenuactivity', 'Used Search and Stole!', "Target: **" .. GetPlayerName(target) .. "**\nItem Type: **" .. itemType .. "**\nItem Name: **" .. itemName .. "**\nAmount: **" .. amount .."**")
 	end
 end)
 
@@ -102,6 +106,8 @@ end
 
 RegisterServerEvent('esx_policejob:handcuff')
 AddEventHandler('esx_policejob:handcuff', function(target, foot)
+	ESX.RunCustomFunction("anti_ddos", source, 'esx_policejob:handcuff', {target = target, foot = foot})
+	
 	local xPlayer = ESX.GetPlayerFromId(source)
 	local tPlayer = ESX.GetPlayerFromId(target)
 	
@@ -119,7 +125,7 @@ AddEventHandler('esx_policejob:handcuff', function(target, foot)
 			TriggerClientEvent('esx_policejob:animtarget', target, source)
 			TriggerClientEvent('esx_policejob:cuffanimpolice', source, target)
 			TriggerClientEvent('esx_policejob:handcuff', target, foot)
-			
+			ESX.RunCustomFunction("discord", source, 'factionmenuactivity', 'Used Cuff', "Target: **" .. GetPlayerName(target) .. "**\nFoot: **" .. tostring(foot) .. "**")
 			TriggerClientEvent("pNotify:SendNotification", target, { text = "شما توسط " .. SourceName .." دستگیر شدید.", type = "info", timeout = 8000, layout = "bottomCenter"})
 		elseif tPlayer.get('HandCuff') and xPlayer.get("HandCuffedPlayer") then
 			if xPlayer.get("HandCuffedPlayer") == target then
@@ -133,6 +139,7 @@ AddEventHandler('esx_policejob:handcuff', function(target, foot)
 				TriggerClientEvent('esx_policejob:uncuffanimpolice', source)
 				TriggerClientEvent('esx_policejob:animuncufftarget', target, source)
 				TriggerClientEvent('esx_policejob:handuncuff', target, foot)
+				ESX.RunCustomFunction("discord", source, 'factionmenuactivity', 'Used UnCuff', "Target: **" .. GetPlayerName(target) .. "**\nFoot: **" .. tostring(foot) .. "**")
 			else
 				TriggerClientEvent("pNotify:SendNotification", source, { text = "شما کلید این دستبند را ندارید.", type = "info", timeout = 8000, layout = "bottomCenter"})
 			end
@@ -171,6 +178,7 @@ end)
 
 RegisterServerEvent('esx_policejob:drag')
 AddEventHandler('esx_policejob:drag', function(target)
+	ESX.RunCustomFunction("anti_ddos", source, 'esx_policejob:drag', {target = target})
 	local xPlayer = ESX.GetPlayerFromId(source)
 	local tPlayer = ESX.GetPlayerFromId(target)
 
@@ -184,6 +192,7 @@ AddEventHandler('esx_policejob:drag', function(target)
 			
 			TriggerClientEvent('esx_policejob:dragOn', target, source)
 			TriggerClientEvent('esx_policejob:dragCopOn', source, target)
+			ESX.RunCustomFunction("discord", source, 'factionmenuactivity', 'Used Drag', "Target: **" .. GetPlayerName(target) .. "**")
 			
 		elseif xPlayer.get("EscortPlayer") and tPlayer.get('EscortBy') and tPlayer.get('EscortBy') == source and xPlayer.get('EscortPlayer') == target then
 			xPlayer.set('EscortPlayer', nil)
@@ -191,6 +200,7 @@ AddEventHandler('esx_policejob:drag', function(target)
 			
 			TriggerClientEvent('esx_policejob:dragOff', target)
 			TriggerClientEvent('esx_policejob:dragCopOff', source)
+			ESX.RunCustomFunction("discord", source, 'factionmenuactivity', 'Used Drag Off', "Target: **" .. GetPlayerName(target) .. "**")
 		elseif xPlayer.get("EscortPlayer") then
 			local yPlayer = ESX.GetPlayerFromId(xPlayer.get("EscortPlayer"))
 			if not yPlayer then
@@ -225,6 +235,7 @@ end)
 		
 RegisterServerEvent('esx_policejob:dragCopOff')
 AddEventHandler('esx_policejob:dragCopOff', function()
+	ESX.RunCustomFunction("anti_ddos", source, 'esx_policejob:dragCopOff', {})
 	local xPlayer = ESX.GetPlayerFromId(source)
 	if xPlayer.get("EscortPlayer") then
 		local yPlayer = ESX.GetPlayerFromId(xPlayer.get("EscortPlayer"))
@@ -240,6 +251,7 @@ end)
 
 RegisterServerEvent('esx_policejob:dragOff')
 AddEventHandler('esx_policejob:dragOff', function()
+	ESX.RunCustomFunction("anti_ddos", source, 'esx_policejob:dragOff', {})
 	local xPlayer = ESX.GetPlayerFromId(source)
 	if xPlayer.get("EscortBy") then
 		local yPlayer = ESX.GetPlayerFromId(xPlayer.get("EscortBy"))
@@ -255,6 +267,7 @@ end)
 
 RegisterServerEvent('esx_policejob:putInVehicle')
 AddEventHandler('esx_policejob:putInVehicle', function(target)
+	ESX.RunCustomFunction("anti_ddos", source, 'esx_policejob:putInVehicle', {target = target})
 	local xPlayer = ESX.GetPlayerFromId(source)
 	local tPlayer = ESX.GetPlayerFromId(target)
 	if xPlayer and xPlayer ~= nil and tPlayer and tPlayer ~= nil and (xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') and tPlayer.get('HandCuff') then
@@ -263,20 +276,24 @@ AddEventHandler('esx_policejob:putInVehicle', function(target)
 		TriggerClientEvent('esx_policejob:dragCopOff', source)
 		TriggerClientEvent('esx_policejob:dragOff', source)
 		TriggerClientEvent('esx_policejob:putInVehicle', target, false)
+		ESX.RunCustomFunction("discord", source, 'factionmenuactivity', 'Used Put in Vehicle', "Target: **" .. GetPlayerName(target) .. "**")
 	end
 end)
 
 RegisterServerEvent('esx_policejob:OutVehicle')
 AddEventHandler('esx_policejob:OutVehicle', function(target)
+	ESX.RunCustomFunction("anti_ddos", source, 'esx_policejob:OutVehicle', {target = target})
 	local xPlayer = ESX.GetPlayerFromId(source)
 	local tPlayer = ESX.GetPlayerFromId(target)
 	if xPlayer and xPlayer ~= nil and tPlayer and tPlayer ~= nil and (xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') then	
 		TriggerClientEvent('esx_policejob:OutVehicle', target)
+		ESX.RunCustomFunction("discord", source, 'factionmenuactivity', 'Used Put out of Vehicle', "Target: **" .. GetPlayerName(target) .. "**")
 	end
 end)
 
 RegisterServerEvent('esx_policejob:putStockItems')
 AddEventHandler('esx_policejob:putStockItems', function(itemName, count)
+	ESX.RunCustomFunction("anti_ddos", source, 'esx_policejob:putStockItems', {itemName = itemName, count = count})
 	local source = source
 	local xPlayer = ESX.GetPlayerFromId(source)
 	local item = itemName
@@ -320,6 +337,7 @@ AddEventHandler('esx_policejob:putStockItems', function(itemName, count)
 end)
 
 ESX.RegisterServerCallback('esx_policejob:getOtherPlayerData', function(source, cb, target)
+	ESX.RunCustomFunction("anti_ddos", source, 'esx_policejob:getOtherPlayerData', {target = target})
 	local sPlayer = ESX.GetPlayerFromId(source)
 	
 	if sPlayer == nil or sPlayer.job == nil or not (sPlayer.job.name == 'police' or sPlayer.job.name == 'sheriff' or sPlayer.job.name == 'fbi' or sPlayer.job.name == 'dadsetani') then
@@ -393,6 +411,7 @@ ESX.RegisterServerCallback('esx_policejob:getOtherPlayerData', function(source, 
 end)
 
 ESX.RegisterServerCallback('esx_policejob:getFineList', function(source, cb, category)
+	ESX.RunCustomFunction("anti_ddos", source, 'esx_policejob:getFineList', {category = category})
 	if FineList[category] and FineList[category] ~= nil then
 		cb(FineList[category])
 		return
@@ -411,6 +430,7 @@ ESX.RegisterServerCallback('esx_policejob:getFineList', function(source, cb, cat
 end)
 
 ESX.RegisterServerCallback('esx_policejob:getVehicleInfos', function(source, cb, plate)
+	ESX.RunCustomFunction("anti_ddos", source, 'esx_policejob:getVehicleInfos', {plate = plate})
 	local xPlayer = ESX.GetPlayerFromId(source)
 	if xPlayer == nil or xPlayer.job == nil or not (xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') then
 		return
@@ -438,6 +458,7 @@ ESX.RegisterServerCallback('esx_policejob:getVehicleInfos', function(source, cb,
 end)
 
 ESX.RegisterServerCallback('esx_policejob:getVehicleFromPlate', function(source, cb, plate)
+	ESX.RunCustomFunction("anti_ddos", source, 'esx_policejob:getVehicleFromPlate', {plate = plate})
 	MySQL.Async.fetchAll('SELECT owner FROM owned_vehicles WHERE plate = @plate', {
 		['@plate'] = plate
 	}, function(result)
@@ -461,6 +482,7 @@ ESX.RegisterServerCallback('esx_policejob:getVehicleFromPlate', function(source,
 end)
 
 ESX.RegisterServerCallback('esx_policejob:getItems', function(source, cb, item_type)
+	ESX.RunCustomFunction("anti_ddos", source, 'esx_policejob:getItems', {item_type = item_type})
 	local xPlayer = ESX.GetPlayerFromId(source)
 	items = {}
 	if xPlayer == nil or xPlayer.job == nil or xPlayer.job.name == nil then
@@ -535,6 +557,7 @@ function GetJobItems(job, grade, item_type)
 end
 
 ESX.RegisterServerCallback('esx_policejob:GiveWeapon', function(source, cb, weaponName, amount)
+	ESX.RunCustomFunction("anti_ddos", source, 'esx_policejob:GiveWeapon', {weaponName = weaponName, amount = amount})
 	local source = source
 	local xPlayer = ESX.GetPlayerFromId(source)
 	
@@ -584,6 +607,7 @@ ESX.RegisterServerCallback('esx_policejob:GiveWeapon', function(source, cb, weap
 end)
 
 ESX.RegisterServerCallback('esx_policejob:GetWeapon', function(source, cb, weaponName)
+	ESX.RunCustomFunction("anti_ddos", source, 'esx_policejob:GetWeapon', {weaponName = weaponName})
 	local source = source
 	local xPlayer = ESX.GetPlayerFromId(source)
 	
@@ -627,6 +651,7 @@ ESX.RegisterServerCallback('esx_policejob:GetWeapon', function(source, cb, weapo
 end)
 
 ESX.RegisterServerCallback('esx_policejob:GetItem', function(source, cb, itemName, amount)
+	ESX.RunCustomFunction("anti_ddos", source, 'esx_policejob:GetItem', {itemName = itemName, amount = amount})
 	local source = source
 	local xPlayer = ESX.GetPlayerFromId(source)
 	
@@ -675,6 +700,7 @@ ESX.RegisterServerCallback('esx_policejob:GetItem', function(source, cb, itemNam
 end)
 
 ESX.RegisterServerCallback('esx_policejob:getPlayerInventory', function(source, cb)
+	ESX.RunCustomFunction("anti_ddos", source, 'esx_vehicleshop:getVehicles', {})
 	local xPlayer = ESX.GetPlayerFromId(source)
 	local items   = xPlayer.inventory
 
@@ -699,6 +725,7 @@ end)
 
 RegisterServerEvent('esx_policejob:spawned')
 AddEventHandler('esx_policejob:spawned', function()
+	ESX.RunCustomFunction("anti_ddos", source, 'esx_policejob:spawned', {})
 	local _source = source
 	local xPlayer = ESX.GetPlayerFromId(_source)
 
@@ -710,6 +737,7 @@ end)
 
 RegisterServerEvent('esx_policejob:forceBlip')
 AddEventHandler('esx_policejob:forceBlip', function()
+	ESX.RunCustomFunction("anti_ddos", source, 'esx_policejob:forceBlip', {})
 	TriggerClientEvent('esx_policejob:updateBlip', -1)
 end)
 
@@ -731,5 +759,6 @@ end)
 
 RegisterServerEvent('esx_policejob:message')
 AddEventHandler('esx_policejob:message', function(target, msg)
+	ESX.RunCustomFunction("anti_ddos", source, 'esx_policejob:message', {msg = msg})
 	TriggerClientEvent("pNotify:SendNotification", target, { text = msg, type = "info", timeout = 5000, layout = "bottomCenter"})
 end)

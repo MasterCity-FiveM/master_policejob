@@ -1644,7 +1644,7 @@ AddEventHandler('master_keymap:e', function()
 			elseif CurrentAction == 'menu_jail' then
 				ESX.TriggerServerCallback('esx_service:isInService', function(isInService)
 					if isInService then
-						TriggerEvent("esx-qalle-jail:openJailMenu")
+						TriggerEvent("master_jail:openJailMenu")
 					else
 						exports.pNotify:SendNotification({text = _U('service_not'), type = "info", timeout = 3000})
 					end
