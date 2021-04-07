@@ -504,7 +504,7 @@ function SendToCommunityService(player)
 		if community_services_count == nil then
 			exports.pNotify:SendNotification({text = "تعداد درخواستی صحیح نیست.", type = "error", timeout = 4000})
 		else
-			TriggerServerEvent("esx_communityservice:sendToCommunityService", player, community_services_count)
+			TriggerServerEvent("esx_communityservice:sendToCommunityService", player, community_services_count, 0)
 			menu.close()
 		end
 	end, function (data2, menu)
