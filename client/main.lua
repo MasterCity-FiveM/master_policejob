@@ -1215,6 +1215,7 @@ function DisableActionsForDrag()
 					DisableControlAction(0, 44, true) -- Cover
 					DisableControlAction(0, 37, true) -- Select Weapon
 					DisableControlAction(0, 23, true) -- Also 'enter'?
+					DisableControlAction(0, 49, true) -- Disable F
 				else
 					TriggerServerEvent('esx_policejob:dragCopOff')
 				end
@@ -1310,6 +1311,7 @@ function HandCuffDisableActions()
 				DisableControlAction(0, 257, true) -- Attack 2
 				DisableControlAction(0, 25, true) -- Aim
 				DisableControlAction(0, 263, true) -- Melee Attack 1
+				DisableControlAction(0, 49, true) -- Disable F
 				
 				DisableControlAction(0, 21, true) -- RUN
 
