@@ -117,10 +117,10 @@ Config.SheriffStation = {
 
 		Helicopters = {
 			{
-				Spawner = vector3(1862.519, 3664.708, 33.94727),
+				Spawner = vector3(1881.521, 3660.185, 35.86816),
 				InsideShop = vector3(477.0, -1106.4, 43.0),
 				SpawnPoints = {
-					{coords = vector3(1869.376, 3676.035, 35.37952), heading = 92.6, radius = 10.0}
+					{coords = vector3(1881.521, 3660.185, 35.86816), heading = 28.346454620361, radius = 10.0}
 				}
 			}
 		}
