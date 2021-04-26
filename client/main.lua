@@ -1505,12 +1505,12 @@ function CreateJobBlips(v, k)
 		end
 	end
 	
-	--[[if Config.EnablePlayerManagement and ESX.PlayerData.job.grade_name == 'boss' then
+	if v.BossActions ~= nil then
 		for i=1, #v.BossActions, 1 do
 			local distance = #(playerCoords - v.BossActions[i])
 
 			if distance < Config.DrawDistance then
-				DrawMarker(22, v.BossActions[i], 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, Config.MarkerColor.r, Config.MarkerColor.g, Config.MarkerColor.b, 100, false, true, 2, true, false, false, false)
+				DrawMarker(21, v.BossActions[i], 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.5, 0.5, Config.MarkerColor.r, Config.MarkerColor.g, Config.MarkerColor.b, 100, false, true, 2, true, false, false, false)
 				letSleep = false
 
 				if distance < Config.MarkerSize.x then
@@ -1518,8 +1518,7 @@ function CreateJobBlips(v, k)
 				end
 			end
 		end
-	end]]--
-				
+	end		
 end
 
 -- Draw markers and more
@@ -1683,13 +1682,7 @@ AddEventHandler('master_keymap:e', function()
 				ESX.Game.DeleteVehicle(CurrentActionData.vehicle)
 			elseif CurrentAction == 'menu_boss_actions' then
 				ESX.UI.Menu.CloseAll()
-				TriggerEvent('esx_society:openBossMenu', 'police', function(data, menu)
-					menu.close()
-
-					CurrentAction     = 'menu_boss_actions'
-					CurrentActionMsg  = _U('open_bossmenu')
-					CurrentActionData = {}
-				end, { wash = false }) -- disable washing money
+				TriggerEvent('master_society:RequestOpenBossMenu')
 			elseif CurrentAction == 'remove_entity' then
 				
 				if currentTask.busy then

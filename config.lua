@@ -13,7 +13,7 @@ Config.EnableLicenses             = true -- enable if you're using esx_license
 Config.EnableHandcuffTimer        = true -- enable handcuff timer? will unrestrain player after the time ends
 Config.HandcuffTimer              = 30 * 60000 -- 10 mins
 
-Config.EnableJobBlip              = true -- enable blips for cops on duty, requires esx_society
+Config.EnableJobBlip              = true -- enable blips for cops on duty, requires master_society
 
 Config.EnableESXService           = true -- enable esx service?
 Config.MaxInService               = 100
@@ -39,6 +39,10 @@ Config.PoliceStations = {
 
 		Armories = {
 			vector3(451.7, -980.1, 30.6)
+		},
+
+		BossActions = {
+			vector3(450.5275, -975.4418, 30.67834)
 		},
 
 		Jail = {
@@ -91,6 +95,10 @@ Config.SheriffStation = {
 			Colour  = 69,
 			name = 'Kalantari'
 		},
+		
+		BossActions = {
+			vector3(1852.391, 3690.29, 34.19995)
+		},
 
 		Cloakrooms = {
 			vector3(1859.196, 3695.222, 34.23364)
@@ -138,6 +146,10 @@ Config.FBIStation = {
 			Scale   = 0.8,
 			Colour  = 78,
 			name = 'Police Amniat'
+		},
+		
+		BossActions = {
+			vector3(148.9978, -758.3736, 242.1436)
 		},
 
 		Cloakrooms = {
@@ -228,6 +240,10 @@ Config.JusticeStation = {
 			Scale   = 0.1,
 			Colour  = 15,
 			name = 'DadSetani'
+		},
+		
+		BossActions = {
+			vector3(238.0352, -1100.229, 36.12085)
 		},
 
 		Cloakrooms = {
