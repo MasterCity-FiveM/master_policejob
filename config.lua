@@ -114,7 +114,7 @@ Config.SheriffStation = {
 		
 		Vehicles = {
 			{
-				Spawner = vector3(1855.332, 3679.279, 33.77881),
+				Spawner = vector3(1854.079, 3675.257, 33.00366),
 				InsideShop = vector3(228.5, -993.5, -99.5),
 				SpawnPoints = {
 					{coords = vector3(1854.237, 3675.31, 33.00366), heading = 215.0, radius = 6.0},

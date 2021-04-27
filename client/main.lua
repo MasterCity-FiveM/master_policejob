@@ -277,21 +277,37 @@ end
 function OpenPoliceActionsMenu()
 	ESX.UI.Menu.CloseAll()
 
-	ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'police_actions', {
-		title    = ESX.PlayerData.job.label_fa,
-		align    = 'right',
+	if ESX.PlayerData.job.grade_name == 'boss' then
 		elements = {
 			{label = _U('citizen_interaction'), value = 'citizen_interaction'},
 			{label = _U('vehicle_interaction'), value = 'vehicle_interaction'},
 			{label = _U('object_spawner'), value = 'object_spawner'},
-			{label = "اشخاص تحت تعقیب",               value = 'wanted_menu'}
-	}}, function(data, menu)
-
+			{label = "اشخاص تحت تعقیب",  value = 'wanted_menu'},
+			{label = 'پنل مدیریت', value = 'boss_action'},
+		}
+	else
+		elements = {
+			{label = _U('citizen_interaction'), value = 'citizen_interaction'},
+			{label = _U('vehicle_interaction'), value = 'vehicle_interaction'},
+			{label = _U('object_spawner'), value = 'object_spawner'},
+			{label = "اشخاص تحت تعقیب", value = 'wanted_menu'}
+		}
+	end
+	
+	ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'police_actions', {
+		title    = ESX.PlayerData.job.label_fa,
+		align    = 'right',
+		elements = elements
+		
+	}, function(data, menu)
 		if data.current.value == 'wanted_menu' then		-- This
 			TriggerEvent("esx_wanted:openWantedMenu")
 		end	
 
-		if data.current.value == 'citizen_interaction' then
+		if data.current.value == 'boss_action' then
+			menu.close()
+			TriggerEvent('master_society:RequestOpenBossMenu')
+		elseif data.current.value == 'citizen_interaction' then
 			local elements = {
 				{label = _U('id_card'), value = 'identity_card'},
 				{label = _U('search'), value = 'search'},
@@ -999,10 +1015,10 @@ AddEventHandler('esx_policejob:hasEnteredMarker', function(station, part, partNu
 		CurrentAction     = 'Helicopters'
 		CurrentActionMsg  = _U('helicopter_prompt')
 		CurrentActionData = {station = station, part = part, partNum = partNum, data = jobData}
-	elseif part == 'BossActions' then
+	--[[elseif part == 'BossActions' then
 		CurrentAction     = 'menu_boss_actions'
 		CurrentActionMsg  = _U('open_bossmenu')
-		CurrentActionData = {}
+		CurrentActionData = {}]]--
 	elseif part == 'FastTravelsPrompt' then
 		CurrentAction     = 'FastTravelsPrompt'
 		CurrentActionMsg  = 'جهت استفاده از آسانسور E بزنید.'
@@ -1505,7 +1521,7 @@ function CreateJobBlips(v, k)
 		end
 	end
 	
-	if v.BossActions ~= nil then
+	--[[if v.BossActions ~= nil then
 		for i=1, #v.BossActions, 1 do
 			local distance = #(playerCoords - v.BossActions[i])
 
@@ -1518,7 +1534,7 @@ function CreateJobBlips(v, k)
 				end
 			end
 		end
-	end		
+	end]]--	
 end
 
 -- Draw markers and more
@@ -1680,9 +1696,9 @@ AddEventHandler('master_keymap:e', function()
 				--CurrentActionData.Data.to
 			elseif CurrentAction == 'delete_vehicle' then
 				ESX.Game.DeleteVehicle(CurrentActionData.vehicle)
-			elseif CurrentAction == 'menu_boss_actions' then
+			--[[elseif CurrentAction == 'menu_boss_actions' then
 				ESX.UI.Menu.CloseAll()
-				TriggerEvent('master_society:RequestOpenBossMenu')
+				TriggerEvent('master_society:RequestOpenBossMenu')]]--
 			elseif CurrentAction == 'remove_entity' then
 				
 				if currentTask.busy then
