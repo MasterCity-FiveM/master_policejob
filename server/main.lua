@@ -22,6 +22,17 @@ TriggerEvent('master_society:registerSociety', 'sheriff', 'Sheriff', 'society_sh
 TriggerEvent('master_society:registerSociety', 'fbi', 'FBI', 'society_fbi', 'society_fbi', 'society_fbi', {type = 'public'})
 TriggerEvent('master_society:registerSociety', 'dadsetani', 'Dadsetani', 'society_dadsetani', 'society_dadsetani', 'society_dadsetani', {type = 'public'})
 
+ESX.RegisterServerCallback('master_policejob:SpawnGarageCar', function (source, cb, carname)
+	-- TODO CHECK CAR ALLOWED
+	local _source = source
+	ESX.RunCustomFunction("anti_ddos", _source, 'master_vehicles:SpawnGarageCar', {})
+	local xPlayer = ESX.GetPlayerFromId(_source)
+	if xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani' then
+		TriggerEvent('master_warden:AllowSpawnCar', xPlayer.source)
+		cb(true)
+	end
+end)
+
 RegisterServerEvent('esx_policejob:confiscatePlayerItem')
 AddEventHandler('esx_policejob:confiscatePlayerItem', function(target, itemType, itemName, amount)
 	ESX.RunCustomFunction("anti_ddos", source, 'esx_policejob:confiscatePlayerItem', {target = target, itemType = itemType, itemName = itemName, amount = amount})
