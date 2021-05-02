@@ -30,6 +30,8 @@ ESX.RegisterServerCallback('master_policejob:SpawnGarageCar', function (source, 
 	if xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani' then
 		TriggerEvent('master_warden:AllowSpawnCar', xPlayer.source)
 		cb(true)
+	else
+		TriggerEvent('master_warden:InvalidRequest', '[POLICE] Try to Spawn Garage Car!', xPlayer.source)
 	end
 end)
 
@@ -41,6 +43,7 @@ AddEventHandler('esx_policejob:confiscatePlayerItem', function(target, itemType,
 	local targetXPlayer = ESX.GetPlayerFromId(target)
 
 	if sourceXPlayer.job.name ~= 'police' and sourceXPlayer.job.name ~= 'sheriff' and sourceXPlayer.job.name ~= 'fbi' and not (sourceXPlayer.job.name == 'dadsetani' and sourceXPlayer.job.grade_name == 'bodyguard') then
+		TriggerEvent('master_warden:InvalidRequest', '[POLICE] Try to Search Player!', sourceXPlayer.source)
 		return
 	end
 	
@@ -183,7 +186,9 @@ AddEventHandler('esx_policejob:handcuff', function(target, foot)
 			end
 		elseif GetItemCount(source, 'handcuffs') == 0 and not xPlayer.get("HandCuffedPlayer") and not tPlayer.get('HandCuff') then
 			TriggerClientEvent("pNotify:SendNotification", source, { text = "شما دستبند ندارید.", type = "error", timeout = 8000, layout = "bottomCenter"})
-		end		
+		end
+	elseif not(xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') then
+		TriggerEvent('master_warden:InvalidRequest', '[POLICE] Try to Handcuff!', sourceXPlayer.source)
 	end
 end)
 
@@ -241,6 +246,8 @@ AddEventHandler('esx_policejob:drag', function(target)
 		elseif not xPlayer.get("EscortPlayer") and not tPlayer.get('EscortBy') and tPlayer.get('HandCuff') then
 			TriggerClientEvent("pNotify:SendNotification", source, { text = "جهت اسکورت ابتدا باید به فرد دستبند بزنید.", type = "info", timeout = 5000, layout = "bottomCenter"})
 		end
+	elseif not(xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') then
+		TriggerEvent('master_warden:InvalidRequest', '[POLICE] Try to Drag!', sourceXPlayer.source)
 	end
 end)
 		
@@ -288,6 +295,8 @@ AddEventHandler('esx_policejob:putInVehicle', function(target)
 		TriggerClientEvent('esx_policejob:dragOff', source)
 		TriggerClientEvent('esx_policejob:putInVehicle', target, false)
 		ESX.RunCustomFunction("discord", source, 'factionmenuactivity', 'Used Put in Vehicle', "Target: **" .. GetPlayerName(target) .. "**")
+	elseif not(xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') then
+		TriggerEvent('master_warden:InvalidRequest', '[POLICE] Try to put In Vehicle!', sourceXPlayer.source)
 	end
 end)
 
@@ -299,6 +308,8 @@ AddEventHandler('esx_policejob:OutVehicle', function(target)
 	if xPlayer and xPlayer ~= nil and tPlayer and tPlayer ~= nil and (xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') then	
 		TriggerClientEvent('esx_policejob:OutVehicle', target)
 		ESX.RunCustomFunction("discord", source, 'factionmenuactivity', 'Used Put out of Vehicle', "Target: **" .. GetPlayerName(target) .. "**")
+	elseif not(xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') then
+		TriggerEvent('master_warden:InvalidRequest', '[POLICE] Try to Put out of Vehicle!', sourceXPlayer.source)
 	end
 end)
 
@@ -352,6 +363,7 @@ ESX.RegisterServerCallback('esx_policejob:getOtherPlayerData', function(source, 
 	local sPlayer = ESX.GetPlayerFromId(source)
 	
 	if sPlayer == nil or sPlayer.job == nil or not (sPlayer.job.name == 'police' or sPlayer.job.name == 'sheriff' or sPlayer.job.name == 'fbi' or sPlayer.job.name == 'dadsetani') then
+		TriggerEvent('master_warden:InvalidRequest', '[POLICE] Try to getOtherPlayerData!', sourceXPlayer.source)
 		cb({})
 		return
 	end
@@ -444,6 +456,7 @@ ESX.RegisterServerCallback('esx_policejob:getVehicleInfos', function(source, cb,
 	ESX.RunCustomFunction("anti_ddos", source, 'esx_policejob:getVehicleInfos', {plate = plate})
 	local xPlayer = ESX.GetPlayerFromId(source)
 	if xPlayer == nil or xPlayer.job == nil or not (xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') then
+		TriggerEvent('master_warden:InvalidRequest', '[POLICE] Try to getVehicleInfos!', sourceXPlayer.source)
 		return
 	end
 	
@@ -502,6 +515,7 @@ ESX.RegisterServerCallback('esx_policejob:getItems', function(source, cb, item_t
 	end	
 	
 	if not (xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') then
+		TriggerEvent('master_warden:InvalidRequest', '[POLICE] getItems!', sourceXPlayer.source)
 		cb(items)
 		return
 	end
@@ -587,6 +601,7 @@ ESX.RegisterServerCallback('esx_policejob:GiveWeapon', function(source, cb, weap
 	end
 	
 	if not (xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') or jobItems[xPlayer.job.name] == nil or jobItems[xPlayer.job.name][xPlayer.job.grade_name] == nil or jobItems[xPlayer.job.name][xPlayer.job.grade_name]['weapon'] == nil then
+		TriggerEvent('master_warden:InvalidRequest', '[POLICE] GiveWeapon!', xPlayer.source)
 		GetJobItems(xPlayer.job.name, xPlayer.job.grade_name, 'weapon')
 		cb()
 		return

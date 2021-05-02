@@ -561,14 +561,14 @@ Config.SubJobUniforms = {
 				model = {
 					male = {
 						tshirt_1 = 15,  tshirt_2 = 0,
-						torso_1 = 49,   torso_2 = 4,
-						decals_1 = 5,   decals_2 = 0,
-						arms = 38,
-						pants_1 = 87,   pants_2 = 10,
-						shoes_1 = 25,   shoes_2 = 0,
-						mask_1  = 52,    mask_2  = 10,
-						bproof_1  = 7, bproof_2  = 0,
-						helmet_1 = 59,  helmet_2 = 0,
+						torso_1 = 94,   torso_2 = 2,
+						decals_1 = 0,   decals_2 = 0,
+						arms = 74,
+						pants_1 = 28,   pants_2 = 4,
+						shoes_1 = 10,   shoes_2 = 0,
+						mask_1  = 0,    mask_2  = 0,
+						bproof_1  = 7, bproof_2  = 1,
+						helmet_1 = 58,  helmet_2 = 0,
 						chain_1 = 0,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
 						glasses_1 = 15,     glasses_2 = 0
@@ -590,16 +590,16 @@ Config.SubJobUniforms = {
 				label = "گروه ضربت 2",
 				model = {
 					male = {
-						tshirt_1 = 15,  tshirt_2 = 0,
-						torso_1 = 139,   torso_2 = 3,
+						tshirt_1 = 122,  tshirt_2 = 0,
+						torso_1 = 94,   torso_2 = 0,
 						decals_1 = 0,   decals_2 = 0,
-						arms = 27,
-						pants_1 = 28,   pants_2 = 0,
-						shoes_1 = 10,   shoes_2 = 0,
-						mask_1  = 0,    mask_2  = 0,
-						bproof_1  = 7, bproof_2  = 0,
-						helmet_1 = 58,  helmet_2 = 2,
-						chain_1 = 0,    chain_2 = 0,
+						arms = 74,
+						pants_1 = 59,   pants_2 = 1,
+						shoes_1 = 24,   shoes_2 = 0,
+						mask_1  = 52,    mask_2  = 10,
+						bproof_1  = 27, bproof_2  = 0,
+						helmet_1 = 117,  helmet_2 = 1,
+						chain_1 = 1,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
 						glasses_1 = 15,     glasses_2 = 6
 					},
@@ -618,7 +618,132 @@ Config.SubJobUniforms = {
 			}
 		}
 	},
-	fbi = {},
+	fbi = {
+		VIZHE = {
+			{
+				label = "یگان ویژه 1",
+				model = {
+					male = {
+						tshirt_1 = 15,  tshirt_2 = 0,
+						torso_1 = 49,   torso_2 = 1,
+						decals_1 = 4,   decals_2 = 0,
+						arms = 38,
+						pants_1 = 31,   pants_2 = 1,
+						shoes_1 = 35,   shoes_2 = 0,
+						mask_1  = 52,    mask_2  = 3,
+						bproof_1  = 27, bproof_2  = 0,
+						helmet_1 = 75,  helmet_2 = 1,
+						chain_1 = 0,    chain_2 = 0,
+						ears_1 = 0,     ears_2 = 0,
+						glasses_1 = 0,     glasses_2 = 0
+					},
+					female = {
+						tshirt_1 = 51,  tshirt_2 = 0,
+						torso_1 = 48,   torso_2 = 0,
+						decals_1 = 0,   decals_2 = 0,
+						arms = 31,
+						pants_1 = 34,   pants_2 = 0,
+						shoes_1 = 52,   shoes_2 = 0,
+						helmet_1 = 10,  helmet_2 = 2,
+						chain_1 = 0,    chain_2 = 0,
+						ears_1 = 0,     ears_2 = 0
+					}
+				}
+			},
+			{
+				label = "یگان ویژه 2",
+				model = {
+					male = {
+						tshirt_1 = 0,  tshirt_2 = 0,
+						torso_1 = 53,   torso_2 = 2,
+						decals_1 = 0,   decals_2 = 0,
+						arms = 38,
+						pants_1 = 37,   pants_2 = 2,
+						shoes_1 = 35,   shoes_2 = 0,
+						mask_1  = 57,    mask_2  = 1,
+						bproof_1  = 27, bproof_2  = 0,
+						helmet_1 = 59,  helmet_2 = 1,
+						chain_1 = 0,    chain_2 = 0,
+						ears_1 = 0,     ears_2 = 0,
+						glasses_1 = 0,     glasses_2 = 0
+					},
+					female = {
+						tshirt_1 = 51,  tshirt_2 = 0,
+						torso_1 = 48,   torso_2 = 0,
+						decals_1 = 0,   decals_2 = 0,
+						arms = 31,
+						pants_1 = 34,   pants_2 = 0,
+						shoes_1 = 52,   shoes_2 = 0,
+						helmet_1 = 10,  helmet_2 = 2,
+						chain_1 = 0,    chain_2 = 0,
+						ears_1 = 0,     ears_2 = 0
+					}
+				}
+			}
+		},
+		ZARBAT = {
+			{
+				label = "گروه ضربت 1",
+				model = {
+					male = {
+						tshirt_1 = 15,  tshirt_2 = 0,
+						torso_1 = 94,   torso_2 = 2,
+						decals_1 = 0,   decals_2 = 0,
+						arms = 74,
+						pants_1 = 28,   pants_2 = 4,
+						shoes_1 = 10,   shoes_2 = 0,
+						mask_1  = 0,    mask_2  = 0,
+						bproof_1  = 7, bproof_2  = 1,
+						helmet_1 = 58,  helmet_2 = 0,
+						chain_1 = 0,    chain_2 = 0,
+						ears_1 = 0,     ears_2 = 0,
+						glasses_1 = 15,     glasses_2 = 0
+					},
+					female = {
+						tshirt_1 = 51,  tshirt_2 = 0,
+						torso_1 = 48,   torso_2 = 0,
+						decals_1 = 0,   decals_2 = 0,
+						arms = 31,
+						pants_1 = 34,   pants_2 = 0,
+						shoes_1 = 52,   shoes_2 = 0,
+						helmet_1 = 10,  helmet_2 = 2,
+						chain_1 = 0,    chain_2 = 0,
+						ears_1 = 0,     ears_2 = 0
+					}
+				}
+			},
+			{
+				label = "گروه ضربت 2",
+				model = {
+					male = {
+						tshirt_1 = 122,  tshirt_2 = 0,
+						torso_1 = 94,   torso_2 = 0,
+						decals_1 = 0,   decals_2 = 0,
+						arms = 74,
+						pants_1 = 59,   pants_2 = 1,
+						shoes_1 = 24,   shoes_2 = 0,
+						mask_1  = 52,    mask_2  = 10,
+						bproof_1  = 18, bproof_2  = 3,
+						helmet_1 = 117,  helmet_2 = 1,
+						chain_1 = 1,    chain_2 = 0,
+						ears_1 = 0,     ears_2 = 0,
+						glasses_1 = 15,     glasses_2 = 6
+					},
+					female = {
+						tshirt_1 = 51,  tshirt_2 = 0,
+						torso_1 = 48,   torso_2 = 0,
+						decals_1 = 0,   decals_2 = 0,
+						arms = 31,
+						pants_1 = 34,   pants_2 = 0,
+						shoes_1 = 52,   shoes_2 = 0,
+						helmet_1 = 10,  helmet_2 = 2,
+						chain_1 = 0,    chain_2 = 0,
+						ears_1 = 0,     ears_2 = 0
+					}
+				}
+			}
+		}
+	},
 	dadsetani = {}
 }
 
@@ -1157,16 +1282,16 @@ Config.CustomUniforms = {
 				label = "لباس سه",
 				model = {
 					male = {
-						tshirt_1 = 130,  tshirt_2 = 0,
-						torso_1 = 12,   torso_2 = 0,
+						tshirt_1 = 15,  tshirt_2 = 0,
+						torso_1 = 193,   torso_2 = 12,
 						decals_1 = 0,   decals_2 = 0,
 						arms = 38,
-						pants_1 = 28,   pants_2 = 5,
+						pants_1 = 24,   pants_2 = 2,
 						shoes_1 = 10,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 0,
-						bproof_1  = 12, bproof_2  = 2,
-						helmet_1 = 13,  helmet_2 = 3,
-						chain_1 = 28,    chain_2 = 2,
+						bproof_1  = 7, bproof_2  = 2,
+						helmet_1 = 28,  helmet_2 = 0,
+						chain_1 = 6,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
 						glasses_1 = 0,     glasses_2 = 0
 					},
@@ -1186,19 +1311,19 @@ Config.CustomUniforms = {
 		},
 		boss = {
 			{
-				label = "لباس یک",
+				label = "لباس فرمانده",
 				model = {
 					male = {
-						tshirt_1 = 130,  tshirt_2 = 0,
-						torso_1 = 12,   torso_2 = 0,
+						tshirt_1 = 15,  tshirt_2 = 0,
+						torso_1 = 13,   torso_2 = 0,
 						decals_1 = 0,   decals_2 = 0,
-						arms = 38,
-						pants_1 = 28,   pants_2 = 5,
+						arms = 37,
+						pants_1 = 24,   pants_2 = 0,
 						shoes_1 = 10,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 0,
-						bproof_1  = 12, bproof_2  = 2,
-						helmet_1 = 13,  helmet_2 = 3,
-						chain_1 = 28,    chain_2 = 2,
+						bproof_1  = 7, bproof_2  = 2,
+						helmet_1 = 58,  helmet_2 = 0,
+						chain_1 = 21,    chain_2 = 1,
 						ears_1 = 0,     ears_2 = 0,
 						glasses_1 = 0,     glasses_2 = 0
 					},
