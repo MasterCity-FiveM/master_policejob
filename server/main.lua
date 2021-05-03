@@ -35,6 +35,26 @@ ESX.RegisterServerCallback('master_policejob:SpawnGarageCar', function (source, 
 	end
 end)
 
+-- Store Vehicles
+ESX.RegisterServerCallback('master_policejob:storeVehicle', function (source, cb, vehicleProps)
+	ESX.RunCustomFunction("anti_ddos", source, 'master_policejob:storeVehicle')
+	local ownedCars = {}
+	local vehplate = vehicleProps.plate:match("^%s*(.-)%s*$")
+	local vehiclemodel = vehicleProps.model
+	local xPlayer = ESX.GetPlayerFromId(source)
+	if xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani' then
+		for i=1, #Config.JobAllowedCars, 1 do
+			if Config.JobAllowedCars[i] == vehiclemodel then
+				cb(true)
+				return
+			end
+		end
+		cb(false)
+	else
+		TriggerEvent('master_warden:InvalidRequest', '[PoliceJob] storeVehicle!', xPlayer.source)
+	end
+end)
+
 RegisterServerEvent('esx_policejob:confiscatePlayerItem')
 AddEventHandler('esx_policejob:confiscatePlayerItem', function(target, itemType, itemName, amount)
 	ESX.RunCustomFunction("anti_ddos", source, 'esx_policejob:confiscatePlayerItem', {target = target, itemType = itemType, itemName = itemName, amount = amount})

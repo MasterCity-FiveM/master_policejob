@@ -20,6 +20,26 @@ Config.MaxInService               = 100
 
 Config.Locale                     = 'en'
 
+Config.JobAllowedCars = {
+	GetHashKey('polmav'),
+	GetHashKey('prevolter'),
+	GetHashKey('jtdurus2'),
+	GetHashKey('21hoe'),
+	GetHashKey('policeb'),
+	GetHashKey('police3'),
+	GetHashKey('2015polstang'),
+	GetHashKey('polgs350'),
+	GetHashKey('polmp4'),
+	GetHashKey('wmfenyrcop'),
+	GetHashKey('riot'),
+	GetHashKey('insSWAT'),
+	GetHashKey('insSAS'),
+	GetHashKey('anpc_l200'),
+	GetHashKey('polgs350sh'),
+	GetHashKey('polmp4sh'),
+	GetHashKey('wmfenyrcopsh'),
+}
+
 Config.PoliceStations = {
 
 	LSPD = {
@@ -73,7 +93,7 @@ Config.PoliceStations = {
 
 		Helicopters = {
 			{
-				Spawner = vector3(461.1, -981.5, 43.6),
+				Spawner = vector3(449.5, -981.2, 43.6),
 				InsideShop = vector3(477.0, -1106.4, 43.0),
 				SpawnPoints = {
 					{coords = vector3(449.5, -981.2, 43.6), heading = 92.6, radius = 10.0}

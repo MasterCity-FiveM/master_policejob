@@ -1095,7 +1095,7 @@ AddEventHandler('esx_policejob:handcuff', function(foot)
 	isHandcuffed = not foot
 	isHandFootcuffed = foot
 	local playerPed = PlayerPedId()
-	TriggerServerEvent('InteractSound_SV:PlayWithinDistance', 2.0, 'cuff', 0.7)
+	TriggerServerEvent('InteractSound_SV:PlayOnSource', 'cuff', 0.7)
 	Citizen.Wait(4010)
 	SetEnableHandcuffs(playerPed, true)
 	DisablePlayerFiring(playerPed, true)
@@ -1118,7 +1118,7 @@ AddEventHandler('esx_policejob:handuncuff', function(foot)
 	isHandcuffed = false
 	isHandFootcuffed = false
 	local playerPed = PlayerPedId()
-	TriggerServerEvent('InteractSound_SV:PlayWithinDistance', 2.0, 'cuff', 0.7)
+	TriggerServerEvent('InteractSound_SV:PlayOnSource', 'cuff', 0.7)
 	Citizen.Wait(5600)
 	if Config.EnableHandcuffTimer and handcuffTimer.active then
 		ESX.ClearTimeout(handcuffTimer.task)
@@ -1691,7 +1691,6 @@ AddEventHandler('master_keymap:e', function()
 					exports.pNotify:SendNotification({text = _U('service_not'), type = "info", timeout = 3000})
 				end
 			elseif CurrentAction == 'FastTravelsPrompt' then
-			
 				FastTravel(CurrentActionData.to, CurrentActionData.heading)
 				--CurrentActionData.Data.to
 			elseif CurrentAction == 'delete_vehicle' then

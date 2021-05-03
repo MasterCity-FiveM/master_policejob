@@ -89,36 +89,105 @@ function OpenVehicleSpawnerMenu(type, station, part, partNum, StationData)
 				end
 			end, type)
 		elseif data.current.action == 'store_garage' then
-			StoreNearbyVehicle(playerCoords)
+			StoreVehicleToGarage()
 		end
 	end, function(data, menu)
 		menu.close()
 	end)
 end
 
-function StoreNearbyVehicle(playerCoords)
-	local vehicles = ESX.Game.GetVehiclesInArea(playerCoords, 30.0)
-	if #vehicles == 0 then
-		exports.pNotify:SendNotification({text = "خودرویی اطراف شما نیست.", type = "error", timeout = 4000})
-		return
-	end
-	
-	for k,entity in ipairs(vehicles) do
-		local attempt = 0
+function StoreVehicleToGarage()
+	local ped = GetPlayerPed(-1)
+	local playerCoords = GetEntityCoords(PlayerPedId())
+    if (DoesEntityExist(ped) and not IsEntityDead(ped)) then 
+        local pos = GetEntityCoords(ped)
 
-		while not NetworkHasControlOfEntity(entity) and attempt < 30.0 and DoesEntityExist(entity) do
-			Wait(100)
-			NetworkRequestControlOfEntity(entity)
-			attempt = attempt + 1
-		end
+        if (IsPedSittingInAnyVehicle(ped)) then 
+            local vehicle = GetVehiclePedIsIn(ped, false)
+			local vehicleProps = GetVehicleProperties(vehicle)
+			if vehicleProps and vehicleProps.plate ~= nil then
+				if (GetPedInVehicleSeat( vehicle, -1 ) == ped) then 
+					ESX.TriggerServerCallback('master_policejob:storeVehicle', function(success)
+						if success then
+							local entity = vehicle
+							local attempt = 0
 
-		if DoesEntityExist(entity) and NetworkHasControlOfEntity(entity) then
-			ESX.Game.DeleteVehicle(entity)
-			exports.pNotify:SendNotification({text = "خودرو به پارکینگ منتقل شد.", type = "success", timeout = 4000})
-			return
-		end
-	end
-	exports.pNotify:SendNotification({text = "خودرو به پارکینگ منتقل نشد، اگر شهروندی در خودرو می باشد، می بایست پیاده شود.", type = "error", timeout = 6000})	
+							exports.pNotify:SendNotification({text = "خودرو شما به گاراژ منتقل شد.", type = "success", timeout = 4000})
+							while not NetworkHasControlOfEntity(entity) and attempt < 30.0 and DoesEntityExist(entity) do
+								Wait(100)
+								NetworkRequestControlOfEntity(entity)
+								attempt = attempt + 1
+							end
+
+							if DoesEntityExist(entity) and NetworkHasControlOfEntity(entity) then
+								ESX.Game.DeleteVehicle(entity)
+								return
+							end
+						else
+							exports.pNotify:SendNotification({text = "شما امکان تحویل این خودرو به گاراژ را ندارید.", type = "error", timeout = 4000})
+						end
+					end, vehicleProps)
+				else 
+					exports.pNotify:SendNotification({text = "شما باید پشت فرمان باشید.", type = "error", timeout = 4000})
+				end
+			else
+				exports.pNotify:SendNotification({text = "شما امکان تحویل این خودرو را ندارید.", type = "error", timeout = 4000})
+				return
+			end
+        else
+            exports.pNotify:SendNotification({text = "شما باید در خودرو باشید.", type = "error", timeout = 4000})
+        end 
+    end
+end
+
+function GetVehicleProperties(vehicle)
+    if DoesEntityExist(vehicle) then
+        local vehicleProps = ESX.Game.GetVehicleProperties(vehicle)
+
+        vehicleProps["tyres"] = {}
+        vehicleProps["windows"] = {}
+        vehicleProps["doors"] = {}
+
+        for id = 1, 7 do
+            local tyreId = IsVehicleTyreBurst(vehicle, id, false)
+        
+            if tyreId then
+                vehicleProps["tyres"][#vehicleProps["tyres"] + 1] = tyreId
+        
+                if tyreId == false then
+                    tyreId = IsVehicleTyreBurst(vehicle, id, true)
+                    vehicleProps["tyres"][ #vehicleProps["tyres"]] = tyreId
+                end
+            else
+                vehicleProps["tyres"][#vehicleProps["tyres"] + 1] = false
+            end
+        end
+
+        for id = 1, 7 do
+            local windowId = IsVehicleWindowIntact(vehicle, id)
+
+            if windowId ~= nil then
+                vehicleProps["windows"][#vehicleProps["windows"] + 1] = windowId
+            else
+                vehicleProps["windows"][#vehicleProps["windows"] + 1] = true
+            end
+        end
+        
+        for id = 0, 5 do
+            local doorId = IsVehicleDoorDamaged(vehicle, id)
+        
+            if doorId then
+                vehicleProps["doors"][#vehicleProps["doors"] + 1] = doorId
+            else
+                vehicleProps["doors"][#vehicleProps["doors"] + 1] = false
+            end
+        end
+		vehicleProps["vehicleHeadLight"]  = GetVehicleHeadlightsColour(vehicle)
+
+        return vehicleProps
+	else
+		return nil
+    end
 end
 
 function GetAvailableVehicleSpawnPoint(station, part, partNum, StationData)
