@@ -143,7 +143,7 @@ Locales['en'] = {
   ['have_deposited'] = 'شما ~y~%sx~s~ ~b~%s~s~ داخل جعبه گزاشتید',
   ['quantity'] = 'تعداد',
   ['inventory'] = 'لوازم داخل جیب',
-  ['police_stock'] = 'لوازم پلیس',
+  ['police_stock'] = 'لوازم',
   -- Misc
   ['remove_prop'] = 'برای برداشتن موانع، دکمه E را فشار دهید',
   ['map_blip'] = 'Edare Police',

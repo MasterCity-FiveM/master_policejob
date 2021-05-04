@@ -145,10 +145,10 @@ Config.SheriffStation = {
 
 		Helicopters = {
 			{
-				Spawner = vector3(1881.521, 3660.185, 35.86816),
+				Spawner = vector3(1869.363, 3675.956, 35.37952),
 				InsideShop = vector3(477.0, -1106.4, 43.0),
 				SpawnPoints = {
-					{coords = vector3(1881.521, 3660.185, 35.86816), heading = 28.346454620361, radius = 10.0}
+					{coords = vector3(1869.363, 3675.956, 35.37952), heading = 116.346454620361, radius = 10.0}
 				}
 			}
 		}
@@ -186,7 +186,7 @@ Config.FBIStation = {
 		
 		Vehicles = {
 			{
-				Spawner = vector3(96.35605, -723.5736, 33.12158),
+				Spawner = vector3(94.35165, -716.5319, 33.12158),
 				InsideShop = vector3(228.5, -993.5, -99.5),
 				SpawnPoints = {
 					{coords = vector3(96.17143, -728.9011, 33.12158), heading = 340.0, radius = 6.0},
@@ -197,7 +197,7 @@ Config.FBIStation = {
 		
 		Helicopters = {
 			{
-				Spawner = vector3(-69.65274, -813.6791, 326.1736),
+				Spawner = vector3(-75.20439, -818.7165, 326.1736),
 				InsideShop = vector3(477.0, -1106.4, 43.0),
 				SpawnPoints = {
 					{coords = vector3(-75.42857, -819.1912, 326.1736), heading = 308.97637, radius = 10.0}
@@ -280,7 +280,7 @@ Config.JusticeStation = {
 		
 		Vehicles = {
 			{
-				Spawner = vector3(235.8462, -1072.629, 29.27991),
+				Spawner = vector3(240.8835, -1061.499, 29.1787),
 				InsideShop = vector3(228.5, -993.5, -99.5),
 				SpawnPoints = {
 					{coords = vector3(222.6725, -1079.222, 29.26306), heading = 357.0, radius = 6.0},
@@ -467,15 +467,18 @@ Config.SubJobUniforms = {
 						glasses_1 = 15,     glasses_2 = 0
 					},
 					female = {
-						tshirt_1 = 51,  tshirt_2 = 0,
-						torso_1 = 48,   torso_2 = 0,
-						decals_1 = 0,   decals_2 = 0,
-						arms = 31,
-						pants_1 = 34,   pants_2 = 0,
-						shoes_1 = 52,   shoes_2 = 0,
-						helmet_1 = 10,  helmet_2 = 2,
+						tshirt_1 = 161,  tshirt_2 = 0,
+						torso_1 = 327,   torso_2 = 8,
+						decals_1 = -1,   decals_2 = 0,
+						arms = 36,
+						pants_1 = 37,   pants_2 = 0,
+						shoes_1 = 29,   shoes_2 = 0,
+						mask_1  = -1,    mask_2  = 0,
+						bproof_1  = 26, bproof_2  = 0,
+						helmet_1 = 59,  helmet_2 = 0,
 						chain_1 = 0,    chain_2 = 0,
-						ears_1 = 0,     ears_2 = 0
+						ears_1 = 0,     ears_2 = 0,
+						glasses_1 = 15,     glasses_2 = 0
 					}
 				}
 			},
@@ -788,15 +791,18 @@ Config.CustomUniforms = {
 						glasses_1 = 0,     glasses_2 = 0
 					},
 					female = {
-						tshirt_1 = 51,  tshirt_2 = 0,
+						tshirt_1 = 15,  tshirt_2 = 0,
 						torso_1 = 48,   torso_2 = 0,
 						decals_1 = 0,   decals_2 = 0,
 						arms = 31,
 						pants_1 = 34,   pants_2 = 0,
-						shoes_1 = 52,   shoes_2 = 0,
-						helmet_1 = 10,  helmet_2 = 2,
-						chain_1 = 0,    chain_2 = 0,
-						ears_1 = 0,     ears_2 = 0
+						shoes_1 = 25,   shoes_2 = 0,
+						mask_1  = 0,    mask_2  = 0,
+						bproof_1  = 11, bproof_2  = 3,
+						helmet_1 = 1,  helmet_2 = 0,
+						chain_1 = -1,    chain_2 = 0,
+						ears_1 = -1,     ears_2 = 0,
+						glasses_1 = -1,     glasses_2 = 0
 					}
 				}
 			}
@@ -821,15 +827,18 @@ Config.CustomUniforms = {
 						glasses_1 = 0,     glasses_2 = 0
 					},
 					female = {
-						tshirt_1 = 33,  tshirt_2 = 0,
-						torso_1 = 92,   torso_2 = 0,
+						tshirt_1 = 27,  tshirt_2 = 0,
+						torso_1 = 93,   torso_2 = 0,
 						decals_1 = 0,   decals_2 = 0,
-						arms = 26,
-						pants_1 = 47,   pants_2 = 0,
-						shoes_1 = 27,   shoes_2 = 0,
-						helmet_1 = -1,  helmet_2 = 0,
-						chain_1 = 0,    chain_2 = 0,
-						ears_1 = 2,     ears_2 = 0
+						arms = 31,
+						pants_1 = 54,   pants_2 = 1,
+						shoes_1 = 24,   shoes_2 = 0,
+						mask_1  = 0,    mask_2  = 0,
+						bproof_1  = 11, bproof_2  = 3,
+						helmet_1 = 10,  helmet_2 = 2,
+						chain_1 = -1,    chain_2 = 0,
+						ears_1 = -1,     ears_2 = 0,
+						glasses_1 = -1,     glasses_2 = 0
 					}
 				}
 			}
@@ -854,15 +863,18 @@ Config.CustomUniforms = {
 						glasses_1 = 0,     glasses_2 = 0
 					},
 					female = {
-						tshirt_1 = 33,  tshirt_2 = 0,
-						torso_1 = 92,   torso_2 = 0,
-						decals_1 = 0,   decals_2 = 0,
-						arms = 26,
-						pants_1 = 47,   pants_2 = 0,
-						shoes_1 = 27,   shoes_2 = 0,
-						helmet_1 = -1,  helmet_2 = 0,
-						chain_1 = 0,    chain_2 = 0,
-						ears_1 = 2,     ears_2 = 0
+						tshirt_1 = 31,  tshirt_2 = 0,
+						torso_1 = 92,   torso_2 = 2,
+						decals_1 = 10,   decals_2 = 0,
+						arms = 39,
+						pants_1 = 61,   pants_2 = 0,
+						shoes_1 = 25,   shoes_2 = 0,
+						mask_1  = 0,    mask_2  = 0,
+						bproof_1  = 11, bproof_2  = 3,
+						helmet_1 = 10,  helmet_2 = 2,
+						chain_1 = -1,    chain_2 = 0,
+						ears_1 = -1,     ears_2 = 0,
+						glasses_1 = -1,     glasses_2 = 0
 					}
 				}
 			}
@@ -888,14 +900,17 @@ Config.CustomUniforms = {
 					},
 					female = {
 						tshirt_1 = 33,  tshirt_2 = 0,
-						torso_1 = 92,   torso_2 = 0,
+						torso_1 = 202,   torso_2 = 8,
 						decals_1 = 0,   decals_2 = 0,
-						arms = 26,
-						pants_1 = 47,   pants_2 = 0,
-						shoes_1 = 27,   shoes_2 = 0,
+						arms = 39,
+						pants_1 = 34,   pants_2 = 0,
+						shoes_1 = 25,   shoes_2 = 0,
+						mask_1  = 0,    mask_2  = 0,
+						bproof_1  = 7, bproof_2  = 0,
 						helmet_1 = -1,  helmet_2 = 0,
-						chain_1 = 0,    chain_2 = 0,
-						ears_1 = 2,     ears_2 = 0
+						chain_1 = -1,    chain_2 = 0,
+						ears_1 = -1,     ears_2 = 0,
+						glasses_1 = -1,     glasses_2 = 0
 					}
 				}
 			}
@@ -920,15 +935,18 @@ Config.CustomUniforms = {
 						glasses_1 = 0,     glasses_2 = 0
 					},
 					female = {
-						tshirt_1 = 33,  tshirt_2 = 0,
-						torso_1 = 92,   torso_2 = 0,
+						tshirt_1 = 15,  tshirt_2 = 0,
+						torso_1 = 84,   torso_2 = 2,
 						decals_1 = 0,   decals_2 = 0,
-						arms = 26,
-						pants_1 = 47,   pants_2 = 0,
-						shoes_1 = 27,   shoes_2 = 0,
-						helmet_1 = -1,  helmet_2 = 0,
-						chain_1 = 0,    chain_2 = 0,
-						ears_1 = 2,     ears_2 = 0
+						arms = 31,
+						pants_1 = 31,   pants_2 = 1,
+						shoes_1 = 9,   shoes_2 = 0,
+						mask_1  = 0,    mask_2  = 0,
+						bproof_1  = 7, bproof_2  = 0,
+						helmet_1 = 28,  helmet_2 = 0,
+						chain_1 = -1,    chain_2 = 0,
+						ears_1 = -1,     ears_2 = 0,
+						glasses_1 = -1,     glasses_2 = 0
 					}
 				}
 			}
@@ -953,15 +971,18 @@ Config.CustomUniforms = {
 						glasses_1 = 0,     glasses_2 = 0
 					},
 					female = {
-						tshirt_1 = 33,  tshirt_2 = 0,
-						torso_1 = 92,   torso_2 = 0,
+						tshirt_1 = 152,  tshirt_2 = 0,
+						torso_1 = 86,   torso_2 = 1,
 						decals_1 = 0,   decals_2 = 0,
-						arms = 26,
-						pants_1 = 47,   pants_2 = 0,
-						shoes_1 = 27,   shoes_2 = 0,
-						helmet_1 = -1,  helmet_2 = 0,
-						chain_1 = 0,    chain_2 = 0,
-						ears_1 = 2,     ears_2 = 0
+						arms = 41,
+						pants_1 = 23,   pants_2 = 12,
+						shoes_1 = 28,   shoes_2 = 0,
+						mask_1  = 0,    mask_2  = 0,
+						bproof_1  = 11, bproof_2  = 3,
+						helmet_1 = 58,  helmet_2 = 2,
+						chain_1 = -1,    chain_2 = 0,
+						ears_1 = -1,     ears_2 = 0,
+						glasses_1 = -1,     glasses_2 = 0
 					}
 				}
 			}
@@ -986,15 +1007,18 @@ Config.CustomUniforms = {
 						glasses_1 = 0,     glasses_2 = 0
 					},
 					female = {
-						tshirt_1 = 33,  tshirt_2 = 0,
-						torso_1 = 92,   torso_2 = 0,
+						tshirt_1 = 38,  tshirt_2 = 0,
+						torso_1 = 339,   torso_2 = 0,
 						decals_1 = 0,   decals_2 = 0,
-						arms = 26,
-						pants_1 = 47,   pants_2 = 0,
-						shoes_1 = 27,   shoes_2 = 0,
+						arms = 36,
+						pants_1 = 37,   pants_2 = 0,
+						shoes_1 = 29,   shoes_2 = 0,
+						mask_1  = 0,    mask_2  = 0,
+						bproof_1  = 26, bproof_2  = 0,
 						helmet_1 = -1,  helmet_2 = 0,
-						chain_1 = 0,    chain_2 = 0,
-						ears_1 = 2,     ears_2 = 0
+						chain_1 = 86,    chain_2 = 1,
+						ears_1 = -1,     ears_2 = 0,
+						glasses_1 = -1,     glasses_2 = 0
 					}
 				}
 			}
@@ -1020,15 +1044,18 @@ Config.CustomUniforms = {
 						glasses_1 = 0,     glasses_2 = 0
 					},
 					female = {
-						tshirt_1 = 51,  tshirt_2 = 0,
-						torso_1 = 48,   torso_2 = 0,
+						tshirt_1 = 34,  tshirt_2 = 0,
+						torso_1 = 44,   torso_2 = 1,
 						decals_1 = 0,   decals_2 = 0,
-						arms = 31,
-						pants_1 = 34,   pants_2 = 0,
-						shoes_1 = 52,   shoes_2 = 0,
-						helmet_1 = 10,  helmet_2 = 2,
-						chain_1 = 0,    chain_2 = 0,
-						ears_1 = 0,     ears_2 = 0
+						arms = 96,
+						pants_1 = 61,   pants_2 = 0,
+						shoes_1 = 25,   shoes_2 = 0,
+						mask_1  = -1,    mask_2  = 0,
+						bproof_1  = -1, bproof_2  = 0,
+						helmet_1 = -1,  helmet_2 = 0,
+						chain_1 = -1,    chain_2 = 0,
+						ears_1 = -1,     ears_2 = 0,
+						glasses_1 = -1,     glasses_2 = 0
 					}
 				}
 			}
@@ -1053,15 +1080,18 @@ Config.CustomUniforms = {
 						glasses_1 = 0,     glasses_2 = 0
 					},
 					female = {
-						tshirt_1 = 33,  tshirt_2 = 0,
-						torso_1 = 92,   torso_2 = 0,
+						tshirt_1 = 34,  tshirt_2 = 0,
+						torso_1 = 33,   torso_2 = 0,
 						decals_1 = 0,   decals_2 = 0,
-						arms = 26,
-						pants_1 = 47,   pants_2 = 0,
-						shoes_1 = 27,   shoes_2 = 0,
+						arms = 96,
+						pants_1 = 61,   pants_2 = 0,
+						shoes_1 = 25,   shoes_2 = 0,
+						mask_1  = -1,    mask_2  = 0,
+						bproof_1  = 11, bproof_2  = 0,
 						helmet_1 = -1,  helmet_2 = 0,
-						chain_1 = 0,    chain_2 = 0,
-						ears_1 = 2,     ears_2 = 0
+						chain_1 = -1,    chain_2 = 0,
+						ears_1 = -1,     ears_2 = 0,
+						glasses_1 = -1,     glasses_2 = 0
 					}
 				}
 			}
@@ -1086,15 +1116,18 @@ Config.CustomUniforms = {
 						glasses_1 = 0,     glasses_2 = 0
 					},
 					female = {
-						tshirt_1 = 33,  tshirt_2 = 0,
-						torso_1 = 92,   torso_2 = 0,
+						tshirt_1 = 34,  tshirt_2 = 0,
+						torso_1 = 40,   torso_2 = 0,
 						decals_1 = 0,   decals_2 = 0,
-						arms = 26,
-						pants_1 = 47,   pants_2 = 0,
-						shoes_1 = 27,   shoes_2 = 0,
+						arms = 53,
+						pants_1 = 61,   pants_2 = 0,
+						shoes_1 = 25,   shoes_2 = 0,
+						mask_1  = -1,    mask_2  = 0,
+						bproof_1  = 10, bproof_2  = 0,
 						helmet_1 = -1,  helmet_2 = 0,
-						chain_1 = 0,    chain_2 = 0,
-						ears_1 = 2,     ears_2 = 0
+						chain_1 = -1,    chain_2 = 0,
+						ears_1 = -1,     ears_2 = 0,
+						glasses_1 = -1,     glasses_2 = 0
 					}
 				}
 			}
@@ -1119,15 +1152,18 @@ Config.CustomUniforms = {
 						glasses_1 = 0,     glasses_2 = 0
 					},
 					female = {
-						tshirt_1 = 33,  tshirt_2 = 0,
-						torso_1 = 92,   torso_2 = 0,
+						tshirt_1 = 34,  tshirt_2 = 0,
+						torso_1 = 85,   torso_2 = 2,
 						decals_1 = 0,   decals_2 = 0,
-						arms = 26,
-						pants_1 = 47,   pants_2 = 0,
-						shoes_1 = 27,   shoes_2 = 0,
+						arms = 96,
+						pants_1 = 61,   pants_2 = 0,
+						shoes_1 = 25,   shoes_2 = 0,
+						mask_1  = -1,    mask_2  = 0,
+						bproof_1  = 6, bproof_2  = 3,
 						helmet_1 = -1,  helmet_2 = 0,
-						chain_1 = 0,    chain_2 = 0,
-						ears_1 = 2,     ears_2 = 0
+						chain_1 = -1,    chain_2 = 0,
+						ears_1 = -1,     ears_2 = 0,
+						glasses_1 = -1,     glasses_2 = 0
 					}
 				}
 			}
@@ -1152,15 +1188,18 @@ Config.CustomUniforms = {
 						glasses_1 = 0,     glasses_2 = 0
 					},
 					female = {
-						tshirt_1 = 33,  tshirt_2 = 0,
-						torso_1 = 92,   torso_2 = 0,
+						tshirt_1 = 34,  tshirt_2 = 0,
+						torso_1 = 85,   torso_2 = 1,
 						decals_1 = 0,   decals_2 = 0,
-						arms = 26,
-						pants_1 = 47,   pants_2 = 0,
-						shoes_1 = 27,   shoes_2 = 0,
+						arms = 96,
+						pants_1 = 61,   pants_2 = 0,
+						shoes_1 = 25,   shoes_2 = 0,
+						mask_1  = -1,    mask_2  = 0,
+						bproof_1  = 17, bproof_2  = 1,
 						helmet_1 = -1,  helmet_2 = 0,
-						chain_1 = 0,    chain_2 = 0,
-						ears_1 = 2,     ears_2 = 0
+						chain_1 = -1,    chain_2 = 0,
+						ears_1 = -1,     ears_2 = 0,
+						glasses_1 = -1,     glasses_2 = 0
 					}
 				}
 			}
@@ -1185,15 +1224,18 @@ Config.CustomUniforms = {
 						glasses_1 = 0,     glasses_2 = 0
 					},
 					female = {
-						tshirt_1 = 33,  tshirt_2 = 0,
-						torso_1 = 92,   torso_2 = 0,
+						tshirt_1 = 34,  tshirt_2 = 0,
+						torso_1 = 90,   torso_2 = 0,
 						decals_1 = 0,   decals_2 = 0,
-						arms = 26,
-						pants_1 = 47,   pants_2 = 0,
-						shoes_1 = 27,   shoes_2 = 0,
+						arms = 92,
+						pants_1 = 61,   pants_2 = 0,
+						shoes_1 = 25,   shoes_2 = 0,
+						mask_1  = -1,    mask_2  = 0,
+						bproof_1  = 11, bproof_2  = 2,
 						helmet_1 = -1,  helmet_2 = 0,
-						chain_1 = 0,    chain_2 = 0,
-						ears_1 = 2,     ears_2 = 0
+						chain_1 = -1,    chain_2 = 0,
+						ears_1 = -1,     ears_2 = 0,
+						glasses_1 = -1,     glasses_2 = 0
 					}
 				}
 			}
@@ -1218,15 +1260,18 @@ Config.CustomUniforms = {
 						glasses_1 = 0,     glasses_2 = 0
 					},
 					female = {
-						tshirt_1 = 33,  tshirt_2 = 0,
-						torso_1 = 92,   torso_2 = 0,
+						tshirt_1 = 32,  tshirt_2 = 0,
+						torso_1 = 40,   torso_2 = 0,
 						decals_1 = 0,   decals_2 = 0,
-						arms = 26,
-						pants_1 = 47,   pants_2 = 0,
-						shoes_1 = 27,   shoes_2 = 0,
+						arms = 92,
+						pants_1 = 61,   pants_2 = 0,
+						shoes_1 = 25,   shoes_2 = 0,
+						mask_1  = -1,    mask_2  = 0,
+						bproof_1  = 31, bproof_2  = 2,
 						helmet_1 = -1,  helmet_2 = 0,
-						chain_1 = 0,    chain_2 = 0,
-						ears_1 = 2,     ears_2 = 0
+						chain_1 = -1,    chain_2 = 0,
+						ears_1 = -1,     ears_2 = 0,
+						glasses_1 = 11,     glasses_2 = 1
 					}
 				}
 			}
@@ -1252,15 +1297,18 @@ Config.CustomUniforms = {
 						glasses_1 = 0,     glasses_2 = 0
 					},
 					female = {
-						tshirt_1 = 33,  tshirt_2 = 0,
-						torso_1 = 92,   torso_2 = 0,
+						tshirt_1 = 23,  tshirt_2 = 1,
+						torso_1 = 179,   torso_2 = 0,
 						decals_1 = 0,   decals_2 = 0,
 						arms = 26,
-						pants_1 = 47,   pants_2 = 0,
-						shoes_1 = 27,   shoes_2 = 0,
-						helmet_1 = -1,  helmet_2 = 0,
-						chain_1 = 0,    chain_2 = 0,
-						ears_1 = 2,     ears_2 = 0
+						pants_1 = 6,   pants_2 = 0,
+						shoes_1 = 28,   shoes_2 = 0,
+						mask_1  = -1,    mask_2  = 0,
+						bproof_1  = -1, bproof_2  = 0,
+						helmet_1 = 10,  helmet_2 = 3,
+						chain_1 = -1,    chain_2 = 0,
+						ears_1 = -1,     ears_2 = 0,
+						glasses_1 = -1,     glasses_2 = 0
 					}
 				}
 			}
@@ -1284,15 +1332,18 @@ Config.CustomUniforms = {
 						glasses_1 = 0,     glasses_2 = 0
 					},
 					female = {
-						tshirt_1 = 33,  tshirt_2 = 0,
-						torso_1 = 92,   torso_2 = 0,
+						tshirt_1 = 15,  tshirt_2 = 0,
+						torso_1 = 44,   torso_2 = 0,
 						decals_1 = 0,   decals_2 = 0,
-						arms = 26,
-						pants_1 = 47,   pants_2 = 0,
-						shoes_1 = 27,   shoes_2 = 0,
-						helmet_1 = -1,  helmet_2 = 0,
-						chain_1 = 0,    chain_2 = 0,
-						ears_1 = 2,     ears_2 = 0
+						arms = 31,
+						pants_1 = 54,   pants_2 = 1,
+						shoes_1 = 25,   shoes_2 = 0,
+						mask_1  = -1,    mask_2  = 0,
+						bproof_1  = 7, bproof_2  = 2,
+						helmet_1 = 10,  helmet_2 = 3,
+						chain_1 = -1,    chain_2 = 0,
+						ears_1 = -1,     ears_2 = 0,
+						glasses_1 = -1,     glasses_2 = 0
 					}
 				}
 			}
@@ -1316,15 +1367,18 @@ Config.CustomUniforms = {
 						glasses_1 = 0,     glasses_2 = 0
 					},
 					female = {
-						tshirt_1 = 33,  tshirt_2 = 0,
-						torso_1 = 92,   torso_2 = 0,
+						tshirt_1 = 15,  tshirt_2 = 0,
+						torso_1 = 202,   torso_2 = 11,
 						decals_1 = 0,   decals_2 = 0,
-						arms = 26,
-						pants_1 = 47,   pants_2 = 0,
-						shoes_1 = 27,   shoes_2 = 0,
-						helmet_1 = -1,  helmet_2 = 0,
-						chain_1 = 0,    chain_2 = 0,
-						ears_1 = 2,     ears_2 = 0
+						arms = 27,
+						pants_1 = 61,   pants_2 = 0,
+						shoes_1 = 25,   shoes_2 = 0,
+						mask_1  = -1,    mask_2  = 0,
+						bproof_1  = 7, bproof_2  = 2,
+						helmet_1 = 28,  helmet_2 = 1,
+						chain_1 = -1,    chain_2 = 0,
+						ears_1 = -1,     ears_2 = 0,
+						glasses_1 = -1,     glasses_2 = 0
 					}
 				}
 			}
@@ -1348,15 +1402,18 @@ Config.CustomUniforms = {
 						glasses_1 = 0,     glasses_2 = 0
 					},
 					female = {
-						tshirt_1 = 33,  tshirt_2 = 0,
-						torso_1 = 92,   torso_2 = 0,
+						tshirt_1 = 14,  tshirt_2 = 1,
+						torso_1 = 332,   torso_2 = 0,
 						decals_1 = 0,   decals_2 = 0,
-						arms = 26,
-						pants_1 = 47,   pants_2 = 0,
-						shoes_1 = 27,   shoes_2 = 0,
-						helmet_1 = -1,  helmet_2 = 0,
-						chain_1 = 0,    chain_2 = 0,
-						ears_1 = 2,     ears_2 = 0
+						arms = 28,
+						pants_1 = 54,   pants_2 = 3,
+						shoes_1 = 25,   shoes_2 = 0,
+						mask_1  = -1,    mask_2  = 0,
+						bproof_1  = 7, bproof_2  = 2,
+						helmet_1 = 58,  helmet_2 = 0,
+						chain_1 = -1,    chain_2 = 0,
+						ears_1 = -1,     ears_2 = 0,
+						glasses_1 = -1,     glasses_2 = 0
 					}
 				}
 			}
