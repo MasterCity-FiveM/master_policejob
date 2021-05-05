@@ -282,7 +282,7 @@ function OpenPoliceActionsMenu()
 		elements = {
 			{label = _U('citizen_interaction'), value = 'citizen_interaction'},
 			{label = _U('vehicle_interaction'), value = 'vehicle_interaction'},
-			{label = _U('object_spawner'), value = 'object_spawner'},
+			--{label = _U('object_spawner'), value = 'object_spawner'},
 			{label = "اشخاص تحت تعقیب",  value = 'wanted_menu'},
 			{label = 'پنل مدیریت', value = 'boss_action'},
 		}
@@ -290,7 +290,7 @@ function OpenPoliceActionsMenu()
 		elements = {
 			{label = _U('citizen_interaction'), value = 'citizen_interaction'},
 			{label = _U('vehicle_interaction'), value = 'vehicle_interaction'},
-			{label = _U('object_spawner'), value = 'object_spawner'},
+			--{label = _U('object_spawner'), value = 'object_spawner'},
 			{label = "اشخاص تحت تعقیب", value = 'wanted_menu'}
 		}
 	end
