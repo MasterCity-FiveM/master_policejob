@@ -17,6 +17,7 @@ Citizen.CreateThread(function()
 	ESX.PlayerData = ESX.GetPlayerData()
 	
 	if ESX.GetPlayerData().job.name == 'fbi' then
+		playerInService = true
 		ESX.TriggerServerCallback('esx_service:enableService', function(canTakeService, maxInService, inServiceCount)
 			if not canTakeService then
 				ESX.ShowNotification(_U('service_max', inServiceCount, maxInService))
@@ -963,7 +964,29 @@ end
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
 	ESX.PlayerData.job = job
+	
+	if job.name == 'fbi' then
+		playerInService = true
+		ESX.TriggerServerCallback('esx_service:enableService', function(canTakeService, maxInService, inServiceCount)
+			if not canTakeService then
+				ESX.ShowNotification(_U('service_max', inServiceCount, maxInService))
+			else
+				awaitService = true
+				playerInService = true
 
+				local notification = {
+					title    = _U('service_anonunce'),
+					subject  = '',
+					msg      = _U('service_in_announce', GetPlayerName(PlayerId())),
+					iconType = 1
+				}
+
+				TriggerServerEvent('esx_service:notifyAllInService', notification, job)
+				TriggerEvent('esx_policejob:updateBlip')
+			end
+		end, job)
+	end
+	
 	Citizen.Wait(5000)
 	TriggerServerEvent('esx_policejob:forceBlip')
 end)

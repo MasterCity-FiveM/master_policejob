@@ -680,11 +680,11 @@ ESX.RegisterServerCallback('esx_policejob:GetWeapon', function(source, cb, weapo
 		end
 	end
 	
-	if not ItemFound then
+	--[[if not ItemFound then
 		TriggerClientEvent("pNotify:SendNotification", source, { text = "شما مجوز تحویل این اسلحه را ندارید.", type = "error", timeout = 5000, layout = "bottomCenter"})
 		cb()
 		return
-	end
+	end]]--
 	
 	if xPlayer.hasWeapon(weapon) then
 		xPlayer.removeWeapon(weapon)
