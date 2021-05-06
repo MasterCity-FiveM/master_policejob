@@ -38,6 +38,12 @@ Config.JobAllowedCars = {
 	GetHashKey('polgs350sh'),
 	GetHashKey('polmp4sh'),
 	GetHashKey('wmfenyrcopsh'),
+	GetHashKey('sheriff'),
+	GetHashKey('sheriff2'),
+	GetHashKey('police'),
+	GetHashKey('police2'),
+	GetHashKey('police3'),
+	GetHashKey('police4'),
 }
 
 Config.PoliceStations = {
