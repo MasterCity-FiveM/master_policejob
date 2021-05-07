@@ -1308,6 +1308,7 @@ function HandCuffDisableActions()
 			EnableControlAction(0, 1, true)
 			EnableControlAction(0, 2, true)
 			EnableControlAction(0, Keys['G'], true)
+			EnableControlAction(0, Keys['L'], true)
 				
 			if not isHandFootcuffed then
 				EnableControlAction(0, 32, true) -- W
@@ -1681,7 +1682,6 @@ end)
 RegisterNetEvent('master_keymap:f6')
 AddEventHandler('master_keymap:f6', function()
 	if not isDead and ESX.PlayerData.job and (ESX.PlayerData.job.name == 'police' or ESX.PlayerData.job.name == 'sheriff' or ESX.PlayerData.job.name == 'fbi' or ESX.PlayerData.job.name == 'dadsetani') then
-		
 		if not Config.EnableESXService then
 			OpenPoliceActionsMenu()
 		elseif playerInService then
