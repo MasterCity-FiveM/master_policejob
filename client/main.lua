@@ -290,7 +290,7 @@ end
 
 function OpenPoliceActionsMenu()
 	ESX.UI.Menu.CloseAll()
-
+	Citizen.Wait(100)
 	if ESX.PlayerData.job.grade_name == 'boss' then
 		elements = {
 			{label = _U('citizen_interaction'), value = 'citizen_interaction'},
