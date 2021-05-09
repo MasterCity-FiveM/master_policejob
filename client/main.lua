@@ -1132,7 +1132,7 @@ AddEventHandler('esx_policejob:handcuff', function(foot)
 	isHandFootcuffed = foot
 	local playerPed = PlayerPedId()
 	HandCuffDisableActions()
-	TriggerServerEvent('InteractSound_SV:PlayOnSource', 'cuff', 0.7)
+	TriggerServerEvent('InteractSound_SV:PlayOnSource', 'cuff', 0.3)
 	Citizen.Wait(4010)
 	SetEnableHandcuffs(playerPed, true)
 	DisablePlayerFiring(playerPed, true)
@@ -1148,7 +1148,7 @@ AddEventHandler('esx_policejob:handuncuff', function(foot)
 	isHandcuffed = false
 	isHandFootcuffed = false
 	local playerPed = PlayerPedId()
-	TriggerServerEvent('InteractSound_SV:PlayOnSource', 'cuff', 0.7)
+	TriggerServerEvent('InteractSound_SV:PlayOnSource', 'cuff', 0.3)
 	Citizen.Wait(5600)
 	ClearPedSecondaryTask(playerPed)
 	SetEnableHandcuffs(playerPed, false)
