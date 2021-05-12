@@ -364,7 +364,13 @@ function OpenPoliceActionsMenu()
 						TriggerServerEvent('esx_policejob:drag', GetPlayerServerId(closestPlayer))
 					elseif action == 'put_in_vehicle' then
 						menu.close()
-						TriggerServerEvent('esx_policejob:putInVehicle', GetPlayerServerId(closestPlayer))
+						local vehicle = ESX.Game.GetVehicleInDirection(4)
+							if vehicle == 0 then
+								exports.pNotify:SendNotification({text = "خودرویی در نزدیکی شما نیست.", type = "error", timeout = 3000})
+								return
+							end
+						local NetId = NetworkGetNetworkIdFromEntity(vehicle)
+						TriggerServerEvent('esx_policejob:putInVehicle', GetPlayerServerId(closestPlayer), NetId)
 					elseif action == 'out_the_vehicle' then
 						menu.close()
 						TriggerServerEvent('esx_policejob:OutVehicle', GetPlayerServerId(closestPlayer))
@@ -1248,28 +1254,30 @@ function DisableActionsForDrag()
 end
 
 RegisterNetEvent('esx_policejob:putInVehicle')
-AddEventHandler('esx_policejob:putInVehicle', function()
+AddEventHandler('esx_policejob:putInVehicle', function(veh)
 	if isHandcuffed or isHandFootcuffed then
 		local playerPed = PlayerPedId()
 		local coords = GetEntityCoords(playerPed)
-
-		if IsAnyVehicleNearPoint(coords, 5.0) then
-			local vehicle = GetClosestVehicle(coords, 5.0, 0, 71)
-
-			if DoesEntityExist(vehicle) then
-				local maxSeats, freeSeat = GetVehicleMaxNumberOfPassengers(vehicle)
-
-				for i=maxSeats - 1, 0, -1 do
+		
+        local vehicle = NetworkGetEntityFromNetworkId(veh)
+		if veh and vehicle then
+			local maxSeats, freeSeat = GetVehicleMaxNumberOfPassengers(vehicle)
+			if maxSeats and maxSeats > 1 then
+				for i = maxSeats, 0, -1 do
 					if IsVehicleSeatFree(vehicle, i) then
 						freeSeat = i
 						break
 					end
 				end
-
-				if freeSeat then
-					TaskWarpPedIntoVehicle(playerPed, vehicle, freeSeat)
-					dragStatus.isDragged = false
+			else
+				if IsVehicleSeatFree(vehicle, 1) then
+					freeSeat = 1
 				end
+			end
+
+			if freeSeat and freeSeat > 0 then
+				TaskWarpPedIntoVehicle(playerPed, vehicle, freeSeat)
+				dragStatus.isDragged = false
 			end
 		end
 	end
