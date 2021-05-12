@@ -223,6 +223,8 @@ AddEventHandler('esx_policejob:putInVehicle', function(target, netID)
 		Citizen.Wait(500)
 		TriggerClientEvent('esx_policejob:putInVehicle', target, netID)
 		ESX.RunCustomFunction("discord", source, 'factionmenuactivity', 'Used Put in Vehicle', "Target: **" .. GetPlayerName(target) .. "**")
+		Citizen.Wait(1000)
+		TriggerClientEvent('master_hud:CloseSeatBelt', target)
 	elseif not(xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') then
 		TriggerEvent('master_warden:InvalidRequest', '[POLICE] Try to put In Vehicle!', sourceXPlayer.source)
 	end
