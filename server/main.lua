@@ -716,5 +716,9 @@ end)
 RegisterServerEvent('esx_policejob:message')
 AddEventHandler('esx_policejob:message', function(target, msg)
 	ESX.RunCustomFunction("anti_ddos", source, 'esx_policejob:message', {msg = msg})
-	TriggerClientEvent("pNotify:SendNotification", target, { text = msg, type = "info", timeout = 5000, layout = "bottomCenter"})
+	local _source = source
+	local xPlayer = ESX.GetPlayerFromId(_source)
+	if xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani' then
+		TriggerClientEvent("pNotify:SendNotification", target, { text = msg, type = "info", timeout = 5000, layout = "bottomCenter"})
+	end
 end)
