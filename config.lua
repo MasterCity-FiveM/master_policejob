@@ -1,4 +1,5 @@
 Config                            = {}
+Config                            = {}
 
 Config.DrawDistance               = 100.0
 Config.MarkerType                 = 1
@@ -315,10 +316,10 @@ Config.Uniforms = {
 	police = {
 		bullet_wear = {
 			male = {
-				bproof_1 = 12,  bproof_2 = 3
+				bproof_1 = 19,  bproof_2 = 0
 			},
 			female = {
-				bproof_1 = 13,  bproof_2 = 1
+				bproof_1 = 19,  bproof_2 = 0
 			}
 		},
 		
@@ -334,10 +335,10 @@ Config.Uniforms = {
 	sheriff = {
 		bullet_wear = {
 			male = {
-				bproof_1 = 12,  bproof_2 = 2
+				bproof_1 = 19,  bproof_2 = 1
 			},
 			female = {
-				bproof_1 = 13,  bproof_2 = 1
+				bproof_1 = 19,  bproof_2 = 1
 			}
 		},
 		
@@ -353,10 +354,10 @@ Config.Uniforms = {
 	fbi = {
 		bullet_wear = {
 			male = {
-				bproof_1 = 12,  bproof_2 = 3
+				bproof_1 = 39,  bproof_2 = 0
 			},
 			female = {
-				bproof_1 = 13,  bproof_2 = 1
+				bproof_1 = 39,  bproof_2 = 0
 			}
 		},
 		
@@ -404,7 +405,7 @@ Config.SubJobUniforms = {
 						pants_1 = 31,   pants_2 = 2,
 						shoes_1 = 25,   shoes_2 = 0,
 						mask_1  = 52,    mask_2  = 0,
-						bproof_1  = 16, bproof_2  = 0,
+						bproof_1  = 19, bproof_2  = 0,
 						helmet_1 = 117,  helmet_2 = 0,
 						chain_1 = 0,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
@@ -434,7 +435,7 @@ Config.SubJobUniforms = {
 						pants_1 = 59,   pants_2 = 0,
 						shoes_1 = 25,   shoes_2 = 0,
 						mask_1  = 52,    mask_2  = 10,
-						bproof_1  = 11, bproof_2  = 2,
+						bproof_1  = 19, bproof_2  = 0,
 						helmet_1 = 117,  helmet_2 = 0,
 						chain_1 = 1,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
@@ -466,7 +467,7 @@ Config.SubJobUniforms = {
 						pants_1 = 87,   pants_2 = 10,
 						shoes_1 = 25,   shoes_2 = 0,
 						mask_1  = 52,    mask_2  = 10,
-						bproof_1  = 7, bproof_2  = 0,
+						bproof_1  = 19, bproof_2  = 0,
 						helmet_1 = 59,  helmet_2 = 0,
 						chain_1 = 0,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
@@ -480,7 +481,7 @@ Config.SubJobUniforms = {
 						pants_1 = 37,   pants_2 = 0,
 						shoes_1 = 29,   shoes_2 = 0,
 						mask_1  = -1,    mask_2  = 0,
-						bproof_1  = 26, bproof_2  = 0,
+						bproof_1  = 19, bproof_2  = 0,
 						helmet_1 = 59,  helmet_2 = 0,
 						chain_1 = 0,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
@@ -499,7 +500,7 @@ Config.SubJobUniforms = {
 						pants_1 = 28,   pants_2 = 0,
 						shoes_1 = 10,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 0,
-						bproof_1  = 7, bproof_2  = 0,
+						bproof_1  = 19, bproof_2  = 0,
 						helmet_1 = 58,  helmet_2 = 2,
 						chain_1 = 0,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
@@ -534,7 +535,7 @@ Config.SubJobUniforms = {
 						pants_1 = 31,   pants_2 = 1,
 						shoes_1 = 35,   shoes_2 = 0,
 						mask_1  = 52,    mask_2  = 3,
-						bproof_1  = 27, bproof_2  = 0,
+						bproof_1  = 19, bproof_2  = 1,
 						helmet_1 = 75,  helmet_2 = 1,
 						chain_1 = 0,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
@@ -564,7 +565,7 @@ Config.SubJobUniforms = {
 						pants_1 = 37,   pants_2 = 2,
 						shoes_1 = 35,   shoes_2 = 0,
 						mask_1  = 57,    mask_2  = 1,
-						bproof_1  = 27, bproof_2  = 0,
+						bproof_1  = 19, bproof_2  = 1,
 						helmet_1 = 59,  helmet_2 = 1,
 						chain_1 = 0,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
@@ -596,7 +597,7 @@ Config.SubJobUniforms = {
 						pants_1 = 28,   pants_2 = 4,
 						shoes_1 = 10,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 0,
-						bproof_1  = 7, bproof_2  = 1,
+						bproof_1  = 19, bproof_2  = 1,
 						helmet_1 = 58,  helmet_2 = 0,
 						chain_1 = 0,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
@@ -626,7 +627,7 @@ Config.SubJobUniforms = {
 						pants_1 = 59,   pants_2 = 1,
 						shoes_1 = 24,   shoes_2 = 0,
 						mask_1  = 52,    mask_2  = 10,
-						bproof_1  = 27, bproof_2  = 0,
+						bproof_1  = 19, bproof_2  = 1,
 						helmet_1 = 117,  helmet_2 = 1,
 						chain_1 = 1,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
@@ -660,7 +661,7 @@ Config.SubJobUniforms = {
 						pants_1 = 31,   pants_2 = 1,
 						shoes_1 = 35,   shoes_2 = 0,
 						mask_1  = 52,    mask_2  = 3,
-						bproof_1  = 27, bproof_2  = 0,
+						bproof_1  = 39, bproof_2  = 0,
 						helmet_1 = 75,  helmet_2 = 1,
 						chain_1 = 0,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
@@ -690,7 +691,7 @@ Config.SubJobUniforms = {
 						pants_1 = 37,   pants_2 = 2,
 						shoes_1 = 35,   shoes_2 = 0,
 						mask_1  = 57,    mask_2  = 1,
-						bproof_1  = 27, bproof_2  = 0,
+						bproof_1  = 39, bproof_2  = 0,
 						helmet_1 = 59,  helmet_2 = 1,
 						chain_1 = 0,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
@@ -722,7 +723,7 @@ Config.SubJobUniforms = {
 						pants_1 = 28,   pants_2 = 4,
 						shoes_1 = 10,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 0,
-						bproof_1  = 7, bproof_2  = 1,
+						bproof_1  = 39, bproof_2  = 0,
 						helmet_1 = 58,  helmet_2 = 0,
 						chain_1 = 0,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
@@ -752,7 +753,7 @@ Config.SubJobUniforms = {
 						pants_1 = 59,   pants_2 = 1,
 						shoes_1 = 24,   shoes_2 = 0,
 						mask_1  = 52,    mask_2  = 10,
-						bproof_1  = 18, bproof_2  = 3,
+						bproof_1  = 39, bproof_2  = 0,
 						helmet_1 = 117,  helmet_2 = 1,
 						chain_1 = 1,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
@@ -790,7 +791,7 @@ Config.CustomUniforms = {
 						pants_1 = 35,   pants_2 = 0,
 						shoes_1 = 15,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 23,
-						bproof_1  = 12, bproof_2  = 3,
+						bproof_1  = 19, bproof_2  = 0,
 						helmet_1 = 46,  helmet_2 = 0,
 						chain_1 = 0,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
@@ -804,7 +805,7 @@ Config.CustomUniforms = {
 						pants_1 = 34,   pants_2 = 0,
 						shoes_1 = 25,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 0,
-						bproof_1  = 11, bproof_2  = 3,
+						bproof_1  = 19, bproof_2  = 0,
 						helmet_1 = 1,  helmet_2 = 0,
 						chain_1 = -1,    chain_2 = 0,
 						ears_1 = -1,     ears_2 = 0,
@@ -826,7 +827,7 @@ Config.CustomUniforms = {
 						pants_1 = 52,   pants_2 = 1,
 						shoes_1 = 24,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 0,
-						bproof_1  = 12, bproof_2  = 3,
+						bproof_1  = 19, bproof_2  = 0,
 						helmet_1 = -1,  helmet_2 = 0,
 						chain_1 = 0,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
@@ -840,7 +841,7 @@ Config.CustomUniforms = {
 						pants_1 = 54,   pants_2 = 1,
 						shoes_1 = 24,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 0,
-						bproof_1  = 11, bproof_2  = 3,
+						bproof_1  = 19, bproof_2  = 0,
 						helmet_1 = 10,  helmet_2 = 2,
 						chain_1 = -1,    chain_2 = 0,
 						ears_1 = -1,     ears_2 = 0,
@@ -862,7 +863,7 @@ Config.CustomUniforms = {
 						pants_1 = 52,   pants_2 = 1,
 						shoes_1 = 24,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 35,
-						bproof_1  = 12, bproof_2  = 3,
+						bproof_1  = 19, bproof_2  = 0,
 						helmet_1 = -1,  helmet_2 = 0,
 						chain_1 = 0,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
@@ -876,7 +877,7 @@ Config.CustomUniforms = {
 						pants_1 = 61,   pants_2 = 0,
 						shoes_1 = 25,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 0,
-						bproof_1  = 11, bproof_2  = 3,
+						bproof_1  = 19, bproof_2  = 0,
 						helmet_1 = 10,  helmet_2 = 2,
 						chain_1 = -1,    chain_2 = 0,
 						ears_1 = -1,     ears_2 = 0,
@@ -898,7 +899,7 @@ Config.CustomUniforms = {
 						pants_1 = 52,   pants_2 = 1,
 						shoes_1 = 24,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 179,
-						bproof_1  = 12, bproof_2  = 3,
+						bproof_1  = 19, bproof_2  = 0,
 						helmet_1 = 10,  helmet_2 = 6,
 						chain_1 = 0,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
@@ -912,7 +913,7 @@ Config.CustomUniforms = {
 						pants_1 = 34,   pants_2 = 0,
 						shoes_1 = 25,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 0,
-						bproof_1  = 7, bproof_2  = 0,
+						bproof_1  = 19, bproof_2  = 0,
 						helmet_1 = -1,  helmet_2 = 0,
 						chain_1 = -1,    chain_2 = 0,
 						ears_1 = -1,     ears_2 = 0,
@@ -934,7 +935,7 @@ Config.CustomUniforms = {
 						pants_1 = 28,   pants_2 = 0,
 						shoes_1 = 10,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 0,
-						bproof_1  = 12, bproof_2  = 3,
+						bproof_1  = 19, bproof_2  = 0,
 						helmet_1 = 28,  helmet_2 = 1,
 						chain_1 = 28,    chain_2 = 2,
 						ears_1 = 0,     ears_2 = 0,
@@ -948,7 +949,7 @@ Config.CustomUniforms = {
 						pants_1 = 31,   pants_2 = 1,
 						shoes_1 = 9,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 0,
-						bproof_1  = 7, bproof_2  = 0,
+						bproof_1  = 19, bproof_2  = 0,
 						helmet_1 = 28,  helmet_2 = 0,
 						chain_1 = -1,    chain_2 = 0,
 						ears_1 = -1,     ears_2 = 0,
@@ -970,7 +971,7 @@ Config.CustomUniforms = {
 						pants_1 = 28,   pants_2 = 0,
 						shoes_1 = 10,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 52,
-						bproof_1  = 12, bproof_2  = 3,
+						bproof_1  = 19, bproof_2  = 0,
 						helmet_1 = -1,  helmet_2 = 0,
 						chain_1 = 28,    chain_2 = 2,
 						ears_1 = 0,     ears_2 = 0,
@@ -984,7 +985,7 @@ Config.CustomUniforms = {
 						pants_1 = 23,   pants_2 = 12,
 						shoes_1 = 28,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 0,
-						bproof_1  = 11, bproof_2  = 3,
+						bproof_1  = 19, bproof_2  = 0,
 						helmet_1 = 58,  helmet_2 = 2,
 						chain_1 = -1,    chain_2 = 0,
 						ears_1 = -1,     ears_2 = 0,
@@ -1006,7 +1007,7 @@ Config.CustomUniforms = {
 						pants_1 = 28,   pants_2 = 0,
 						shoes_1 = 10,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 52,
-						bproof_1  = 12, bproof_2  = 3,
+						bproof_1  = 19, bproof_2  = 0,
 						helmet_1 = -1,  helmet_2 = 0,
 						chain_1 = 28,    chain_2 = 2,
 						ears_1 = 0,     ears_2 = 0,
@@ -1020,7 +1021,7 @@ Config.CustomUniforms = {
 						pants_1 = 37,   pants_2 = 0,
 						shoes_1 = 29,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 0,
-						bproof_1  = 26, bproof_2  = 0,
+						bproof_1  = 19, bproof_2  = 0,
 						helmet_1 = -1,  helmet_2 = 0,
 						chain_1 = 86,    chain_2 = 1,
 						ears_1 = -1,     ears_2 = 0,
@@ -1043,7 +1044,7 @@ Config.CustomUniforms = {
 						pants_1 = 25,   pants_2 = 0,
 						shoes_1 = 15,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 23,
-						bproof_1  = 12, bproof_2  = 2,
+						bproof_1  = 19, bproof_2  = 1,
 						helmet_1 = -1,  helmet_2 = 0,
 						chain_1 = 0,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
@@ -1057,7 +1058,7 @@ Config.CustomUniforms = {
 						pants_1 = 61,   pants_2 = 0,
 						shoes_1 = 25,   shoes_2 = 0,
 						mask_1  = -1,    mask_2  = 0,
-						bproof_1  = -1, bproof_2  = 0,
+						bproof_1  = 19, bproof_2  = 1,
 						helmet_1 = -1,  helmet_2 = 0,
 						chain_1 = -1,    chain_2 = 0,
 						ears_1 = -1,     ears_2 = 0,
@@ -1069,7 +1070,7 @@ Config.CustomUniforms = {
 
 		sotvan = {
 			{
-				label = "لباس پلیس 1",
+				label = "لباس شریف 1",
 				model = {
 					male = {
 						tshirt_1 = 37,  tshirt_2 = 0,
@@ -1079,7 +1080,7 @@ Config.CustomUniforms = {
 						pants_1 = 25,   pants_2 = 2,
 						shoes_1 = 15,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 0,
-						bproof_1  = 12, bproof_2  = 2,
+						bproof_1  = 19, bproof_2  = 1,
 						helmet_1 = -1,  helmet_2 = 0,
 						chain_1 = 0,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
@@ -1093,7 +1094,7 @@ Config.CustomUniforms = {
 						pants_1 = 61,   pants_2 = 0,
 						shoes_1 = 25,   shoes_2 = 0,
 						mask_1  = -1,    mask_2  = 0,
-						bproof_1  = 11, bproof_2  = 0,
+						bproof_1  = 19, bproof_2  = 1,
 						helmet_1 = -1,  helmet_2 = 0,
 						chain_1 = -1,    chain_2 = 0,
 						ears_1 = -1,     ears_2 = 0,
@@ -1105,7 +1106,7 @@ Config.CustomUniforms = {
 		
 		sarvan = {
 			{
-				label = "لباس پلیس 2",
+				label = "لباس شریف 2",
 				model = {
 					male = {
 						tshirt_1 = 54,  tshirt_2 = 0,
@@ -1115,7 +1116,7 @@ Config.CustomUniforms = {
 						pants_1 = 24,   pants_2 = 0,
 						shoes_1 = 10,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 0,
-						bproof_1  = 12, bproof_2  = 2,
+						bproof_1  = 19, bproof_2  = 1,
 						helmet_1 = 13,  helmet_2 = 0,
 						chain_1 = 0,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
@@ -1129,7 +1130,7 @@ Config.CustomUniforms = {
 						pants_1 = 61,   pants_2 = 0,
 						shoes_1 = 25,   shoes_2 = 0,
 						mask_1  = -1,    mask_2  = 0,
-						bproof_1  = 10, bproof_2  = 0,
+						bproof_1  = 19, bproof_2  = 1,
 						helmet_1 = -1,  helmet_2 = 0,
 						chain_1 = -1,    chain_2 = 0,
 						ears_1 = -1,     ears_2 = 0,
@@ -1141,7 +1142,7 @@ Config.CustomUniforms = {
 
 		sargord = {
 			{
-				label = "لباس پلیس 3",
+				label = "لباس شریف 3",
 				model = {
 					male = {
 						tshirt_1 = 55,  tshirt_2 = 0,
@@ -1151,7 +1152,7 @@ Config.CustomUniforms = {
 						pants_1 = 24,   pants_2 = 0,
 						shoes_1 = 10,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 0,
-						bproof_1  = 12, bproof_2  = 2,
+						bproof_1  = 19, bproof_2  = 1,
 						helmet_1 = 13,  helmet_2 = 0,
 						chain_1 = 0,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
@@ -1165,7 +1166,7 @@ Config.CustomUniforms = {
 						pants_1 = 61,   pants_2 = 0,
 						shoes_1 = 25,   shoes_2 = 0,
 						mask_1  = -1,    mask_2  = 0,
-						bproof_1  = 6, bproof_2  = 3,
+						bproof_1  = 19, bproof_2  = 1,
 						helmet_1 = -1,  helmet_2 = 0,
 						chain_1 = -1,    chain_2 = 0,
 						ears_1 = -1,     ears_2 = 0,
@@ -1177,7 +1178,7 @@ Config.CustomUniforms = {
 		
 		sarhang = {
 			{
-				label = "لباس پلیس 4",
+				label = "لباس شریف 4",
 				model = {
 					male = {
 						tshirt_1 = 129,  tshirt_2 = 0,
@@ -1187,7 +1188,7 @@ Config.CustomUniforms = {
 						pants_1 = 52,   pants_2 = 0,
 						shoes_1 = 25,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 0,
-						bproof_1  = 12, bproof_2  = 2,
+						bproof_1  = 19, bproof_2  = 1,
 						helmet_1 = 10,  helmet_2 = 7,
 						chain_1 = 0,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
@@ -1201,7 +1202,7 @@ Config.CustomUniforms = {
 						pants_1 = 61,   pants_2 = 0,
 						shoes_1 = 25,   shoes_2 = 0,
 						mask_1  = -1,    mask_2  = 0,
-						bproof_1  = 17, bproof_2  = 1,
+						bproof_1  = 19, bproof_2  = 1,
 						helmet_1 = -1,  helmet_2 = 0,
 						chain_1 = -1,    chain_2 = 0,
 						ears_1 = -1,     ears_2 = 0,
@@ -1223,7 +1224,7 @@ Config.CustomUniforms = {
 						pants_1 = 28,   pants_2 = 0,
 						shoes_1 = 10,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 0,
-						bproof_1  = 12, bproof_2  = 2,
+						bproof_1  = 19, bproof_2  = 1,
 						helmet_1 = 13,  helmet_2 = 0,
 						chain_1 = 28,    chain_2 = 2,
 						ears_1 = 0,     ears_2 = 0,
@@ -1237,7 +1238,7 @@ Config.CustomUniforms = {
 						pants_1 = 61,   pants_2 = 0,
 						shoes_1 = 25,   shoes_2 = 0,
 						mask_1  = -1,    mask_2  = 0,
-						bproof_1  = 11, bproof_2  = 2,
+						bproof_1  = 19, bproof_2  = 1,
 						helmet_1 = -1,  helmet_2 = 0,
 						chain_1 = -1,    chain_2 = 0,
 						ears_1 = -1,     ears_2 = 0,
@@ -1259,7 +1260,7 @@ Config.CustomUniforms = {
 						pants_1 = 28,   pants_2 = 5,
 						shoes_1 = 10,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 0,
-						bproof_1  = 12, bproof_2  = 2,
+						bproof_1  = 19, bproof_2  = 1,
 						helmet_1 = 13,  helmet_2 = 3,
 						chain_1 = 28,    chain_2 = 2,
 						ears_1 = 0,     ears_2 = 0,
@@ -1273,7 +1274,7 @@ Config.CustomUniforms = {
 						pants_1 = 61,   pants_2 = 0,
 						shoes_1 = 25,   shoes_2 = 0,
 						mask_1  = -1,    mask_2  = 0,
-						bproof_1  = 31, bproof_2  = 2,
+						bproof_1  = 19, bproof_2  = 1,
 						helmet_1 = -1,  helmet_2 = 0,
 						chain_1 = -1,    chain_2 = 0,
 						ears_1 = -1,     ears_2 = 0,
@@ -1286,7 +1287,7 @@ Config.CustomUniforms = {
 	fbi = {
 		agent = {
 			{
-				label = "لباس یک",
+				label = "لباس مامور",
 				model = {
 					male = {
 						tshirt_1 = 28,  tshirt_2 = 0,
@@ -1321,7 +1322,7 @@ Config.CustomUniforms = {
 		},
 		specialagent = {
 			{
-				label = "لباس دو",
+				label = "لباس مامور ویژه",
 				model = {
 					male = {
 						tshirt_1 = 15,  tshirt_2 = 0,
@@ -1331,7 +1332,7 @@ Config.CustomUniforms = {
 						pants_1 = 52,   pants_2 = 1,
 						shoes_1 = 25,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 0,
-						bproof_1  = 7, bproof_2  = 2,
+						bproof_1  = 39, bproof_2  = 0,
 						helmet_1 = 58,  helmet_2 = 2,
 						chain_1 = 6,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
@@ -1345,7 +1346,7 @@ Config.CustomUniforms = {
 						pants_1 = 54,   pants_2 = 1,
 						shoes_1 = 25,   shoes_2 = 0,
 						mask_1  = -1,    mask_2  = 0,
-						bproof_1  = 7, bproof_2  = 2,
+						bproof_1  = 39, bproof_2  = 0,
 						helmet_1 = 10,  helmet_2 = 3,
 						chain_1 = -1,    chain_2 = 0,
 						ears_1 = -1,     ears_2 = 0,
@@ -1356,7 +1357,7 @@ Config.CustomUniforms = {
 		},
 		janeshinf = {
 			{
-				label = "لباس سه",
+				label = "لباس جانشین فرمانده",
 				model = {
 					male = {
 						tshirt_1 = 15,  tshirt_2 = 0,
@@ -1366,7 +1367,7 @@ Config.CustomUniforms = {
 						pants_1 = 24,   pants_2 = 2,
 						shoes_1 = 10,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 0,
-						bproof_1  = 7, bproof_2  = 2,
+						bproof_1  = 39, bproof_2  = 0,
 						helmet_1 = 28,  helmet_2 = 0,
 						chain_1 = 6,    chain_2 = 0,
 						ears_1 = 0,     ears_2 = 0,
@@ -1380,7 +1381,7 @@ Config.CustomUniforms = {
 						pants_1 = 61,   pants_2 = 0,
 						shoes_1 = 25,   shoes_2 = 0,
 						mask_1  = -1,    mask_2  = 0,
-						bproof_1  = 7, bproof_2  = 2,
+						bproof_1  = 39, bproof_2  = 0,
 						helmet_1 = 28,  helmet_2 = 1,
 						chain_1 = -1,    chain_2 = 0,
 						ears_1 = -1,     ears_2 = 0,
@@ -1401,7 +1402,7 @@ Config.CustomUniforms = {
 						pants_1 = 24,   pants_2 = 0,
 						shoes_1 = 10,   shoes_2 = 0,
 						mask_1  = 0,    mask_2  = 0,
-						bproof_1  = 7, bproof_2  = 2,
+						bproof_1  = 39, bproof_2  = 0,
 						helmet_1 = 58,  helmet_2 = 0,
 						chain_1 = 21,    chain_2 = 1,
 						ears_1 = 0,     ears_2 = 0,
@@ -1415,7 +1416,7 @@ Config.CustomUniforms = {
 						pants_1 = 54,   pants_2 = 3,
 						shoes_1 = 25,   shoes_2 = 0,
 						mask_1  = -1,    mask_2  = 0,
-						bproof_1  = 7, bproof_2  = 2,
+						bproof_1  = 39, bproof_2  = 0,
 						helmet_1 = 58,  helmet_2 = 0,
 						chain_1 = -1,    chain_2 = 0,
 						ears_1 = -1,     ears_2 = 0,
