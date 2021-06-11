@@ -6,8 +6,6 @@ description 'ESX Police Job'
 
 version '1.3.0'
 
-this_is_a_map 'yes'
-
 server_scripts {
 	'@mysql-async/lib/MySQL.lua',
 	'@es_extended/locale.lua',
