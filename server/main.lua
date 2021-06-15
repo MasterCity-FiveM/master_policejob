@@ -4,12 +4,10 @@ jobItems = {}
 
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
-if Config.MaxInService ~= -1 then
-	TriggerEvent('esx_service:activateService', 'police', Config.MaxInService)
-	TriggerEvent('esx_service:activateService', 'sheriff', Config.MaxInService)
-	TriggerEvent('esx_service:activateService', 'fbi', Config.MaxInService)
-	TriggerEvent('esx_service:activateService', 'dadsetani', Config.MaxInService)
-end
+TriggerEvent('esx_service:activateService', 'police', 500)
+TriggerEvent('esx_service:activateService', 'sheriff', 500)
+TriggerEvent('esx_service:activateService', 'fbi', 500)
+TriggerEvent('esx_service:activateService', 'dadsetani', 500)
 
 TriggerEvent('esx_phone:registerNumber', 'police', _U('alert_police'), true, true)
 TriggerEvent('esx_phone:registerNumber', 'sheriff', 'Sheriff Alert', true, true)
@@ -661,47 +659,6 @@ ESX.RegisterServerCallback('esx_policejob:getPlayerInventory', function(source, 
 	local items   = xPlayer.inventory
 
 	cb( { items = items } )
-end)
-
-AddEventHandler('playerDropped', function()
-	-- Save the source in case we lose it (which happens a lot)
-	local _source = source
-
-	-- Did the player ever join?
-	if _source ~= nil then
-		local xPlayer = ESX.GetPlayerFromId(_source)
-
-		-- Is it worth telling all clients to refresh?
-		if xPlayer ~= nil and xPlayer.job ~= nil and (xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') then
-			Citizen.Wait(5000)
-			TriggerClientEvent('esx_policejob:updateBlip', -1)
-		end
-	end
-end)
-
-RegisterServerEvent('esx_policejob:spawned')
-AddEventHandler('esx_policejob:spawned', function()
-	ESX.RunCustomFunction("anti_ddos", source, 'esx_policejob:spawned', {})
-	local _source = source
-	local xPlayer = ESX.GetPlayerFromId(_source)
-
-	if xPlayer ~= nil and xPlayer.job ~= nil and (xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') then
-		Citizen.Wait(5000)
-		TriggerClientEvent('esx_policejob:updateBlip', -1)
-	end
-end)
-
-RegisterServerEvent('esx_policejob:forceBlip')
-AddEventHandler('esx_policejob:forceBlip', function()
-	ESX.RunCustomFunction("anti_ddos", source, 'esx_policejob:forceBlip', {})
-	TriggerClientEvent('esx_policejob:updateBlip', -1)
-end)
-
-AddEventHandler('onResourceStart', function(resource)
-	if resource == GetCurrentResourceName() then
-		Citizen.Wait(5000)
-		TriggerClientEvent('esx_policejob:updateBlip', -1)
-	end
 end)
 
 AddEventHandler('onResourceStop', function(resource)

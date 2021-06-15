@@ -10,7 +10,7 @@ Keys = {
 	["NENTER"] = 201, ["N4"] = 108, ["N5"] = 60, ["N6"] = 107, ["N+"] = 96, ["N-"] = 97, ["N7"] = 117, ["N8"] = 61, ["N9"] = 118
 }
 
-local CurrentActionData, dragStatus, blipsCops, currentTask = {}, {}, {}, {}, {}
+local CurrentActionData, dragStatus, currentTask = {}, {}, {}, {}
 local HasAlreadyEnteredMarker, isDead, isHandcuffed, isHandFootcuffed, hasAlreadyJoined, playerInService = false, false, false, false, false, false
 local LastStation, LastPart, LastPartNum, LastEntity, CurrentAction, CurrentActionMsg, underDragPlayer
 dragStatus.isDragged = false, false
@@ -46,7 +46,6 @@ Citizen.CreateThread(function()
 				}
 
 				TriggerServerEvent('esx_service:notifyAllInService', notification, ESX.PlayerData.job.name)
-				TriggerEvent('esx_policejob:updateBlip')
 			end
 		end, ESX.PlayerData.job.name)
 	end
@@ -186,7 +185,6 @@ function OpenCloakroomMenu()
 						TriggerServerEvent('esx_service:notifyAllInService', notification, ESX.PlayerData.job.name)
 
 						TriggerServerEvent('esx_service:disableService', ESX.PlayerData.job.name)
-						TriggerEvent('esx_policejob:updateBlip')
 						exports.pNotify:SendNotification({text = _U('service_out'), type = "info", timeout = 3000})
 					end
 				end, ESX.PlayerData.job.name)
@@ -214,7 +212,6 @@ function OpenCloakroomMenu()
 							}
 
 							TriggerServerEvent('esx_service:notifyAllInService', notification, ESX.PlayerData.job.name)
-							TriggerEvent('esx_policejob:updateBlip')
 							exports.pNotify:SendNotification({text = _U('service_in'), type = "info", timeout = 3000})
 						end
 					end, ESX.PlayerData.job.name)
@@ -1003,13 +1000,9 @@ AddEventHandler('esx:setJob', function(job)
 				}
 
 				TriggerServerEvent('esx_service:notifyAllInService', notification, job)
-				TriggerEvent('esx_policejob:updateBlip')
 			end
 		end, job)
 	end
-	
-	Citizen.Wait(5000)
-	TriggerServerEvent('esx_policejob:forceBlip')
 end)
 
 RegisterNetEvent('esx:setJobSub')
@@ -1700,24 +1693,6 @@ AddEventHandler('master_keymap:f6', function()
 	end
 end)
 
--- Create blip for colleagues
-function createBlip(id)
-	local ped = GetPlayerPed(id)
-	local blip = GetBlipFromEntity(ped)
-
-	if not DoesBlipExist(blip) then -- Add blip and create head display on player
-		blip = AddBlipForEntity(ped)
-		SetBlipSprite(blip, 1)
-		ShowHeadingIndicatorOnBlip(blip, true) -- Player Blip indicator
-		SetBlipRotation(blip, math.ceil(GetEntityHeading(ped))) -- update rotation
-		SetBlipNameToPlayerName(blip, id) -- update blip name
-		SetBlipScale(blip, 0.7) -- set scale
-		SetBlipAsShortRange(blip, true)
-
-		table.insert(blipsCops, blip) -- add blip to array so we can remove it later
-	end
-end
-
 -- Animations
 RegisterNetEvent('esx_policejob:animtarget')
 AddEventHandler('esx_policejob:animtarget', function(target)
@@ -1776,61 +1751,6 @@ AddEventHandler('esx_policejob:uncuffanimpolice', function()
 	TaskPlayAnim(playerPed, 'mp_arresting', 'a_uncuff', 8.0, -8,-1, 2, 0, 0, 0, 0)
 	Citizen.Wait(5500)
 	ClearPedTasks(playerPed)
-end)
-
-
--- Draw markers and more
-Citizen.CreateThread(function()
-	while true do
-		Citizen.Wait(60000)
-		TriggerEvent('esx_policejob:updateBlip')
-	end
-end)
--- Animations
-RegisterNetEvent('esx_policejob:updateBlip')
-AddEventHandler('esx_policejob:updateBlip', function()
-
-	-- Refresh all blips
-	for k, existingBlip in pairs(blipsCops) do
-		RemoveBlip(existingBlip)
-	end
-
-	-- Clean the blip table
-	blipsCops = {}
-
-	-- Enable blip?
-	if Config.EnableESXService and not playerInService then
-		return
-	end
-
-	if not Config.EnableJobBlip then
-		return
-	end
-	
-	while ESX == nil do
-		Citizen.Wait(0)
-	end
-	
-	while ESX.GetPlayerData().job == nil do
-		Citizen.Wait(3000)
-	end
-
-	ESX.PlayerData = ESX.GetPlayerData()
-
-	-- Is the player a cop? In that case show all the blips for other cops
-	if ESX.PlayerData.job and (ESX.PlayerData.job.name == 'police' or ESX.PlayerData.job.name == 'sheriff' or ESX.PlayerData.job.name == 'fbi' or ESX.PlayerData.job.name == 'dadsetani') then
-		ESX.TriggerServerCallback('esx_service:getInServOnlinePlayers', function(players)
-			for i=1, #players, 1 do
-				if players[i].job.name == ESX.PlayerData.job.name then
-					local id = GetPlayerFromServerId(players[i].source)
-					if NetworkIsPlayerActive(id) and GetPlayerPed(id) ~= PlayerPedId() then
-						createBlip(id)
-					end
-				end
-			end
-		end, ESX.PlayerData.job.name)
-	end
-
 end)
 
 AddEventHandler('playerSpawned', function(spawn)
