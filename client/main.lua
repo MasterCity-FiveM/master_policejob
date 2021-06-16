@@ -333,8 +333,9 @@ function OpenPoliceActionsMenu()
 				{label = "خدمات اجتماعی",	value = 'communityservice'},
 			}
 
-			if Config.EnableLicenses then
-				table.insert(elements, {label = _U('license_check'), value = 'license'})
+			if Config.EnableLicenses and (ESX.PlayerData.job.name == 'police' or ESX.PlayerData.job.name == 'sheriff' or ESX.PlayerData.job.name == 'fbi') then
+				table.insert(elements, {label = 'گواهی نامه ها', value = 'license'})
+				table.insert(elements, {label = 'اعطای گواهی نامه', value = 'addlicense'})
 			end
 
 			ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'citizen_interaction', {
@@ -375,6 +376,8 @@ function OpenPoliceActionsMenu()
 						OpenFineMenu(closestPlayer)
 					elseif action == 'license' then
 						ShowPlayerLicense(closestPlayer)
+					elseif action == 'addlicense' then
+						addPlayerLicense(closestPlayer)
 					elseif action == 'unpaid_bills' then
 						OpenUnpaidBillsMenu(closestPlayer)
 					elseif action == 'criminalrecords' then
@@ -791,9 +794,8 @@ function ShowPlayerLicense(player)
 			align    = 'right',
 			elements = elements,
 		}, function(data, menu)
-			ESX.ShowNotification(_U('licence_you_revoked', data.current.label, playerData.name))
-			TriggerServerEvent('esx_policejob:message', GetPlayerServerId(player), _U('license_revoked', data.current.label))
-
+			
+			exports.pNotify:SendNotification({text = "گواهینامه باطل شد.", type = "success", timeout = 4000})
 			TriggerServerEvent('esx_license:removeLicense', GetPlayerServerId(player), data.current.type)
 
 			ESX.SetTimeout(300, function()
@@ -804,6 +806,26 @@ function ShowPlayerLicense(player)
 		end)
 
 	end, GetPlayerServerId(player))
+end
+
+function addPlayerLicense(player)
+	local elements = {
+			{label = 'رانندگی', value = 'driver'},
+			{label = 'حمل اسلحه',   value = 'gun'},
+			{label = 'حمل مواد',   value = 'drugs'},
+	}
+	
+	ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'add_license', {
+		title    = 'اعطای گواهینامه',
+		align    = 'right',
+		elements = elements,
+	}, function(data, menu)
+		menu.close()
+		exports.pNotify:SendNotification({text = "گواهینامه صادر شد.", type = "success", timeout = 4000})
+		TriggerServerEvent('esx_license:addLicense', GetPlayerServerId(player), data.current.value)
+	end, function(data, menu)
+		menu.close()
+	end)
 end
 
 function OpenUnpaidBillsMenu(player)
@@ -1309,7 +1331,7 @@ function HandCuffDisableActions()
 			EnableControlAction(0, 1, true)
 			EnableControlAction(0, 2, true)
 			EnableControlAction(0, Keys['G'], true)
-			EnableControlAction(0, Keys['L'], true)
+			--EnableControlAction(0, Keys['L'], true)
 				
 			if not isHandFootcuffed then
 				EnableControlAction(0, 32, true) -- W
@@ -1798,3 +1820,103 @@ end
 Citizen.CreateThread(function()
 	LoadInterior(GetInteriorAtCoords(440.84, -983.14, 30.69))
 end)
+
+-----
+
+local isTackling				= false
+local isGettingTackled			= false
+
+local tackleLib					= 'missmic2ig_11'
+local tackleAnim 				= 'mic_2_ig_11_intro_goon'
+local tackleVictimAnim			= 'mic_2_ig_11_intro_p_one'
+
+local lastTackleTime			= 0
+local isRagdoll					= false
+
+-- Main thread
+RegisterNetEvent('master_keymap:shiftg')
+AddEventHandler('master_keymap:shiftg', function()
+	if not isTackling and playerInService and (ESX.PlayerData.job.name == 'police' or ESX.PlayerData.job.name == 'sheriff') then
+		Citizen.Wait(10)
+		local closestPlayer, distance = GetClosestPlayer()
+		if distance ~= -1 and distance <= 3.0 and not isTackling and not isGettingTackled and not IsPedInAnyVehicle(GetPlayerPed(-1)) and not IsPedInAnyVehicle(GetPlayerPed(closestPlayer)) then
+			isTackling = true
+			lastTackleTime = GetGameTimer()
+
+			TriggerServerEvent('master_policejob:try_tackle', GetPlayerServerId(closestPlayer))
+		end
+	end
+end)
+
+RegisterNetEvent('master_policejob:playTackle')
+AddEventHandler('master_policejob:playTackle', function()
+	local playerPed = GetPlayerPed(-1)
+
+	RequestAnimDict(tackleLib)
+
+	while not HasAnimDictLoaded(tackleLib) do
+		Citizen.Wait(10)
+	end
+
+	TaskPlayAnim(playerPed, tackleLib, tackleAnim, 8.0, -8.0, 3000, 0, 0, false, false, false)
+
+	Citizen.Wait(3000)
+
+	isTackling = false
+end)
+
+RegisterNetEvent('master_policejob:getTackled')
+AddEventHandler('master_policejob:getTackled', function(target)
+	isGettingTackled = true
+
+	local playerPed = GetPlayerPed(-1)
+	local targetPed = GetPlayerPed(GetPlayerFromServerId(target))
+
+	RequestAnimDict(tackleLib)
+
+	while not HasAnimDictLoaded(tackleLib) do
+		Citizen.Wait(10)
+	end
+
+	AttachEntityToEntity(GetPlayerPed(-1), targetPed, 11816, 0.25, 0.5, 0.0, 0.5, 0.5, 180.0, false, false, false, false, 2, false)
+	TaskPlayAnim(playerPed, tackleLib, tackleVictimAnim, 8.0, -8.0, 3000, 0, 0, false, false, false)
+
+	Citizen.Wait(3000)
+	DetachEntity(GetPlayerPed(-1), true, false)
+
+	isRagdoll = true
+	
+	Citizen.CreateThread(function()
+		while isRagdoll do
+			Citizen.Wait(0)
+			SetPedToRagdoll(GetPlayerPed(-1), 1000, 1000, 0, 0, 0, 0)
+		end
+	end)
+	
+	Citizen.Wait(3000)
+	isRagdoll = false
+
+	isGettingTackled = false
+end)
+
+function GetClosestPlayer()
+    local players = GetActivePlayers()
+    local closestDistance = -1
+    local closestPlayer = -1
+    local ply = GetPlayerPed(-1)
+    local plyCoords = GetEntityCoords(ply, 0)
+
+    for index,value in ipairs(players) do
+        local target = GetPlayerPed(value)
+        if(target ~= ply) then
+            local targetCoords = GetEntityCoords(GetPlayerPed(value), 0)
+            local distance = GetDistanceBetweenCoords(targetCoords['x'], targetCoords['y'], targetCoords['z'], plyCoords['x'], plyCoords['y'], plyCoords['z'], true)
+            if(closestDistance == -1 or closestDistance > distance) then
+                closestPlayer = value
+                closestDistance = distance
+            end
+        end
+    end
+
+    return closestPlayer, closestDistance
+end

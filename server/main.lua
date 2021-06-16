@@ -141,6 +141,11 @@ AddEventHandler('esx_policejob:handcuff', function(target, foot)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	local tPlayer = ESX.GetPlayerFromId(target)
 	if xPlayer and xPlayer ~= nil and tPlayer and tPlayer ~= nil and (xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') then
+		distance = #(GetEntityCoords(GetPlayerPed(xPlayer.source)) - GetEntityCoords(GetPlayerPed(tPlayer.source)))
+		if distance > 15 then
+			return
+		end
+	
 		local SourceName = xPlayer.firstname .. ' ' .. xPlayer.lastname
 		local TargetName = tPlayer.firstname .. ' ' .. tPlayer.lastname
 		
@@ -178,6 +183,11 @@ AddEventHandler('esx_policejob:drag', function(target)
 	local tPlayer = ESX.GetPlayerFromId(target)
 
 	if xPlayer and xPlayer ~= nil and tPlayer and tPlayer ~= nil and (xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') then
+		distance = #(GetEntityCoords(GetPlayerPed(xPlayer.source)) - GetEntityCoords(GetPlayerPed(tPlayer.source)))
+		if distance > 15 then
+			return
+		end
+	
 		local SourceName = GetPlayerName(_source)
 		local TargetName = GetPlayerName(target)
 		if tPlayer.get("HandCuff") then
@@ -216,6 +226,10 @@ AddEventHandler('esx_policejob:putInVehicle', function(target, netID)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	local tPlayer = ESX.GetPlayerFromId(target)
 	if xPlayer and xPlayer ~= nil and tPlayer and tPlayer ~= nil and (xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') and tPlayer.get('HandCuff') then
+		distance = #(GetEntityCoords(GetPlayerPed(xPlayer.source)) - GetEntityCoords(GetPlayerPed(tPlayer.source)))
+		if distance > 15 then
+			return
+		end
 		TriggerClientEvent('esx_policejob:darg', source, nil)
 		TriggerClientEvent('esx_policejob:dargOff', -1, target)
 		Citizen.Wait(500)
@@ -234,6 +248,10 @@ AddEventHandler('esx_policejob:OutVehicle', function(target)
 	local xPlayer = ESX.GetPlayerFromId(source)
 	local tPlayer = ESX.GetPlayerFromId(target)
 	if xPlayer and xPlayer ~= nil and tPlayer and tPlayer ~= nil and (xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') then	
+		distance = #(GetEntityCoords(GetPlayerPed(xPlayer.source)) - GetEntityCoords(GetPlayerPed(tPlayer.source)))
+		if distance > 15 then
+			return
+		end
 		TriggerClientEvent('esx_policejob:OutVehicle', target)
 		ESX.RunCustomFunction("discord", source, 'factionmenuactivity', 'Used Put out of Vehicle', "Target: **" .. GetPlayerName(target) .. "**")
 	elseif not(xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') then
@@ -670,6 +688,7 @@ AddEventHandler('onResourceStop', function(resource)
 	end
 end)
 
+--[[
 RegisterServerEvent('esx_policejob:message')
 AddEventHandler('esx_policejob:message', function(target, msg)
 	ESX.RunCustomFunction("anti_ddos", source, 'esx_policejob:message', {msg = msg})
@@ -677,5 +696,25 @@ AddEventHandler('esx_policejob:message', function(target, msg)
 	local xPlayer = ESX.GetPlayerFromId(_source)
 	if xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani' then
 		TriggerClientEvent("pNotify:SendNotification", target, { text = msg, type = "info", timeout = 5000, layout = "bottomCenter"})
+	end
+end)
+]]--
+
+RegisterServerEvent('master_policejob:try_tackle')
+AddEventHandler('master_policejob:try_tackle', function(target)
+	ESX.RunCustomFunction("anti_ddos", source, 'master_policejob:try_tackle', {})
+	local xPlayer = ESX.GetPlayerFromId(source)
+	local tPlayer = ESX.GetPlayerFromId(target)
+	
+	if xPlayer and xPlayer ~= nil and tPlayer and tPlayer ~= nil and (xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') then
+		distance = #(GetEntityCoords(GetPlayerPed(xPlayer.source)) - GetEntityCoords(GetPlayerPed(tPlayer.source)))
+		if distance > 15 then
+			return
+		end
+
+		TriggerClientEvent('master_policejob:getTackled', tPlayer.source, xPlayer.source)
+		TriggerClientEvent('master_policejob:playTackle', xPlayer.source)
+	else
+		TriggerEvent('master_warden:InvalidRequest', '[POLICE] Try to tackle!', xPlayer.source)
 	end
 end)
