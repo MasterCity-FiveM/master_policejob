@@ -718,3 +718,33 @@ AddEventHandler('master_policejob:try_tackle', function(target)
 		TriggerEvent('master_warden:InvalidRequest', '[POLICE] Try to tackle!', xPlayer.source)
 	end
 end)
+
+RegisterNetEvent('master_policejob:request_support')
+AddEventHandler('master_policejob:request_support', function(data_type)
+	local xPlayer = ESX.GetPlayerFromId(source)
+	ESX.RunCustomFunction("anti_ddos", xPlayer.source, 'master_policejob:request_support', {})
+	
+	local xPlayer = ESX.GetPlayerFromId(source)
+	if xPlayer and xPlayer ~= nil and (xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') then
+		ESX.TriggerServerCallback("esx_service:isPlayerInService", xPlayer.source, function(InServicePlayers)
+			Coords = GetEntityCoords(GetPlayerPed(xPlayer.source))
+			TriggerClientEvent("pNotify:SendNotification", xPlayer.source, { text = "درخواست شما ارسال شد.", type = "success", timeout = 5000, layout = "bottomCenter"})
+			for job, v1 in pairs(InServicePlayers) do
+				for psource, v2 in pairs(v1) do
+				
+					local tPlayer = ESX.GetPlayerFromId(psource)
+					
+					if tPlayer and data_type == 0 and tPlayer.job.name == xPlayer.job.name then
+						TriggerClientEvent("pNotify:SendNotification", tPlayer.source, { text = "یکی از نیروهای شما نیاز به نیرو پشتیبانی دارد.", type = "error", timeout = 10000, layout = "centerLeft"})
+						TriggerClientEvent('master_police:ShowEmergencyBlip', tPlayer.source, Coords)
+					elseif tPlayer and data_type == 1 and (tPlayer.job.name == 'police' or tPlayer.job.name == 'fbi' or tPlayer.job.name == 'sheriff') then
+						TriggerClientEvent("pNotify:SendNotification", tPlayer.source, { text = "درخواست نیروی پشتیبانی از کلیه نیروهای نظامی ثبت شده است.", type = "error", timeout = 10000, layout = "centerLeft"})
+						TriggerClientEvent('master_police:ShowEmergencyBlip', tPlayer.source, Coords)
+					end
+				end
+			end
+		end)
+	elseif not(xPlayer.job.name == 'police' or xPlayer.job.name == 'sheriff' or xPlayer.job.name == 'fbi' or xPlayer.job.name == 'dadsetani') then
+		TriggerEvent('master_warden:InvalidRequest', '[POLICE] Try to request_support!', sourceXPlayer.source)
+	end
+end)

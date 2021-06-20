@@ -287,22 +287,18 @@ end
 
 function OpenPoliceActionsMenu()
 	ESX.UI.Menu.CloseAll()
+	
 	Citizen.Wait(100)
+	elements = {
+		{label = _U('citizen_interaction'), value = 'citizen_interaction'},
+		{label = _U('vehicle_interaction'), value = 'vehicle_interaction'},
+		{label = 'درخواست نیرو کمکی', value = 'need_support'},
+		--{label = _U('object_spawner'), value = 'object_spawner'},
+		{label = "اشخاص تحت تعقیب", value = 'wanted_menu'}
+	}
+	
 	if ESX.PlayerData.job.grade_name == 'boss' then
-		elements = {
-			{label = _U('citizen_interaction'), value = 'citizen_interaction'},
-			{label = _U('vehicle_interaction'), value = 'vehicle_interaction'},
-			--{label = _U('object_spawner'), value = 'object_spawner'},
-			{label = "اشخاص تحت تعقیب",  value = 'wanted_menu'},
-			{label = 'پنل مدیریت', value = 'boss_action'},
-		}
-	else
-		elements = {
-			{label = _U('citizen_interaction'), value = 'citizen_interaction'},
-			{label = _U('vehicle_interaction'), value = 'vehicle_interaction'},
-			--{label = _U('object_spawner'), value = 'object_spawner'},
-			{label = "اشخاص تحت تعقیب", value = 'wanted_menu'}
-		}
+		table.insert(elements, {label = 'پنل مدیریت', value = 'boss_action'})
 	end
 	
 	ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'police_actions', {
@@ -318,6 +314,9 @@ function OpenPoliceActionsMenu()
 		if data.current.value == 'boss_action' then
 			menu.close()
 			TriggerEvent('master_society:RequestOpenBossMenu')
+		elseif data.current.value == 'need_support' then
+			menu.close()
+			OpenSupportMenu()
 		elseif data.current.value == 'citizen_interaction' then
 			local elements = {
 				{label = _U('id_card'), value = 'identity_card'},
@@ -346,22 +345,20 @@ function OpenPoliceActionsMenu()
 				local closestPlayer, closestDistance = ESX.Game.GetClosestPlayer()
 				if closestPlayer ~= -1 and closestDistance <= 2.0 then
 					local action = data2.current.value
-					
+					menu.close()
+					menu2.close()
+
 					if action == 'identity_card' then
 						OpenIdentityCardMenu(closestPlayer)
 					elseif action == 'search' then
 						OpenBodySearchMenu(closestPlayer)
 					elseif action == 'handcuff' then
-						menu.close()
 						TriggerServerEvent('esx_policejob:handcuff', GetPlayerServerId(closestPlayer), false)
 					elseif action == 'handfootcuff' then
-						menu.close()
 						TriggerServerEvent('esx_policejob:handcuff', GetPlayerServerId(closestPlayer), true)
 					elseif action == 'drag' then
-						menu.close()
 						TriggerServerEvent('esx_policejob:drag', GetPlayerServerId(closestPlayer))
 					elseif action == 'put_in_vehicle' then
-						menu.close()
 						local vehicle = ESX.Game.GetVehicleInDirection(4)
 							if vehicle == 0 then
 								exports.pNotify:SendNotification({text = "خودرویی در نزدیکی شما نیست.", type = "error", timeout = 3000})
@@ -370,7 +367,6 @@ function OpenPoliceActionsMenu()
 						local NetId = NetworkGetNetworkIdFromEntity(vehicle)
 						TriggerServerEvent('esx_policejob:putInVehicle', GetPlayerServerId(closestPlayer), NetId)
 					elseif action == 'out_the_vehicle' then
-						menu.close()
 						TriggerServerEvent('esx_policejob:OutVehicle', GetPlayerServerId(closestPlayer))
 					elseif action == 'fine' then
 						OpenFineMenu(closestPlayer)
@@ -385,6 +381,7 @@ function OpenPoliceActionsMenu()
 					elseif action == 'communityservice' then
 						SendToCommunityService(GetPlayerServerId(closestPlayer))	
 					end
+					
 					Citizen.Wait(100)
 				else
 					exports.pNotify:SendNotification({text = "شهروندی نزدیک شما نیست.", type = "error", timeout = 3000})
@@ -688,6 +685,21 @@ function OpenBodySearchMenu(player)
 			menu.close()
 		end)
 	end, GetPlayerServerId(player))
+end
+
+function OpenSupportMenu()
+	ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'support', {
+		title    = 'درخواست نیرو',
+		align    = 'right',
+		elements = {
+			{label = 'درخواست نیرو پشتیبانی', value = 0},
+			{label = 'درخواست نیرو از کلیه یگانهای نظامی',   value = 1},
+	}}, function(data, menu)
+		menu.close()
+		TriggerServerEvent('master_policejob:request_support', data.current.value)
+	end, function(data, menu)
+		menu.close()
+	end)
 end
 
 function OpenFineMenu(player)
@@ -1920,3 +1932,25 @@ function GetClosestPlayer()
 
     return closestPlayer, closestDistance
 end
+
+
+RegisterNetEvent('master_police:ShowEmergencyBlip')
+AddEventHandler('master_police:ShowEmergencyBlip', function(Coords)
+-- Create blips
+	Citizen.CreateThread(function()
+		local blip = AddBlipForCoord(Coords)
+
+		SetBlipSprite (blip, 161)
+		SetBlipDisplay(blip, 4)
+		SetBlipScale(blip, 1.2)
+		SetBlipColour (blip, 53)
+		SetBlipAsShortRange(blip, true)
+
+		BeginTextCommandSetBlipName('STRING')
+		AddTextComponentSubstringPlayerName('Support')
+		EndTextCommandSetBlipName(blip)
+		
+		Citizen.Wait(120000)
+		RemoveBlip(blip)
+	end)
+end)
