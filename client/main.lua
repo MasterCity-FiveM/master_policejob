@@ -113,15 +113,19 @@ function OpenCloakroomMenu()
 	local grade = ESX.PlayerData.job.grade_name
 
 	local elements = {
-			{label = _U('citizen_wear'), value = 'citizen_wear'},
-			{label = _U('bullet_wear'), uniform = 'bullet_wear'},
-			{label = "برداشتن " .. _U('bullet_wear'), uniform = 'unbullet_wear'}
-		}
+		{label = _U('citizen_wear'), value = 'citizen_wear'},
+		{label = _U('bullet_wear'), uniform = 'bullet_wear'},
+		{label = "برداشتن " .. _U('bullet_wear'), uniform = 'unbullet_wear'}
+	}
 		
 	if ESX.PlayerData.job.name == 'dadsetani' then
 		elements = {
 			{label = _U('citizen_wear'), value = 'citizen_wear'}
 		}		
+	end
+	
+	if ESX.PlayerData.job.name == 'police' and ESX.PlayerData.job.grade >= 4 then
+		table.insert(elements, {label = _U('bullet_wear') .. ' 2', uniform = 'bullet_wear2'})	
 	end
 	
 
@@ -697,6 +701,16 @@ function OpenSupportMenu()
 	}}, function(data, menu)
 		menu.close()
 		TriggerServerEvent('master_policejob:request_support', data.current.value)
+		RequestAnimDict("random@arrests")
+
+		while not HasAnimDictLoaded("random@arrests") do
+			Citizen.Wait(150)
+		end
+		
+		TaskPlayAnim(PlayerPedId(), "random@arrests", "generic_radio_enter", 8.0, 2.0, -1, 50, 2.0, 0, 0, 0 )
+		Citizen.Wait(3000)
+		RemoveAnimDict("random@arrests")
+		ClearPedTasks(PlayerPedId())
 	end, function(data, menu)
 		menu.close()
 	end)
