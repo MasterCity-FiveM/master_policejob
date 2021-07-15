@@ -831,7 +831,7 @@ Config.CustomUniforms = {
 				model = {
 					male = {
 						tshirt_1 = 15,  tshirt_2 = 0,
-						torso_1 = 102,   torso_2 = 0,
+						torso_1 = 93,   torso_2 = 0,
 						decals_1 = 0,   decals_2 = 0,
 						arms = 30,
 						bags_1 = -1, bags_2 = 0,
@@ -868,7 +868,7 @@ Config.CustomUniforms = {
 				model = {
 					male = {
 						tshirt_1 = 15,  tshirt_2 = 0,
-						torso_1 = 102,   torso_2 = 0,
+						torso_1 = 93,   torso_2 = 0,
 						decals_1 = 0,   decals_2 = 0,
 						arms = 30,
 						bags_1 = -1, bags_2 = 0,
@@ -905,7 +905,7 @@ Config.CustomUniforms = {
 				model = {
 					male = {
 						tshirt_1 = 15,  tshirt_2 = 0,
-						torso_1 = 102,   torso_2 = 0,
+						torso_1 = 93,   torso_2 = 0,
 						decals_1 = 0,   decals_2 = 0,
 						arms = 30,
 						bags_1 = -1, bags_2 = 0,
@@ -942,7 +942,7 @@ Config.CustomUniforms = {
 				model = {
 					male = {
 						tshirt_1 = 15,  tshirt_2 = 0,
-						torso_1 = 102,   torso_2 = 0,
+						torso_1 = 93,   torso_2 = 0,
 						decals_1 = 0,   decals_2 = 0,
 						arms = 30,
 						bags_1 = -1, bags_2 = 0,

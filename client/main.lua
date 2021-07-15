@@ -114,10 +114,9 @@ function OpenCloakroomMenu()
 
 	local elements = {
 		{label = _U('citizen_wear'), value = 'citizen_wear'},
-		{label = _U('bullet_wear'), uniform = 'bullet_wear'},
 		{label = "برداشتن " .. _U('bullet_wear'), uniform = 'unbullet_wear'}
 	}
-		
+	table.insert(elements, {label = _U('bullet_wear') .. ' 2', uniform = 'bullet_wear2'})
 	if ESX.PlayerData.job.name == 'dadsetani' then
 		elements = {
 			{label = _U('citizen_wear'), value = 'citizen_wear'}
@@ -125,7 +124,7 @@ function OpenCloakroomMenu()
 	end
 	
 	if ESX.PlayerData.job.name == 'police' and ESX.PlayerData.job.grade >= 4 then
-		table.insert(elements, {label = _U('bullet_wear') .. ' 2', uniform = 'bullet_wear2'})	
+		table.insert(elements, {label = _U('bullet_wear') .. ' 1', uniform = 'bullet_wear'})
 	end
 	
 
@@ -1821,10 +1820,12 @@ end)
 AddEventHandler('onResourceStop', function(resource)
 	if resource == GetCurrentResourceName() then
 		TriggerEvent('esx_policejob:unrestrain')
-		TriggerEvent('esx_phone:removeSpecialContact', ESX.PlayerData.job.name)
+		if ESX.PlayerData and ESX.PlayerData.job and ESX.PlayerData.job.name then
+			TriggerEvent('esx_phone:removeSpecialContact', ESX.PlayerData.job.name)
 
-		if Config.EnableESXService then
-			TriggerServerEvent('esx_service:disableService', ESX.PlayerData.job.name)
+			if Config.EnableESXService then
+				TriggerServerEvent('esx_service:disableService', ESX.PlayerData.job.name)
+			end
 		end
 	end
 end)
