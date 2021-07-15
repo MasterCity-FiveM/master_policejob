@@ -676,7 +676,7 @@ function OpenBodySearchMenu(player)
 			if data.current.value then
 				local playerCoords = GetEntityCoords(GetPlayerPed(-1))
 				local playerCoords2 = GetEntityCoords(GetPlayerPed(player))
-				if IsPedDeadOrDying(GetPlayerPed(player)) or IsEntityPlayingAnim(GetPlayerPed(player), 'missminuteman_1ig_2', 'handsup_base', 3) or IsEntityPlayingAnim(GetPlayerPed(player), 'anim@gangops@morgue@table@', 'ko_front', 3) or IsEntityPlayingAnim(GetPlayerPed(player), "amb@world_human_bum_slumped@male@laying_on_left_side@base", "base", 1) then
+				if IsPedDeadOrDying(GetPlayerPed(player)) or IsEntityPlayingAnim(PlayerPedId(), 'mp_arresting', 'idle', 3) or IsEntityPlayingAnim(GetPlayerPed(player), 'missminuteman_1ig_2', 'handsup_base', 3) or IsEntityPlayingAnim(GetPlayerPed(player), 'anim@gangops@morgue@table@', 'ko_front', 3) or IsEntityPlayingAnim(GetPlayerPed(player), "amb@world_human_bum_slumped@male@laying_on_left_side@base", "base", 1) then
 					TriggerServerEvent('esx_policejob:confiscatePlayerItem', GetPlayerServerId(player), data.current.itemType, data.current.value, data.current.amount)
 					OpenBodySearchMenu(player)
 				else
