@@ -322,21 +322,21 @@ function OpenPoliceActionsMenu()
 			OpenSupportMenu()
 		elseif data.current.value == 'citizen_interaction' then
 			local elements = {
-				{label = _U('id_card'), value = 'identity_card'},
-				{label = _U('search'), value = 'search'},
-				{label = 'باز و بسته کردن دستبند',   value = 'handcuff'},
-				{label = 'باز و بسته کردن دستبند و پابند', value = 'handfootcuff'},
-				{label = _U('drag'), value = 'drag'},
-				{label = _U('put_in_vehicle'), value = 'put_in_vehicle'},
-				{label = _U('out_the_vehicle'), value = 'out_the_vehicle'},
-				{label = _U('fine'), value = 'fine'},
-				{label = _U('unpaid_bills'), value = 'unpaid_bills'},
+				{label = _U('id_card') .. ' - Identity', value = 'identity_card'},
+				{label = _U('search') .. ' - Search', value = 'search'},
+				{label = 'دست بند' .. ' - Handcuff',   value = 'handcuff'},
+				{label = 'دست بند و پابند' .. ' - Hand & foot cuff', value = 'handfootcuff'},
+				{label = _U('drag') .. ' - Drag', value = 'drag'},
+				{label = _U('put_in_vehicle') .. ' - Put in Veh', value = 'put_in_vehicle'},
+				{label = _U('out_the_vehicle') .. ' - Out the Veh', value = 'out_the_vehicle'},
+				{label = _U('fine') .. ' - Fine', value = 'fine'},
+				{label = _U('unpaid_bills') .. ' - Unpaid Bills', value = 'unpaid_bills'},
 				{label = 'سوابق کیفری',   value = 'criminalrecords'},
 				{label = "خدمات اجتماعی",	value = 'communityservice'},
 			}
 
 			if Config.EnableLicenses and (ESX.PlayerData.job.name == 'police' or ESX.PlayerData.job.name == 'sheriff' or ESX.PlayerData.job.name == 'fbi') then
-				table.insert(elements, {label = 'گواهی نامه ها', value = 'license'})
+				table.insert(elements, {label = 'گواهی نامه ها' .. ' - License', value = 'license'})
 				table.insert(elements, {label = 'اعطای گواهی نامه', value = 'addlicense'})
 			end
 
@@ -676,7 +676,7 @@ function OpenBodySearchMenu(player)
 			if data.current.value then
 				local playerCoords = GetEntityCoords(GetPlayerPed(-1))
 				local playerCoords2 = GetEntityCoords(GetPlayerPed(player))
-				if IsPedDeadOrDying(GetPlayerPed(player)) or IsEntityPlayingAnim(PlayerPedId(), 'mp_arresting', 'idle', 3) or IsEntityPlayingAnim(GetPlayerPed(player), 'missminuteman_1ig_2', 'handsup_base', 3) or IsEntityPlayingAnim(GetPlayerPed(player), 'anim@gangops@morgue@table@', 'ko_front', 3) or IsEntityPlayingAnim(GetPlayerPed(player), "amb@world_human_bum_slumped@male@laying_on_left_side@base", "base", 1) then
+				if IsPedDeadOrDying(GetPlayerPed(player)) or IsEntityPlayingAnim(GetPlayerPed(player), 'missminuteman_1ig_2', 'handsup_base', 3) or IsEntityPlayingAnim(GetPlayerPed(player), 'anim@gangops@morgue@table@', 'ko_front', 3) or IsEntityPlayingAnim(GetPlayerPed(player), "amb@world_human_bum_slumped@male@laying_on_left_side@base", "base", 1) then
 					TriggerServerEvent('esx_policejob:confiscatePlayerItem', GetPlayerServerId(player), data.current.itemType, data.current.value, data.current.amount)
 					OpenBodySearchMenu(player)
 				else
